@@ -1,0 +1,37 @@
+<form class="form-horizontal" #createTimForm="ngForm" (ngSubmit)="submitForm()">
+	<div class="col-sm-10">
+		<div class="form-group">
+			<label class="control-label col-sm-4">Broadcast Date/Time Start:</label>
+			<div class="col-sm-8"> 
+				<input type="date" class="form-control" [(ngModel)]="tim.startTime" name="startTime" required />
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-4">Duration (Minutes):</label>
+			<div class="col-sm-8">
+				<input class="form-control" [(ngModel)]="tim.durationTime" name="durationTime" type="Number" required />
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-4">TIM Type (ITIS code):</label>
+			<div class="col-sm-8"> 
+				<select class="form-control" [(ngModel)]="tim.itisCode" name="itisCode" required>
+		        	<option *ngFor="let i of itisCodes" [ngValue]="i.id">{{ i.code }}</option> 
+	  			</select>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-sm-4">RSU IP Address:</label>
+			<div class="col-sm-8"> 
+		  		<input class="form-control" [(ngModel)]="tim.rsuIpAddress" name="rsuIpAddress" type="rsuIpAddress" />			  	
+			</div>
+		</div>
+
+	</div>
+	<div style="text-align: center; clear: both;">			
+		<button type="submit" class="btn btn-primary">Submit</button>
+	</div>
+</form>

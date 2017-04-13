@@ -9,7 +9,7 @@
       "outDir": "dist",
       "assets": [
         "assets",
-        "favicon.ico"
+        "WYDOT_icon.jpg"
       ],
       "index": "index.html",
       "main": "main.ts",
@@ -19,9 +19,9 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css"
+        "theme-dashboard/dist/toolkit-light.min.css"
       ],
-      "scripts": [],
+      "scripts": ["theme-dashboard/dist/toolkit.min.js"],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
