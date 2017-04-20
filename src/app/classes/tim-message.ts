@@ -3,4 +3,9 @@ export class TimMessage{
 	durationTime: number;
 	itisCode: string;
 	rsuIpAddress: string;
+	msgCnt: number;
+	timeStamp: string;
+	packetID: number;
+	urlB: string;
+	//dataframes: Dataframes[];
 }
