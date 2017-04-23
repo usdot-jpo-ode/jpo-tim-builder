@@ -1,34 +1,42 @@
 <form class="form-horizontal" #createTimForm="ngForm" (ngSubmit)="submitForm()">
 	<div class="col-sm-10">
 		<div class="form-group">
-			<label class="control-label col-sm-4">Broadcast Date/Time Start:</label>
+			<label class="control-label col-sm-4">Broadcast Date/Time Start:<span style="color: red;">*</span></label>
 			<div class="col-sm-8"> 
-				<input type="date" class="form-control" [(ngModel)]="tim.startTime" name="startTime" required />
+				<input type="date" class="form-control" [(ngModel)]="df.startDateTime" name="startTime" required />
 			</div>
 		</div>
 
 		<div class="form-group">
-			<label class="control-label col-sm-4">Duration (Minutes):</label>
+			<label class="control-label col-sm-4">Duration (Minutes):<span style="color: red;">*</span></label>
 			<div class="col-sm-8">
-				<input class="form-control" [(ngModel)]="tim.durationTime" name="durationTime" type="Number" required />
+				<input class="form-control" [(ngModel)]="df.durationTime" name="durationTime" type="Number" required />
 			</div>
 		</div>
 
 		<div class="form-group">
-			<label class="control-label col-sm-4">TIM Type (ITIS code):</label>
+			<label class="control-label col-sm-4">TIM Type (ITIS code):<span style="color: red;">*</span></label>
 			<div class="col-sm-8"> 
 				<select class="form-control" [(ngModel)]="tim.itisCode" name="itisCode" required>
 		        	<option *ngFor="let i of itisCodes" [ngValue]="i.id">{{ i.code }}</option> 
 	  			</select>
 			</div>
 		</div>
-		
+
 		<div class="form-group">
-			<label class="control-label col-sm-4">RSU IP Address:</label>
-			<div class="col-sm-8"> 
-		  		<input class="form-control" [(ngModel)]="tim.rsuIpAddress" name="rsuIpAddress" type="rsuIpAddress" />			  	
+		<label class="control-label col-sm-4">RSUs (at least one):<span style="color: red;">*</span></label>
+			<div *ngFor="let r of rsuData">
+				<div class="col-sm-offset-4" style="padding-left: 15px;">
+					<div class="checkbox custom-control custom-checkbox">
+						<label>
+						<input type="checkbox" (change)="checkChanged($event)" name="{{r.rsuTarget}}">
+						<span class="custom-control-indicator"></span>
+							{{ r.rsuTarget }}
+						</label>
+					</div>
+				</div>
 			</div>
-		</div>
+		</div>			
 
 	</div>
 	<div style="text-align: center; clear: both;">			

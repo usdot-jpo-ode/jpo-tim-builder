@@ -5,6 +5,7 @@ import { TimMessage } from '../../classes/tim-message';
 import { TimSample } from '../../classes/tim-sample';
 import { DataFrame } from '../../classes/data-frame';
 import { ITISCODES } from '../../data/itis-codes';
+import { RSUDATA } from '../../data/rsu-data';
 import { ItisCode } from '../../classes/itis-code';
 import { Region } from '../../classes/region';
 import { J2735Position3D } from '../../classes/J2735-Position-3D';
@@ -24,12 +25,27 @@ export class HomeComponent implements OnInit{
 	tim: TimMessage;
 	itisCodes: ItisCode[];
 	testJSON: string;
+	df: DataFrame;
+	rsuData: RSU[];	
 
    	constructor(private timCreatorService : TimCreatorService){ }
 
 	ngOnInit(){			
 		this.tim = new TimMessage();
 		this.itisCodes = ITISCODES;
+		this.df = new DataFrame();
+		this.rsuData = RSUDATA;
+	}
+
+	checkChanged(e){
+		for(let r of this.rsuData){  			
+			if(r.rsuTarget == e.target.name){ 
+				if(e.target.checked)
+					r.isSelected = true;			
+				else
+					r.isSelected = false;
+			}
+		}
 	}
 
 	submitForm(){
@@ -40,22 +56,19 @@ export class HomeComponent implements OnInit{
 		tim.packetID = "1";
 		tim.urlB = "null";
 
-		let df = new DataFrame();
-		df.sspTimRights = "0";
-		df.frameType = "0";
-		df.msgID = "RoadSignID";
-		df.position = new J2735Position3D();
-		df.position.latitude = "41.678473";
-		df.position.longitude = "-108.782775";
-		df.position.elevation = "917.1432";
-		df.viewAngle = "1010101010101010";
-		df.mutcd = "5";
-		df.crc = "0000000000000000";
-		df.startDateTime = "2017-12-01T17:47:11-05:00";
-		df.durationTime = "22";
-		df.priority = "0";
-		df.sspLocationRights = "3";
-		df.regions = [];
+		this.df.sspTimRights = "0";
+		this.df.frameType = "0";
+		this.df.msgID = "RoadSignID";
+		this.df.position = new J2735Position3D();
+		this.df.position.latitude = "41.678473";
+		this.df.position.longitude = "-108.782775";
+		this.df.position.elevation = "917.1432";
+		this.df.viewAngle = "1010101010101010";
+		this.df.mutcd = "5";
+		this.df.crc = "0000000000000000";
+		this.df.priority = "0";
+		this.df.sspLocationRights = "3";
+		this.df.regions = [];
 
 		let region = new Region();
 		region.name = "TRIHYDRO TEST";
@@ -82,28 +95,28 @@ export class HomeComponent implements OnInit{
 		region.geometry.circle.radius = "15";
 		region.geometry.circle.units = "7";
 
-		df.sspMsgTypes = "2";
-		df.sspMsgContent = "3";
-		df.content = "Advisory";
-		df.items = [];
-		df.items.push("250");
-		df.url = "null";
+		this.df.sspMsgTypes = "2";
+		this.df.sspMsgContent = "3";
+		this.df.content = "Advisory";
+		this.df.items = [];
+		this.df.items.push("250");
+		this.df.url = "null";
 
-		df.regions.push(region);
+		this.df.regions.push(region);
 		let dfa: DataFrame[] = [];
-		dfa.push(df);
+		dfa.push(this.df);
 		tim.dataframes = dfa;
 		timSample.tim = tim;
 
 		timSample.rsus = [];
-		let rsu = new RSU();
-		rsu.rsuTarget = "10.145.1.15";
-		rsu.rsuUsername = "v3user";
-		rsu.rsuPassword = "password";
-		rsu.rsuRetries = "1";
-		rsu.rsuTimeout = "2000";
 
-		timSample.rsus.push(rsu);
+		// selected RSUs
+		for(let r of this.rsuData){  			
+			if(r.isSelected){ 
+				timSample.rsus.push(r);
+			}
+		}
+
 
 		timSample.snmp = new SNMP();
 		timSample.snmp.rsuid = "8300";
@@ -118,11 +131,11 @@ export class HomeComponent implements OnInit{
 
 		this.testJSON = JSON.stringify(timSample);	
 
-		this.timCreatorService
-      	.sendTim(timSample)
-      	.subscribe(
-      		(r: Response) => { console.log(''); }
-  		);
+		// this.timCreatorService
+  //     	.sendTim(timSample)
+  //     	.subscribe(
+  //     		(r: Response) => { console.log(''); }
+  // 		);
         
 	}
 }

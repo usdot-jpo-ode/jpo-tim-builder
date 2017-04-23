@@ -4,4 +4,5 @@ export class RSU{
 	rsuPassword: string;
 	rsuRetries: string;
 	rsuTimeout: string;
+	isSelected: boolean;
 }
