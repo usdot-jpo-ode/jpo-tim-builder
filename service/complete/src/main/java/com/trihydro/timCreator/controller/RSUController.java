@@ -21,7 +21,7 @@ public class RSUController {
 	@RequestMapping(value="/rsus", method = RequestMethod.GET, headers="Accept=application/json")
   	public List<RSU> selectAllRsus() { 
    		List<RSU> rsus = rsuService.selectAll();
-   		return rsus;
+   		return rsus;      
   	}
 
   	@RequestMapping(value="/rsus", method = RequestMethod.POST, headers="Accept=application/json")
@@ -29,13 +29,10 @@ public class RSUController {
    		
    		rsuService.addRSU(newRsu);
 
-
-		URI location = ServletUriComponentsBuilder
+		  URI location = ServletUriComponentsBuilder
 							.fromCurrentRequest().path("/{id}")
 							.buildAndExpand(newRsu.getRsuId())
 							.toUri();
-		return ResponseEntity.created(location).build();
-   		
+		  return ResponseEntity.created(location).build();   		
   	}
-
 }

@@ -82,6 +82,7 @@ export class HomeComponent implements OnInit{
 		this.df.priority = "0";
 		this.df.sspLocationRights = "3";
 		this.df.regions = [];
+		this.df.furtherInfoID = "test";
 
 		let region = new Region();
 		region.name = "TRIHYDRO TEST";
@@ -130,25 +131,43 @@ export class HomeComponent implements OnInit{
 			}
 		}
 
-
 		timSample.snmp = new SNMP();
 		timSample.snmp.rsuid = "8300";
 		timSample.snmp.msgid = "31";
 		timSample.snmp.mode = "1";
 		timSample.snmp.channel = "178";
-		timSample.snmp.interval = "1";
+		timSample.snmp.interval = "2";
 		timSample.snmp.deliverystart = "2017-01-01T17:47:11-05:00";
 		timSample.snmp.deliverystop = "2019-01-01T17:47:11-05:15";
-		timSample.snmp.enable = "1";
+		timSample.snmp.enable = "3";
 		timSample.snmp.status = "4";
 
-		this.testJSON = JSON.stringify(timSample);	
+		var today = new Date();
+		var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+		var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+
+		timSample.dateSent = date + "T" + time;
+
 
 		// this.timCreatorService
   //     	.sendTim(timSample)
   //     	.subscribe(
   //     		(r: Response) => { console.log(''); }
   // 		);
+
+  		today = new Date();
+		date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+		time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+		timSample.dateReceived = date + "T" + time;
+
+		this.testJSON = JSON.stringify(timSample);	
+
+		
+
+  		this.timCreatorService
+	      	.sendTim(timSample)
+	      	.subscribe((r: Response) => {console.log(r); })      
         
 	}
 }

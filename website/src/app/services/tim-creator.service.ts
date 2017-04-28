@@ -8,15 +8,16 @@ import { TimSample } from '../classes/tim-sample';
 @Injectable()
 export class TimCreatorService{
   
-	private baseUrl: string = 'https://cvodedp01:8443';
+	private baseUrl: string = 'http://localhost:8080';
 
 	constructor(private http : Http){
 		
 	}
 
 	sendTim(timSample: TimSample) : Observable<Response>{   
+		console.log(timSample);
 		return this.http
-		.post(`${this.baseUrl}/tim`, JSON.stringify(timSample), {headers: this.getHeaders()});
+		.post(`${this.baseUrl}/sendTim`, JSON.stringify(timSample), {headers: this.getHeaders()});
 	}
 
 	private getHeaders(){

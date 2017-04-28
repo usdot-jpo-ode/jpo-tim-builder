@@ -6,4 +6,6 @@ export class TimSample{
 	tim: Tim;
 	rsus: RSU[];
 	snmp: SNMP;
+	dateSent: string;
+	dateReceived: string;
 }

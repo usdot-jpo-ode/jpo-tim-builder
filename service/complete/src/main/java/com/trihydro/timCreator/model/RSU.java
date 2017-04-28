@@ -11,11 +11,13 @@ public class RSU
 
 	public Integer getRsuId() 
 	{
+		System.out.println("**** get *****");
 		return this.rsuId;
 	}
 
 	public void setRsuId(Integer rsuId) 
 	{
+		System.out.println("**** set *****");
 		this.rsuId = rsuId;
 	}
 

@@ -5,4 +5,5 @@ export class RSU{
 	rsuRetries: string;
 	rsuTimeout: string;
 	isSelected: boolean;
+	rsuId: number;
 }
