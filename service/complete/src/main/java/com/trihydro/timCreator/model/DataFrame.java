@@ -23,6 +23,8 @@ public class DataFrame
 	private String content;
 	private String url;// End content Information
 	private Region[] regions;
+	private String[] items;
+	private ItisCode[] itisCodes;
 
 	public Integer getDataFrameId() {
 		return dataFrameId;
@@ -40,131 +42,133 @@ public class DataFrame
 		this.timId = timId;
 	}
 
-	public short getsspTimRights() {
+	public short getSspTimRights() {
 		return sspTimRights;
 	}
       
-    public void setsspTimRights(short sspTimRights) {
+    public void setSspTimRights(short sspTimRights) {
 		this.sspTimRights = sspTimRights;
 	}
 
-	public Integer getframeType() {
+	public Integer getFrameType() {
 		return frameType;
 	}
 
-	public void setframeType(Integer frameType) {
+	public void setFrameType(Integer frameType) {
 		this.frameType = frameType;
 	}
 
-	public String getmsgID() {
+	public String getMsgID() {
 		return msgID;
 	}
 
-    public void setmsgID(String msgID) {
+    public void setMsgID(String msgID) {
 		this.msgID = msgID;
 	}
 
-	public String getfurtherInfoID() {
+	public String getFurtherInfoID() {
 		return furtherInfoID;
 	}
 
-	public void setfurtherInfoID(String furtherInfoID) {
+	public void setFurtherInfoID(String furtherInfoID) {
 		this.furtherInfoID = furtherInfoID;
 	}
 
-	public J2735Position3D getposition() {
+	public J2735Position3D getPosition() {
 		return position;
 	}
 
-	public void setposition(J2735Position3D position) {
+	public void setPosition(J2735Position3D position) {
 		this.position = position;
 	}
 
-	public String getviewAngle() {
+	public String getViewAngle() {
 		return viewAngle;
 	}
 
-	public void setviewAngle(String viewAngle) {
+	public void setViewAngle(String viewAngle) {
 		this.viewAngle = viewAngle;
 	}
 
-	public Integer getmutcd() {
+	public Integer getMutcd() {
 		return mutcd;
 	}
 
-	public void setmutcd(Integer mutcd) {
+	public void setMutcd(Integer mutcd) {
 		this.mutcd = mutcd;
 	}
 
-	public String getcrc() {
+	public String getCrc() {
 		return crc;
 	}
 
-	public void setcrc(String crc) {
+	public void setCrc(String crc) {
 		this.crc = crc;
 	}
 
-	public String getstartDateTime() {
+	public String getStartDateTime() {
+		System.out.println("------ get startDateTime");
 		return startDateTime;
 	}
 
-	public void setstartDateTime(String startDateTime) {
+	public void setStartDateTime(String startDateTime) {
+		System.out.println("------ set startDateTime " + startDateTime);
 		this.startDateTime = startDateTime;
 	}
 
-	public Integer getdurationTime() {
+	public Integer getDurationTime() {
 		return durationTime;
 	}
 
-	public void setdurationTime(Integer durationTime) {
+	public void setDurationTime(Integer durationTime) {
 		this.durationTime = durationTime;
 	}
 
-	public Integer getpriority() {
+	public Integer getPriority() {
 		return priority;
 	}
 
-	public void setpriority(Integer priority) {
+	public void setPriority(Integer priority) {
 		this.priority = priority;
 	}  
 
-	public short getsspLocationRights() {
+	public short getSspLocationRights() {
 		return sspLocationRights;
 	}
 
-	public void setsspLocationRights(short sspLocationRights) {
+	public void setSspLocationRights(short sspLocationRights) {
 		this.sspLocationRights = sspLocationRights;
 	}  
 
-	public short getsspMsgTypes() {
+	public short getSspMsgTypes() {
 		return sspMsgTypes;
 	}
 
-	public void setsspMsgTypes(short sspMsgTypes) {
+	public void setSspMsgTypes(short sspMsgTypes) {
 		this.sspMsgTypes = sspMsgTypes;
 	}    
 
-	public short getsspMsgContent() {
+	public short getSspMsgContent() {
 		return sspMsgContent;
 	}
 
-	public void setsspMsgContent(short sspMsgContent) {
+	public void setSspMsgContent(short sspMsgContent) {
 		this.sspMsgContent = sspMsgContent;
 	}
 
-	public String getcontent() {
+	public String getContent() {
 		return content;
 	}
 
-	public void setcontent(String content) {
+	public void setContent(String content) {
 		this.content = content;
 	}
 
-	public String geturl() {
+	public String getUrl() {
 		return url;
 	}
 
-	public void seturl(String url) {
+	public void setUrl(String url) {
 		this.url = url;
 	}        
 
@@ -175,4 +179,21 @@ public class DataFrame
 	public void setRegions(Region[] regions) {
 		this.regions = regions;
 	} 
+
+	public String[] getItems() {
+		return this.items;
+	}             
+
+	public void setItems(String[] items) {
+		this.items = items;
+	} 
+
+	public ItisCode[] getItisCodes() {
+		return this.itisCodes;
+	}             
+
+	public void setItisCodes(ItisCode[] itisCodes) {
+		this.itisCodes = itisCodes;
+	} 
+
 }

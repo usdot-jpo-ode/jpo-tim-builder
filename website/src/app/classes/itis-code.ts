@@ -1,5 +1,5 @@
 export class ItisCode{
-	id: number;
+	itisCodeId: number;
 	itisCode: string;
 	description: string;
 }

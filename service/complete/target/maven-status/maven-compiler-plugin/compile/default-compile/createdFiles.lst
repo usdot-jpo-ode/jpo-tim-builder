@@ -19,4 +19,5 @@ com/trihydro/timCreator/controller/RSUController.class
 com/trihydro/timCreator/model/Region.class
 com/trihydro/timCreator/model/SNMP.class
 com/trihydro/timCreator/model/RSU.class
+com/trihydro/timCreator/dao/DataFrameItisCodeService.class
 com/trihydro/timCreator/dao/ItisCodeService.class

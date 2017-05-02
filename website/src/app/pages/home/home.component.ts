@@ -16,7 +16,7 @@ import { ItisCodeService } from '../../services/itis-code.service';
 import { Response } from '@angular/http';
 
 @Component({
-	selector: 'tc-home',
+	selector: 'tc-home',   
 	templateUrl: './home.component.html',
 	providers: [TimCreatorService, RSUService, ItisCodeService]
 })
@@ -29,7 +29,7 @@ export class HomeComponent implements OnInit{
 	rsuData: RSU[];	
 	errorMessage: string = '';
 	isLoading: boolean = true;
-	selectedItisCode: number;
+	selectedItisCodeId: number;
 
    	constructor(private timCreatorService : TimCreatorService, private rsuService: RSUService, private itisCodeService: ItisCodeService){ }
 
@@ -109,12 +109,23 @@ export class HomeComponent implements OnInit{
 		region.geometry.circle.radius = "15";
 		region.geometry.circle.units = "7";
 
-		this.df.sspMsgTypes = "2";
+		this.df.sspMsgTypes = "2"; 
 		this.df.sspMsgContent = "3";
 		this.df.content = "Advisory";
+
 		this.df.items = [];
-		this.df.items.push(this.selectedItisCode.toString());
+		
+
+		this.df.itisCodes = [];
+		for(let i of this.itisCodes){  			
+			if(i.itisCodeId == this.selectedItisCodeId){ 
+				this.df.items.push(i.itisCode.toString());
+				this.df.itisCodes.push(i);
+			}
+		}
+
 		this.df.url = "null";
+
 
 		this.df.regions.push(region);
 		let dfa: DataFrame[] = [];

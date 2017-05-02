@@ -31,8 +31,6 @@ public class TIMService
 			preparedStatement.setString(3, tim.getUrlB());
 			preparedStatement.setString(4, tim.getTimeStamp());   	
 
-			preparedStatement.executeUpdate();
-
 			// execute insert statement
  			Long timId = null;
 

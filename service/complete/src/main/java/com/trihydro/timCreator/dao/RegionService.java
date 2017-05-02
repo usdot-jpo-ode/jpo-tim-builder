@@ -25,7 +25,7 @@ public class RegionService
 	try {
 		
 		for(int i = 0; i < regions.length; i++){
-		
+		    System.out.println("regions length: " + regions.length);
 			String insertQueryStatement = "insert into region(data_frame_id, name, regulator_id, segment_id, anchor_lat, anchor_long, anchor_elev, lane_width, directionality, closed_path, direction, region_type, description, path_id, old_region_id, geometry_direction, geometry_extent, geometry_lane_width, geometry_circle_position_lat, geometry_circle_position_long, geometry_circle_position_elev, geometry_circle_radius, geometry_circle_units) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			
 			PreparedStatement preparedStatement = connection.prepareStatement(insertQueryStatement, new String[] {"region_id"});
@@ -54,7 +54,6 @@ public class RegionService
 			preparedStatement.setString(22, regions[i].getGeometry().getCircle().getRadius().toString()); 
 			preparedStatement.setString(23, regions[i].getGeometry().getCircle().getUnits().toString()); 
 
-			preparedStatement.executeUpdate();
 			// execute insert statement
  			Long regionId = null;
 
@@ -69,9 +68,9 @@ public class RegionService
 			return regionId;
 		}
 
-    } catch (SQLException e) {
-   		e.printStackTrace();
-  	}
+	    } catch (SQLException e) {
+	   		e.printStackTrace();
+	  	}
 	  	return new Long(0);
     }
 }

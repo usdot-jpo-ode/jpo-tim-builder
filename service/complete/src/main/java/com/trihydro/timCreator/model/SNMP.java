@@ -12,28 +12,23 @@ public class SNMP
     private Integer enable;
     private Integer status;
 
-	public String getRsuId() 
+	public String getRsuid() 
 	{
-		System.out.println("get rsu id " + this.rsuId);
 		return this.rsuId;
 	}
 
 	public void setRsuid(String rsuid) 
 	{
-		System.out.println("set rsu id " + rsuid );
 		this.rsuId = rsuid;
 	}
 
-	public Integer getMsgId() 
+	public Integer getMsgid() 
 	{
-		System.out.println("set mg id");
 		return this.msgId;
 	}
 
 	public void setMsgid(Integer msgid) 
 	{
-
-		System.out.println("set mg id");
 		this.msgId = msgid;
 	}
 
@@ -67,22 +62,22 @@ public class SNMP
 		this.interval = interval;
 	}
 
-	public String getDeliveryStart() 
+	public String getDeliverystart() 
 	{
 		return this.deliveryStart;
 	}
 
-	public void setDeliveryStart(String deliverystart) 
+	public void setDeliverystart(String deliverystart) 
 	{
 		this.deliveryStart = deliverystart;
 	}
 
-	public String getDeliveryStop() 
+	public String getDeliverystop() 
 	{
 		return this.deliveryStop;
 	}
 
-	public void setDeliveryStop(String deliverystop) 
+	public void setDeliverystop(String deliverystop) 
 	{
 		this.deliveryStop = deliverystop;
 	}

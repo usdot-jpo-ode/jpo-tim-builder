@@ -1,5 +1,6 @@
 import { J2735Position3D } from './J2735-Position-3D';
 import { Region } from './region';
+import { ItisCode } from './itis-code';
 
 export class DataFrame{
 	sspTimRights: string;
@@ -19,5 +20,6 @@ export class DataFrame{
 	sspMsgContent: string;
 	content: string;
 	items: string[];
+	itisCodes: ItisCode[];
 	url: string;
 }
