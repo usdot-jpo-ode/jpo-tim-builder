@@ -23,6 +23,7 @@ public class Region
 	private Integer oldRegionId;
 
 	private Geometry geometry;	
+	private Path path;
 
 	public Integer getRegionId() {
 		return regionId;
@@ -143,5 +144,14 @@ public class Region
 	public void setGeometry(Geometry geometry) {
 		this.geometry = geometry;
 	}
+
+	public Path getPath() {
+		return this.path;
+	}
+
+	public void setPath(Path path) {
+		this.path = path;
+	}
+
 
 }

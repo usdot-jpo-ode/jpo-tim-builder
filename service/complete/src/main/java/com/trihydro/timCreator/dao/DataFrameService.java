@@ -20,57 +20,47 @@ public class DataFrameService
 		connection = DBUtility.getConnection();	
 	}	
 
-	    public void insertDataFrames(DataFrame dataFrames[], Long timId) {
-    	try {
+	public Long insertDataFrame(DataFrame dataFrame, Long timId) {
+		try {						
+			String insertQueryStatement = "insert into data_frame(tim_id, ssp_tim_rights, frame_type, msg_id, further_info_id, position_lat, position_long, position_elev, view_angle, mutcd, crc, start_date_time, duration_time, priority, ssp_location_rights, ssp_msg_types, ssp_msg_content, content, url) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			
-			RegionService regionService = new RegionService();
-			DataFrameItisCodeService dataFrameItisCodeService = new DataFrameItisCodeService();
+			PreparedStatement preparedStatement = connection.prepareStatement(insertQueryStatement, new String[] {"data_frame_id"});
+			
+			preparedStatement.setString(1, timId.toString());		
+			preparedStatement.setString(2, String.valueOf(dataFrame.getSspTimRights()));
+			preparedStatement.setString(3, dataFrame.getFrameType().toString());
+			preparedStatement.setString(4, dataFrame.getMsgID());   	
+			preparedStatement.setString(5, dataFrame.getFurtherInfoID());   	
+			preparedStatement.setString(6, dataFrame.getPosition().getLatitude().toString());   	
+			preparedStatement.setString(7, dataFrame.getPosition().getLongitude().toString());   	
+			preparedStatement.setString(8, dataFrame.getPosition().getElevation().toString());   	
+			preparedStatement.setString(9, dataFrame.getViewAngle());   	
+			preparedStatement.setString(10, dataFrame.getMutcd().toString());   
+			preparedStatement.setString(11, dataFrame.getCrc());   	
+			preparedStatement.setString(12, dataFrame.getStartDateTime());   	
+			preparedStatement.setString(13, dataFrame.getDurationTime().toString());
+			preparedStatement.setString(14, dataFrame.getPriority().toString());   
+			preparedStatement.setString(15, String.valueOf(dataFrame.getSspLocationRights()));  				
+			preparedStatement.setString(16, String.valueOf(dataFrame.getSspMsgTypes()));   	
+			preparedStatement.setString(17, String.valueOf(dataFrame.getSspMsgContent()));   	
+			preparedStatement.setString(18, dataFrame.getContent());
+			preparedStatement.setString(19, dataFrame.getUrl());  
 
-			for(int i = 0; i < dataFrames.length; i++) {
-				System.out.println("dataframes length: " + dataFrames.length);
-				String insertQueryStatement = "insert into data_frame(tim_id, ssp_tim_rights, frame_type, msg_id, further_info_id, position_lat, position_long, position_elev, view_angle, mutcd, crc, start_date_time, duration_time, priority, ssp_location_rights, ssp_msg_types, ssp_msg_content, content, url) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-				
-				PreparedStatement preparedStatement = connection.prepareStatement(insertQueryStatement, new String[] {"data_frame_id"});
-				
-				preparedStatement.setString(1, timId.toString());		
-				preparedStatement.setString(2, String.valueOf(dataFrames[i].getSspTimRights()));
-				preparedStatement.setString(3, dataFrames[i].getFrameType().toString());
-				preparedStatement.setString(4, dataFrames[i].getMsgID());   	
-				preparedStatement.setString(5, dataFrames[i].getFurtherInfoID());   	
-				preparedStatement.setString(6, dataFrames[i].getPosition().getLatitude().toString());   	
-				preparedStatement.setString(7, dataFrames[i].getPosition().getLongitude().toString());   	
-				preparedStatement.setString(8, dataFrames[i].getPosition().getElevation().toString());   	
-				preparedStatement.setString(9, dataFrames[i].getViewAngle());   	
-				preparedStatement.setString(10, dataFrames[i].getMutcd().toString());   
-				preparedStatement.setString(11, dataFrames[i].getCrc());   	
-				preparedStatement.setString(12, dataFrames[i].getStartDateTime());   	
-				preparedStatement.setString(13, dataFrames[i].getDurationTime().toString());
-				preparedStatement.setString(14, dataFrames[i].getPriority().toString());   
-				preparedStatement.setString(15, String.valueOf(dataFrames[i].getSspLocationRights()));  				
-				preparedStatement.setString(16, String.valueOf(dataFrames[i].getSspMsgTypes()));   	
-				preparedStatement.setString(17, String.valueOf(dataFrames[i].getSspMsgContent()));   	
-				preparedStatement.setString(18, dataFrames[i].getContent());
-				preparedStatement.setString(19, dataFrames[i].getUrl());  
+			// execute insert statement
+				Long dataFrameId = null;
 
-				// execute insert statement
-	 			Long dataFrameId = null;
+				if(preparedStatement.executeUpdate() > 0){
+					ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
 
-	 			if(preparedStatement.executeUpdate() > 0){
-	 				ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-
-	 				if(generatedKeys != null && generatedKeys.next()){
-	 					dataFrameId = generatedKeys.getLong(1);
-	 					System.out.println("------ Generated data frame ID: " + dataFrameId + " --------------");
-	 				}
-	 			}
-	 			regionService.insertRegions(dataFrames[i].getRegions(), dataFrameId, new Long(0), new Long(0));
-	 			dataFrameItisCodeService.insertDataFrameItisCode(dataFrameId, dataFrames[i]);
-
-			}
-
-	    } catch (SQLException e) {
-	   		e.printStackTrace();
-	  	}
-    }
-
+					if(generatedKeys != null && generatedKeys.next()){
+						dataFrameId = generatedKeys.getLong(1);
+						System.out.println("------ Generated data frame ID: " + dataFrameId + " --------------");
+					}
+				} 	
+				return dataFrameId;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+		return new Long(0);
+	}
 }
