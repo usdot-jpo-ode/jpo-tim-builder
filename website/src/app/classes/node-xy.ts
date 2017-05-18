@@ -1,8 +1,8 @@
+import { Attributes } from './attributes';
+
 export class NodeXY{
 	delta: string;
-	nodeLat: number;
-	nodeLong: number;
-	x: number;
-	y: number;
-	//private Attributes attributes;
+	x: string;
+	y: string;
+	attributes: Attributes;
 }

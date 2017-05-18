@@ -1,9 +1,11 @@
-export class Attributes{
-	
-	 // private LocalNode[] localNodes;
-  //     private DisabledList[] disabledLists;
-  //     private EnabledList[] enabledLists;
-  //     private DataList[] dataLists;
-  //     private int dWidth;
-  //     private int dElevation;
+import { LocalNode } from './local-node';
+import { DisabledList } from './disabled-list';
+import { EnabledList } from './enabled-list';
+import { DataList } from './data-list';
+
+export class Attributes{	
+	localNodes: LocalNode[];
+    disabledLists: DisabledList[];
+    enabledLists: EnabledList[];
+    dataLists: DataList[];  
 }

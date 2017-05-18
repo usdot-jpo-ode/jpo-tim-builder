@@ -1,6 +1,8 @@
+import { NodeXY } from './node-xy';
+
 export class Path{
-	scale: number;
+	scale: string;
 	type: string;
-	//private NodeXY[] nodes;
+	nodes: NodeXY[];
     //private ComputedLane computedLane;
 }

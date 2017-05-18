@@ -31,6 +31,4 @@ public class Circle
 	public void setUnits(Integer units) {
 		this.units = units;
 	}
-
-	
 }
