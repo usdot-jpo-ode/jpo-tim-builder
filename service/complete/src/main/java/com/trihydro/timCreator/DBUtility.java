@@ -19,7 +19,7 @@ public class DBUtility {
                 // connect to oracle database
                  Class.forName("oracle.jdbc.driver.OracleDriver");
                 
-                 connection = DriverManager.getConnection("jdbc:oracle:thin:@ordb-p01-vip:1521/cvdev.gisits.local", "CVCOMMS", "C0nnV3h1cl3");
+                 connection = DriverManager.getConnection("jdbc:oracle:thin:@10.145.9.22:1521/cvdev.gisits.local", "CVCOMMS", "C0nnV3h1cl3");
                  if (connection != null) {
                     System.out.println("Connection Successful! Enjoy. Now it's time to push data");
                  } else {
