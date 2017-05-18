@@ -69,6 +69,7 @@ export class HomeComponent implements OnInit{
 		tim.packetID = "1";
 		tim.urlB = "null";
 
+		this.df.startDateTime = "2017-01-01T17:47:11-05:00";
 		this.df.sspTimRights = "0";
 		this.df.frameType = "0";
 		this.df.msgID = "RoadSignID";
@@ -82,7 +83,7 @@ export class HomeComponent implements OnInit{
 		this.df.priority = "0";
 		this.df.sspLocationRights = "3";
 		this.df.regions = [];
-		this.df.furtherInfoID = "test";
+		//this.df.furtherInfoID = "test";
 
 		let region = new Region();
 		region.name = "TRIHYDRO TEST";
@@ -138,6 +139,8 @@ export class HomeComponent implements OnInit{
 		// selected RSUs
 		for(let r of this.rsuData){  			
 			if(r.isSelected){ 
+				r.rsuRetries = "1";
+				r.rsuTimeout = "2000";
 				timSample.rsus.push(r);
 			}
 		}
@@ -161,11 +164,11 @@ export class HomeComponent implements OnInit{
 		timSample.dateSent = date + "T" + time;
 
 
-		// this.timCreatorService
-  //     	.sendTim(timSample)
-  //     	.subscribe(
-  //     		(r: Response) => { console.log(''); }
-  // 		);
+		this.timCreatorService
+      	.sendTimToRSU(timSample)
+      	.subscribe(
+      		(r: Response) => { console.log('rsu response: ' + r); }
+  		);
 
   		today = new Date();
 		date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
@@ -176,9 +179,9 @@ export class HomeComponent implements OnInit{
 
 		
 
-  		this.timCreatorService
-	      	.sendTim(timSample)
-	      	.subscribe((r: Response) => {console.log(r); })      
+  		// this.timCreatorService
+	//      	.sendTim(timSample)
+	  //    	.subscribe((r: Response) => {console.log(r); })      
         
 	}
 }
