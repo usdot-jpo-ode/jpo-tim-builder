@@ -7,7 +7,7 @@ import { ItisCode } from '../classes/itis-code';
 @Injectable()
 export class ItisCodeService{
   
-	private baseUrl: string = 'http://localhost:9000';
+	private baseUrl: string = 'http://localhost:8080';
 
 	constructor(private http : Http){		
 	}

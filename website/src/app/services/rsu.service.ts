@@ -7,7 +7,7 @@ import { RSU } from '../classes/rsu';
 @Injectable()
 export class RSUService{
   
-	private baseUrl: string = 'http://localhost:9000';
+	private baseUrl: string = 'http://localhost:8080';
 
 	constructor(private http : Http){		
 	}

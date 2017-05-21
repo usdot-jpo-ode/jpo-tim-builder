@@ -6,6 +6,7 @@ public class Path
     private Integer scale;
     private String type;
     private NodeXY[] nodes;
+    private ComputedLane computedLane;
 
     public Integer getPathId() {
 		return this.pathId;
@@ -37,5 +38,13 @@ public class Path
 	
 	public void setNodes(NodeXY[] nodes) {
 		this.nodes = nodes;
+	}
+	
+	public ComputedLane getComputedLane(){
+		return computedLane;
+	}
+	
+	public void setComputedLane(ComputedLane computedLane){
+		this.computedLane = computedLane;
 	}
 }

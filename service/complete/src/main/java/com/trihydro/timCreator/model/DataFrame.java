@@ -1,7 +1,5 @@
 package com.trihydro.timCreator.model;
 
-import java.math.BigDecimal;
-
 public class DataFrame
 {
 	private Integer dataFrameId;

@@ -6,7 +6,11 @@ public class Attributes
 	private String delta;
     private Integer x;
     private Integer y;
-
+    private LocalNode[] localNodes;
+    private DisabledList[] disabledLists;
+    private EnabledList[] enabledLists;
+    private DataList[] dataLists;
+    
     public Integer getPathId() {
 		return this.pathId;
 	}
@@ -38,4 +42,36 @@ public class Attributes
 	public void setY(Integer y) {
 		this.y = y;
 	}
+	
+	public LocalNode[] getLocalNodes() {
+		return localNodes;
+	}
+	
+    public void setLocalNodes(LocalNode[] localNodes) {
+    	this.localNodes = localNodes;
+    }
+    
+    public DisabledList[] getDisabledLists() {
+    	return disabledLists;
+    }
+    
+    public void setDisabledLists(DisabledList[] disabledLists) {
+    	this.disabledLists = disabledLists;
+    }
+    
+    public EnabledList[] getEnabledLists() {
+    	return enabledLists;
+    }
+    
+    public void setEnabledLists(EnabledList[] enabledLists) {
+    	this.enabledLists = enabledLists;
+    }
+    
+    public DataList[] getDataLists() {
+    	return dataLists;
+    }
+    
+    public void setDataLists(DataList[] dataLists) {
+    	this.dataLists = dataLists;
+    }
 }

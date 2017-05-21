@@ -1,7 +1,5 @@
 package com.trihydro.timCreator.model;
 
-import java.math.BigDecimal;
-
 public class Region
 {
 	private Integer regionId;
@@ -24,6 +22,7 @@ public class Region
 
 	private Geometry geometry;	
 	private Path path;
+	private OldRegion oldRegion;
 
 	public Integer getRegionId() {
 		return regionId;
@@ -153,5 +152,12 @@ public class Region
 		this.path = path;
 	}
 
+	public OldRegion getOldRegion() {
+        return oldRegion;
+    }
+
+    public void setOldRegion(OldRegion oldRegion) {
+        this.oldRegion = oldRegion;
+    }
 
 }

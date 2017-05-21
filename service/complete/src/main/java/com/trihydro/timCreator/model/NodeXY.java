@@ -10,6 +10,7 @@ public class NodeXY
     private Integer y;
     private Integer dWidth;
     private Integer dLength;
+    private Attributes attributes;
 
     public Integer getNodeXYId() {
 		return this.nodeXYId;
@@ -74,4 +75,13 @@ public class NodeXY
 	public void setDLength(Integer dLength) {
 		this.dLength = dLength;
 	}
+	
+	public Attributes getAttributes() {
+        return attributes;
+    }
+	
+    public void setAttributes(Attributes attributes) {
+        this.attributes = attributes;
+    }
+
 }

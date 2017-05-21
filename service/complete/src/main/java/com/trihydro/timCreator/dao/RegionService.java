@@ -1,15 +1,10 @@
+
 package com.trihydro.timCreator.dao;
 
-import com.trihydro.timCreator.model.SubmittedTIM;
-import com.trihydro.timCreator.model.DataFrame;
-import com.trihydro.timCreator.model.TIM;
 import com.trihydro.timCreator.model.Region;
 import com.trihydro.timCreator.DBUtility;
 import java.sql.Connection;
-import java.sql.Statement;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 
@@ -50,9 +45,15 @@ public class RegionService
 		preparedStatement.setString(11, region.getDirection());  
 		preparedStatement.setString(12, region.getRegionType());  
 		preparedStatement.setString(13, region.getDescription());  
-		preparedStatement.setString(14, null);  
-		preparedStatement.setString(15, null);  
-
+		if(pathId != null)
+			preparedStatement.setString(14, pathId.toString());  
+		else
+			preparedStatement.setString(14, null);
+		if(oldRegionId != null)
+			preparedStatement.setString(15, oldRegionId.toString());  
+		else
+			preparedStatement.setString(15, null);
+		
 		if(region.getGeometry() != null) {
 			preparedStatement.setString(16, region.getGeometry().getDirection()); 
 			preparedStatement.setString(17, region.getGeometry().getExtent().toString()); 

@@ -1,12 +1,8 @@
 package com.trihydro.timCreator.dao;
 
-import com.trihydro.timCreator.model.NodeXY;
 import com.trihydro.timCreator.DBUtility;
 import java.sql.Connection;
-import java.sql.Statement;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 

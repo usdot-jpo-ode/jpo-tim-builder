@@ -8,7 +8,7 @@ import { TimSample } from '../classes/tim-sample';
 @Injectable()
 export class TimCreatorService{
   
-	private databaseUrl: string = 'http://localhost:9000';
+	private databaseUrl: string = 'http://localhost:8080';
 	private rsuUrl: string = 'http://localhost:8080';
 
 	constructor(private http : Http){
