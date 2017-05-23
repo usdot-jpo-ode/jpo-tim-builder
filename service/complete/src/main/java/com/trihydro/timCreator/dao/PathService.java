@@ -1,7 +1,9 @@
 package com.trihydro.timCreator.dao;
 
-import com.trihydro.timCreator.model.Path;
 import com.trihydro.timCreator.DBUtility;
+import com.trihydro.timCreator.helpers.SQLNullHandler;
+import com.trihydro.timCreator.model.Path;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.ResultSet;
@@ -22,9 +24,9 @@ public class PathService
 
 			PreparedStatement preparedStatement = connection.prepareStatement(insertQueryStatement, new String[] {"path_id"});
 			
-			preparedStatement.setString(1, path.getScale().toString());		
-			preparedStatement.setString(2, path.getType());
-			preparedStatement.setString(3, computedLaneId.toString());
+			SQLNullHandler.setIntegerOrNull(preparedStatement, 1, path.getScale());
+			SQLNullHandler.setStringOrNull(preparedStatement, 2, path.getType());
+			SQLNullHandler.setLongOrNull(preparedStatement, 3, computedLaneId);
 
 			// execute insert statement
  			Long pathId = null;

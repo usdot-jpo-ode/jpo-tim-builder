@@ -1,7 +1,8 @@
 package com.trihydro.timCreator.dao;
 
-import com.trihydro.timCreator.model.TIM;
 import com.trihydro.timCreator.DBUtility;
+import com.trihydro.timCreator.model.TIM;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.ResultSet;
@@ -22,10 +23,10 @@ public class TIMService
 
 			PreparedStatement preparedStatement = connection.prepareStatement(insertQueryStatement, new String[] {"tim_id"});
 			
-			preparedStatement.setString(1, tim.getMsgCnt().toString());		
+			preparedStatement.setString(1, String.valueOf(tim.getMsgCnt()));		
 			preparedStatement.setString(2, tim.getPacketID());
 			preparedStatement.setString(3, tim.getUrlB());
-			preparedStatement.setString(4, tim.getTimeStamp());   	
+			preparedStatement.setTimestamp(4, new java.sql.Timestamp(System.currentTimeMillis()));   	
 
 			// execute insert statement
  			Long timId = null;
@@ -35,7 +36,7 @@ public class TIMService
 
  				if(generatedKeys != null && generatedKeys.next()){
  					timId = generatedKeys.getLong(1);
- 					System.out.println("------ Generated ID: " + timId + " --------------");
+ 					System.out.println("------ Generated Tim ID: " + timId + " --------------");
  				}
  			}
 			return timId;

@@ -3,6 +3,7 @@ package com.trihydro.timCreator.controller;
 import org.springframework.web.bind.annotation.RestController;
 import com.trihydro.timCreator.dao.RSUService;
 import com.trihydro.timCreator.model.RSU;
+
 import java.util.List;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

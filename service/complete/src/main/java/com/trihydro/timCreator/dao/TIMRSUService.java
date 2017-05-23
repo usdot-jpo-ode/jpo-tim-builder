@@ -1,7 +1,8 @@
 package com.trihydro.timCreator.dao;
 
-import com.trihydro.timCreator.model.SubmittedTIM;
 import com.trihydro.timCreator.DBUtility;
+import com.trihydro.timCreator.model.SubmittedTIM;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.ResultSet;

@@ -1,7 +1,8 @@
 package com.trihydro.timCreator.dao;
 
-import com.trihydro.timCreator.model.NodeXY;
 import com.trihydro.timCreator.DBUtility;
+import com.trihydro.timCreator.model.NodeXY;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.ResultSet;
@@ -22,12 +23,12 @@ public class NodeXYService
 
 			PreparedStatement preparedStatement = connection.prepareStatement(insertQueryStatement, new String[] {"path_id"});				
 			preparedStatement.setString(1, nodeXY.getDelta());		
-			preparedStatement.setString(2, nodeXY.getNodeLat().toString());
-			preparedStatement.setString(3, nodeXY.getNodeLong().toString());
-			preparedStatement.setString(4, nodeXY.getX().toString());
-			preparedStatement.setString(5, nodeXY.getY().toString());
-			preparedStatement.setString(6, nodeXY.getDWidth().toString());
-			preparedStatement.setString(7, nodeXY.getDLength().toString());
+			preparedStatement.setString(2, String.valueOf(nodeXY.getNodeLat()));
+			preparedStatement.setString(3, String.valueOf(nodeXY.getNodeLong()));
+			preparedStatement.setString(4, String.valueOf(nodeXY.getX()));
+			preparedStatement.setString(5, String.valueOf(nodeXY.getY()));
+			preparedStatement.setString(6, String.valueOf(nodeXY.getDWidth()));
+			preparedStatement.setString(7, String.valueOf(nodeXY.getDLength()));
 
 			// execute insert statement
  			Long nodeXYId = null;

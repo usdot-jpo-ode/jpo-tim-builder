@@ -4,7 +4,7 @@ public class DataFrame
 {
 	private Integer dataFrameId;
 	private Integer timId;
-	private short sspTimRights;// Start Header Information
+	private Short sspTimRights;// Start Header Information
 	private Integer frameType;
 	private String msgID;
 	private String furtherInfoID;
@@ -15,9 +15,9 @@ public class DataFrame
 	private String startDateTime;
 	private Integer durationTime;
 	private Integer priority;// End header Information
-	private short sspLocationRights;// Start Region Information
-	private short sspMsgTypes;// Start content Information
-	private short sspMsgContent;
+	private Short sspLocationRights;// Start Region Information
+	private Short sspMsgTypes;// Start content Information
+	private Short sspMsgContent;
 	private String content;
 	private String url;// End content Information
 	private Region[] regions;
@@ -40,11 +40,11 @@ public class DataFrame
 		this.timId = timId;
 	}
 
-	public short getSspTimRights() {
+	public Short getSspTimRights() {
 		return sspTimRights;
 	}
       
-    public void setSspTimRights(short sspTimRights) {
+    public void setSspTimRights(Short sspTimRights) {
 		this.sspTimRights = sspTimRights;
 	}
 
@@ -105,12 +105,10 @@ public class DataFrame
 	}
 
 	public String getStartDateTime() {
-		System.out.println("------ get startDateTime");
 		return startDateTime;
 	}
 
 	public void setStartDateTime(String startDateTime) {
-		System.out.println("------ set startDateTime " + startDateTime);
 		this.startDateTime = startDateTime;
 	}
 
@@ -130,27 +128,27 @@ public class DataFrame
 		this.priority = priority;
 	}  
 
-	public short getSspLocationRights() {
+	public Short getSspLocationRights() {
 		return sspLocationRights;
 	}
 
-	public void setSspLocationRights(short sspLocationRights) {
+	public void setSspLocationRights(Short sspLocationRights) {
 		this.sspLocationRights = sspLocationRights;
 	}  
 
-	public short getSspMsgTypes() {
+	public Short getSspMsgTypes() {
 		return sspMsgTypes;
 	}
 
-	public void setSspMsgTypes(short sspMsgTypes) {
+	public void setSspMsgTypes(Short sspMsgTypes) {
 		this.sspMsgTypes = sspMsgTypes;
 	}    
 
-	public short getSspMsgContent() {
+	public Short getSspMsgContent() {
 		return sspMsgContent;
 	}
 
-	public void setSspMsgContent(short sspMsgContent) {
+	public void setSspMsgContent(Short sspMsgContent) {
 		this.sspMsgContent = sspMsgContent;
 	}
 

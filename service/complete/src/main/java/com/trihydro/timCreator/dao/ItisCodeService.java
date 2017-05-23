@@ -1,7 +1,8 @@
 package com.trihydro.timCreator.dao;
 
-import com.trihydro.timCreator.model.ItisCode;
 import com.trihydro.timCreator.DBUtility;
+import com.trihydro.timCreator.model.ItisCode;
+
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.SQLException;

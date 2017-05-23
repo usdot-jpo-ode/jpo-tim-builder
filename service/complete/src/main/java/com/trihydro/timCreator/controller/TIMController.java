@@ -2,6 +2,9 @@ package com.trihydro.timCreator.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 import com.trihydro.timCreator.dao.TIMService;
+import com.trihydro.timCreator.model.NodeXY;
+import com.trihydro.timCreator.model.Region;
+import com.trihydro.timCreator.model.SubmittedTIM;
 import com.trihydro.timCreator.dao.DataFrameService;
 import com.trihydro.timCreator.dao.TIMRSUService;
 import com.trihydro.timCreator.dao.RegionService;
@@ -19,7 +22,7 @@ import com.trihydro.timCreator.dao.OldRegionService;
 import com.trihydro.timCreator.dao.ShapePointService;
 import com.trihydro.timCreator.dao.RegionListService;
 import com.trihydro.timCreator.dao.ShapePointNodeXYService;
-import com.trihydro.timCreator.model.SubmittedTIM;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -71,57 +74,62 @@ public class TIMController {
         for(int i = 0; i < submittedTim.getTIM().getdataframes().length; i++) {
             // insert data frame  
             dataFrameId = dataFrameService.insertDataFrame(submittedTim.getTIM().getdataframes()[i], timId); 
-            // for each region region
-            for(int j = 0; j < submittedTim.getTIM().getdataframes()[i].getRegions().length; j++){
-                // if region has path
-                if(submittedTim.getTIM().getdataframes()[i].getRegions()[j].getPath() != null){ 
-                	if(submittedTim.getTIM().getdataframes()[i].getRegions()[j].getPath().getComputedLane() != null){
-                		computedLaneId = computedLaneService.insertComputedLane(submittedTim.getTIM().getdataframes()[i].getRegions()[j].getPath().getComputedLane());
-                	}
-                    // insert path
-                    pathId = pathService.insertPath(submittedTim.getTIM().getdataframes()[i].getRegions()[j].getPath(), computedLaneId);               
-                    // for each node in path
-                    for(int k = 0; k < submittedTim.getTIM().getdataframes()[i].getRegions()[j].getPath().getNodes().length; k++){
-                        nodeXYId = nodeXYService.insertNodeXY(submittedTim.getTIM().getdataframes()[i].getRegions()[j].getPath().getNodes()[k]);
-                        pathNodeXYService.insertPathNodeXY(pathId, nodeXYId);
-                        // attributes
-                        if(submittedTim.getTIM().getdataframes()[i].getRegions()[j].getPath().getNodes()[k].getAttributes() != null){
-                        	// local nodes;
-                        	for( int l = 0; l < submittedTim.getTIM().getdataframes()[i].getRegions()[j].getPath().getNodes()[k].getAttributes().getLocalNodes().length; l++){
-                        		localNodeService.insertLocalNode(submittedTim.getTIM().getdataframes()[i].getRegions()[j].getPath().getNodes()[k].getAttributes().getLocalNodes()[l], nodeXYId);
-                        	}
-                        	// disabled lists
-                        	for( int l = 0; l < submittedTim.getTIM().getdataframes()[i].getRegions()[j].getPath().getNodes()[k].getAttributes().getDisabledLists().length; l++){
-                        		disabledListService.insertDisabledList(submittedTim.getTIM().getdataframes()[i].getRegions()[j].getPath().getNodes()[k].getAttributes().getDisabledLists()[l], nodeXYId);
-                        	}
-                        	// enabled lists
-                        	for( int l = 0; l < submittedTim.getTIM().getdataframes()[i].getRegions()[j].getPath().getNodes()[k].getAttributes().getEnabledLists().length; l++){
-                        		enabledListService.insertEnabledList(submittedTim.getTIM().getdataframes()[i].getRegions()[j].getPath().getNodes()[k].getAttributes().getEnabledLists()[l], nodeXYId);
-                        	}
-                        	// data lists
-                        	for( int l = 0; l < submittedTim.getTIM().getdataframes()[i].getRegions()[j].getPath().getNodes()[k].getAttributes().getDataLists().length; l++){
-                        		dataFrameId = dataListService.insertDataList(submittedTim.getTIM().getdataframes()[i].getRegions()[j].getPath().getNodes()[k].getAttributes().getDataLists()[l], nodeXYId);
-                        		// speed limits
-                        		for(int m = 0; m < submittedTim.getTIM().getdataframes()[i].getRegions()[j].getPath().getNodes()[k].getAttributes().getDataLists()[l].getSpeedLimits().length; m++){
-                        			speedLimitService.insertSpeedLimit(submittedTim.getTIM().getdataframes()[i].getRegions()[j].getPath().getNodes()[k].getAttributes().getDataLists()[l].getSpeedLimits()[m], dataListId);
-                        		}                        		
-                        	}                                                 
-                        }
-                    }   
-                }
-                // if region has old region
-                if(submittedTim.getTIM().getdataframes()[i].getRegions()[j].getOldRegion() != null){
-                	if(submittedTim.getTIM().getdataframes()[i].getRegions()[j].getOldRegion().getShapepoint() != null){
-                		shapePointId = shapePointService.insertShapePoint(submittedTim.getTIM().getdataframes()[i].getRegions()[j].getOldRegion().getShapepoint(), computedLaneId);
-                		shapePointNodeXYService.insertShapePointNodeXY(shapePointId, nodeXYId);
-                	}
-                	oldRegionId = oldRegionService.insertOldRegion(submittedTim.getTIM().getdataframes()[i].getRegions()[j].getOldRegion(), shapePointId);
-                	for(int n = 0; n < submittedTim.getTIM().getdataframes()[i].getRegions()[j].getOldRegion().getRegionPoint().getRegionList().length; n++){
-                		regionListService.insertRegionList(submittedTim.getTIM().getdataframes()[i].getRegions()[j].getOldRegion().getRegionPoint().getRegionList()[n], oldRegionId);
-                	}
-                }
-                // insert region
-                regionService.insertRegion(submittedTim.getTIM().getdataframes()[i].getRegions()[j], dataFrameId, new Long(0), pathId);    
+            // if there is at least one region
+            if(submittedTim.getTIM().getdataframes()[i].getRegions() != null){
+            	// for each region region
+	            for(Region region : submittedTim.getTIM().getdataframes()[i].getRegions()){
+	                // if region has path
+	                if(region.getPath() != null){ 
+	                	if(region.getPath().getComputedLane() != null){
+	                		computedLaneId = computedLaneService.insertComputedLane(region.getPath().getComputedLane());
+	                	}
+	                    // insert path
+	                    pathId = pathService.insertPath(region.getPath(), computedLaneId);               
+	                    // for each node in path
+	                    if(region.getPath().getNodes() != null){
+		                    for(NodeXY node : region.getPath().getNodes()){
+		                        nodeXYId = nodeXYService.insertNodeXY(node);
+		                        pathNodeXYService.insertPathNodeXY(pathId, nodeXYId);
+		                        // attributes
+		                        if(node.getAttributes() != null){
+		                        	// local nodes;
+		                        	for( int l = 0; l < node.getAttributes().getLocalNodes().length; l++){
+		                        		localNodeService.insertLocalNode(node.getAttributes().getLocalNodes()[l], nodeXYId);
+		                        	}
+		                        	// disabled lists
+		                        	for( int l = 0; l < node.getAttributes().getDisabledLists().length; l++){
+		                        		disabledListService.insertDisabledList(node.getAttributes().getDisabledLists()[l], nodeXYId);
+		                        	}
+		                        	// enabled lists
+		                        	for( int l = 0; l < node.getAttributes().getEnabledLists().length; l++){
+		                        		enabledListService.insertEnabledList(node.getAttributes().getEnabledLists()[l], nodeXYId);
+		                        	}
+		                        	// data lists
+		                        	for( int l = 0; l < node.getAttributes().getDataLists().length; l++){
+		                        		dataFrameId = dataListService.insertDataList(node.getAttributes().getDataLists()[l], nodeXYId);
+		                        		// speed limits
+		                        		for(int m = 0; m < node.getAttributes().getDataLists()[l].getSpeedLimits().length; m++){
+		                        			speedLimitService.insertSpeedLimit(node.getAttributes().getDataLists()[l].getSpeedLimits()[m], dataListId);
+		                        		}                        		
+		                        	}                                                 
+		                        }
+		                    }   
+	                    }
+	                }
+	                // if region has old region
+	                if(region.getOldRegion() != null){
+	                	if(region.getOldRegion().getShapepoint() != null){
+	                		shapePointId = shapePointService.insertShapePoint(region.getOldRegion().getShapepoint(), computedLaneId);
+	                		shapePointNodeXYService.insertShapePointNodeXY(shapePointId, nodeXYId);
+	                	}
+	                	oldRegionId = oldRegionService.insertOldRegion(region.getOldRegion(), shapePointId);
+	                	for(int n = 0; n < region.getOldRegion().getRegionPoint().getRegionList().length; n++){
+	                		regionListService.insertRegionList(region.getOldRegion().getRegionPoint().getRegionList()[n], oldRegionId);
+	                	}
+	                }
+	                // insert region
+	                regionService.insertRegion(region, dataFrameId, oldRegionId, pathId);    
+	            }
             }
             dataFrameItisCodeService.insertDataFrameItisCode(dataFrameId, submittedTim.getTIM().getdataframes()[i]); 
         }
