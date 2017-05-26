@@ -2,6 +2,7 @@ package com.trihydro.timCreator.dao;
 
 import com.trihydro.timCreator.DBUtility;
 import com.trihydro.timCreator.model.DataFrame;
+import com.trihydro.timCreator.helpers.SQLNullHandler;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -24,11 +25,9 @@ public class DataFrameItisCodeService
 				String insertQueryStatement = "insert into data_frame_itis_code(itis_code_id, data_frame_id) values (?,?)";
 
 				PreparedStatement preparedStatement = connection.prepareStatement(insertQueryStatement, new String[] {"data_frame_itis_code_id"});
-
 				
-				System.out.println("------ Generated data frame itis code ID " + dataFrame.getItisCodes()[i].getItisCodeId().toString());
-				preparedStatement.setString(1, dataFrame.getItisCodes()[i].getItisCodeId().toString());			
-				preparedStatement.setString(2, dataFrameId.toString());			
+				SQLNullHandler.setIntegerOrNull(preparedStatement, 1, dataFrame.getItisCodes()[i].getItisCodeId());
+				SQLNullHandler.setLongOrNull(preparedStatement, 2, dataFrameId);
 
 				// execute insert statement
 	 			Long dataFrameItisCodeId = null;

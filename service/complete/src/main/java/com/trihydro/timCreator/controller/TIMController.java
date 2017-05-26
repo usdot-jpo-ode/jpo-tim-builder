@@ -5,6 +5,12 @@ import com.trihydro.timCreator.dao.TIMService;
 import com.trihydro.timCreator.model.NodeXY;
 import com.trihydro.timCreator.model.Region;
 import com.trihydro.timCreator.model.SubmittedTIM;
+import com.trihydro.timCreator.model.LocalNode;
+import com.trihydro.timCreator.model.DisabledList;
+import com.trihydro.timCreator.model.EnabledList;
+import com.trihydro.timCreator.model.DataList;
+import com.trihydro.timCreator.model.SpeedLimits;
+import com.trihydro.timCreator.model.RegionList;
 import com.trihydro.timCreator.dao.DataFrameService;
 import com.trihydro.timCreator.dao.TIMRSUService;
 import com.trihydro.timCreator.dao.RegionService;
@@ -66,9 +72,8 @@ public class TIMController {
         Long pathId = null;
         Long nodeXYId = null;
         Long computedLaneId = null;
-        Long dataListId = null;
         Long oldRegionId = null;
-        Long shapePointId = null;
+        Long shapePointId = null;        
         
         // for each data frames 
         for(int i = 0; i < submittedTim.getTIM().getdataframes().length; i++) {
@@ -92,40 +97,35 @@ public class TIMController {
 		                        pathNodeXYService.insertPathNodeXY(pathId, nodeXYId);
 		                        // attributes
 		                        if(node.getAttributes() != null){
-		                        	// local nodes;
-		                        	for( int l = 0; l < node.getAttributes().getLocalNodes().length; l++){
-		                        		localNodeService.insertLocalNode(node.getAttributes().getLocalNodes()[l], nodeXYId);
-		                        	}
-		                        	// disabled lists
-		                        	for( int l = 0; l < node.getAttributes().getDisabledLists().length; l++){
-		                        		disabledListService.insertDisabledList(node.getAttributes().getDisabledLists()[l], nodeXYId);
-		                        	}
-		                        	// enabled lists
-		                        	for( int l = 0; l < node.getAttributes().getEnabledLists().length; l++){
-		                        		enabledListService.insertEnabledList(node.getAttributes().getEnabledLists()[l], nodeXYId);
-		                        	}
-		                        	// data lists
-		                        	for( int l = 0; l < node.getAttributes().getDataLists().length; l++){
-		                        		dataFrameId = dataListService.insertDataList(node.getAttributes().getDataLists()[l], nodeXYId);
-		                        		// speed limits
-		                        		for(int m = 0; m < node.getAttributes().getDataLists()[l].getSpeedLimits().length; m++){
-		                        			speedLimitService.insertSpeedLimit(node.getAttributes().getDataLists()[l].getSpeedLimits()[m], dataListId);
-		                        		}                        		
-		                        	}                                                 
+		                        	addNodeAttributes(node, nodeXYId);	                        	                                            
 		                        }
 		                    }   
 	                    }
 	                }
 	                // if region has old region
 	                if(region.getOldRegion() != null){
-	                	if(region.getOldRegion().getShapepoint() != null){
-	                		shapePointId = shapePointService.insertShapePoint(region.getOldRegion().getShapepoint(), computedLaneId);
-	                		shapePointNodeXYService.insertShapePointNodeXY(shapePointId, nodeXYId);
+	                	if(region.getOldRegion().getShapePoint() != null){
+	                		if(region.getOldRegion().getShapePoint().getComputedLane() != null){
+	                			computedLaneId = computedLaneService.insertComputedLane(region.getOldRegion().getShapePoint().getComputedLane());
+	                		}
+	                		shapePointId = shapePointService.insertShapePoint(region.getOldRegion().getShapePoint(), computedLaneId);
+	                		if(region.getOldRegion().getShapePoint().getNodexy() != null){
+	                			for(NodeXY node: region.getOldRegion().getShapePoint().getNodexy()){
+	                				nodeXYId = nodeXYService.insertNodeXY(node);
+	                				shapePointNodeXYService.insertShapePointNodeXY(shapePointId, nodeXYId);
+	                				// attributes
+			                        if(node.getAttributes() != null){
+			                        	addNodeAttributes(node, nodeXYId);	                        	                                            
+			                        }
+	                			}
+	                		}	                		
 	                	}
 	                	oldRegionId = oldRegionService.insertOldRegion(region.getOldRegion(), shapePointId);
-	                	for(int n = 0; n < region.getOldRegion().getRegionPoint().getRegionList().length; n++){
-	                		regionListService.insertRegionList(region.getOldRegion().getRegionPoint().getRegionList()[n], oldRegionId);
-	                	}
+	                	if(region.getOldRegion().getRegionPoint().getRegionList() != null){
+	                		for(RegionList regionList: region.getOldRegion().getRegionPoint().getRegionList()){
+	                			regionListService.insertRegionList(regionList, oldRegionId);
+	                		}
+	                	}	               
 	                }
 	                // insert region
 	                regionService.insertRegion(region, dataFrameId, oldRegionId, pathId);    
@@ -143,5 +143,40 @@ public class TIMController {
         .toUri();
 
         return ResponseEntity.created(location).build();   		
+    }
+    
+    protected void addNodeAttributes(NodeXY node, Long nodeXYId){    
+    	Long dataListId = null;
+    	
+    	// local nodes;
+    	if(node.getAttributes().getLocalNodes() != null){
+        	for(LocalNode localNode : node.getAttributes().getLocalNodes()){
+        		localNodeService.insertLocalNode(localNode, nodeXYId);
+        	}
+    	}
+    	// disabled lists
+    	if(node.getAttributes().getDisabledLists() != null){
+        	for(DisabledList disabledList : node.getAttributes().getDisabledLists()){
+        		disabledListService.insertDisabledList(disabledList, nodeXYId);
+        	}
+    	}		                        
+    	// enabled lists
+    	if(node.getAttributes().getEnabledLists() != null){
+        	for(EnabledList enabledList : node.getAttributes().getEnabledLists()){
+        		enabledListService.insertEnabledList(enabledList, nodeXYId);
+        	}
+    	}	
+    	// data lists
+    	if(node.getAttributes().getDataLists() != null){
+        	for(DataList dataList : node.getAttributes().getDataLists()){
+        		dataListId = dataListService.insertDataList(dataList, nodeXYId);
+        		// speed limits
+        		if(dataList.getSpeedLimits() != null){
+        			for(SpeedLimits speedLimit : dataList.getSpeedLimits()){
+        				speedLimitService.insertSpeedLimit(speedLimit, dataListId);
+        			}			                        	
+        		}
+        	}
+    	}
     }
 }

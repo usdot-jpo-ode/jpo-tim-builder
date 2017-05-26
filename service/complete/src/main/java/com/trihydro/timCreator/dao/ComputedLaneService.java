@@ -2,6 +2,7 @@ package com.trihydro.timCreator.dao;
 
 import com.trihydro.timCreator.DBUtility;
 import com.trihydro.timCreator.model.ComputedLane;
+import com.trihydro.timCreator.helpers.SQLNullHandler;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -23,14 +24,14 @@ public class ComputedLaneService
 			
 			PreparedStatement preparedStatement = connection.prepareStatement(insertQueryStatement, new String[] {"computed_lane_id"});
 			
-			preparedStatement.setString(1, computedLane.getLaneID().toString());		
-			preparedStatement.setString(2, computedLane.getOffsetSmallX().toString());
-			preparedStatement.setString(3, computedLane.getOffsetLargeX().toString());
-			preparedStatement.setString(4, computedLane.getOffsetSmallY().toString());
-			preparedStatement.setString(5, computedLane.getOffsetLargeY().toString());
-			preparedStatement.setString(6, computedLane.getAngle().toString());
-			preparedStatement.setString(7, computedLane.getxScale().toString());
-			preparedStatement.setString(8, computedLane.getyScale().toString());
+			SQLNullHandler.setIntegerOrNull(preparedStatement, 1, computedLane.getLaneID());
+			SQLNullHandler.setIntegerOrNull(preparedStatement, 2, computedLane.getOffsetSmallX());
+			SQLNullHandler.setIntegerOrNull(preparedStatement, 3, computedLane.getOffsetLargeX());
+			SQLNullHandler.setIntegerOrNull(preparedStatement, 4, computedLane.getOffsetSmallY());
+			SQLNullHandler.setIntegerOrNull(preparedStatement, 5, computedLane.getOffsetLargeY());
+			SQLNullHandler.setIntegerOrNull(preparedStatement, 6, computedLane.getAngle());
+			SQLNullHandler.setIntegerOrNull(preparedStatement, 7, computedLane.getxScale());
+			SQLNullHandler.setIntegerOrNull(preparedStatement, 8, computedLane.getyScale());
 
 			// execute insert statement
  			Long computedLaneId = null;

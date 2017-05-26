@@ -6,7 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.trihydro.timCreator.DBUtility;
-import com.trihydro.timCreator.model.RegionList;;
+import com.trihydro.timCreator.model.RegionList;
+import com.trihydro.timCreator.helpers.SQLNullHandler;
 
 public class RegionListService {
 	
@@ -19,14 +20,14 @@ public class RegionListService {
     public Long insertRegionList(RegionList regionList, Long oldRegionId) {
     	try {
     		
-			String insertQueryStatement = "insert into shape_point(OLD_REGION_ID, X_OFFSET, Y_OFFSET, Z_OFFSET) values (?,?,?,?)";
+			String insertQueryStatement = "insert into region_list(OLD_REGION_ID, X_OFFSET, Y_OFFSET, Z_OFFSET) values (?,?,?,?)";
 
 			PreparedStatement preparedStatement = connection.prepareStatement(insertQueryStatement, new String[] {"region_list_id"});
 			
-			preparedStatement.setString(1, oldRegionId.toString());
-			preparedStatement.setString(2, regionList.getxOffset().toString());
-			preparedStatement.setString(3, regionList.getyOffset().toString());
-			preparedStatement.setString(4, regionList.getzOffset().toString());
+			SQLNullHandler.setLongOrNull(preparedStatement, 1, oldRegionId);
+			SQLNullHandler.setIntegerOrNull(preparedStatement, 2, regionList.getxOffset());
+			SQLNullHandler.setIntegerOrNull(preparedStatement, 3, regionList.getyOffset());
+			SQLNullHandler.setIntegerOrNull(preparedStatement, 4, regionList.getzOffset());
 		
 			// execute insert statement
  			Long regionListId = null;

@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
+import com.trihydro.timCreator.helpers.SQLNullHandler;
 
 public class NodeXYService
 {
@@ -19,16 +20,22 @@ public class NodeXYService
     public Long insertNodeXY(NodeXY nodeXY) {
     	try {
 			
-			String insertQueryStatement = "insert into path(delta, node_lat, node_long, x, y, attributes_dWidth, attributes_dLength) values (?,?,?,?,?,?,?)";
+			String insertQueryStatement = "insert into node_xy(delta, node_lat, node_long, x, y, attributes_dWidth, attributes_delevation) values (?,?,?,?,?,?,?)";
 
-			PreparedStatement preparedStatement = connection.prepareStatement(insertQueryStatement, new String[] {"path_id"});				
-			preparedStatement.setString(1, nodeXY.getDelta());		
-			preparedStatement.setString(2, String.valueOf(nodeXY.getNodeLat()));
-			preparedStatement.setString(3, String.valueOf(nodeXY.getNodeLong()));
-			preparedStatement.setString(4, String.valueOf(nodeXY.getX()));
-			preparedStatement.setString(5, String.valueOf(nodeXY.getY()));
-			preparedStatement.setString(6, String.valueOf(nodeXY.getDWidth()));
-			preparedStatement.setString(7, String.valueOf(nodeXY.getDLength()));
+			PreparedStatement preparedStatement = connection.prepareStatement(insertQueryStatement, new String[] {"node_xy_id"});
+			SQLNullHandler.setStringOrNull(preparedStatement, 1, nodeXY.getDelta());
+			SQLNullHandler.setLongOrNull(preparedStatement, 2, nodeXY.getNodeLat());
+			SQLNullHandler.setLongOrNull(preparedStatement, 3, nodeXY.getNodeLong());
+			SQLNullHandler.setIntegerOrNull(preparedStatement, 4, nodeXY.getX());
+			SQLNullHandler.setIntegerOrNull(preparedStatement, 5, nodeXY.getY());
+			if(nodeXY.getAttributes() != null){
+				SQLNullHandler.setIntegerOrNull(preparedStatement, 6, nodeXY.getAttributes().getdWidth());
+				SQLNullHandler.setIntegerOrNull(preparedStatement, 7, nodeXY.getAttributes().getdElevation());
+			}
+			else{
+				preparedStatement.setNull(6, java.sql.Types.NUMERIC);
+				preparedStatement.setNull(7, java.sql.Types.NUMERIC);
+			}
 
 			// execute insert statement
  			Long nodeXYId = null;

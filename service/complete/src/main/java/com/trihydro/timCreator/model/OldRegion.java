@@ -4,7 +4,7 @@ public class OldRegion {
 	 private String direction;
      private Integer extent;
      private String area;
-     private ShapePoint shapepoint;
+     private ShapePoint shapePoint;
      private Circle circle;
      private RegionPoint regionPoint;
      
@@ -24,12 +24,12 @@ public class OldRegion {
 	     this.circle = circle;
 	 }
 	
-	 public ShapePoint getShapepoint() {
-	     return shapepoint;
+	 public ShapePoint getShapePoint() {
+	     return shapePoint;
 	 }
 	
-	 public void setShapepoint(ShapePoint shapepoint) {
-	     this.shapepoint = shapepoint;
+	 public void setShapepoint(ShapePoint shapePoint) {
+	     this.shapePoint = shapePoint;
 	 }
 	
 	 public String getArea() {

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import com.trihydro.timCreator.DBUtility;
 import com.trihydro.timCreator.model.ShapePoint;
+import com.trihydro.timCreator.helpers.SQLNullHandler;
 
 public class ShapePointService {
 	
@@ -23,13 +24,21 @@ public class ShapePointService {
 
 			PreparedStatement preparedStatement = connection.prepareStatement(insertQueryStatement, new String[] {"shape_point_id"});
 			
-			preparedStatement.setString(1, shapePoint.getPosition().getLatitude().toString());
-			preparedStatement.setString(2, shapePoint.getPosition().getLongitude().toString());
-			preparedStatement.setString(3, shapePoint.getPosition().getElevation().toString());
-			preparedStatement.setString(4, shapePoint.getLaneWidth().toString());
-			preparedStatement.setString(5, shapePoint.getDirectionality().toString());
-			preparedStatement.setString(6, shapePoint.getNodeType());
-			preparedStatement.setString(7, computedLaneId.toString());
+			if(shapePoint.getPosition() != null){
+				SQLNullHandler.setBigDecimalOrNull(preparedStatement, 1, shapePoint.getPosition().getLatitude());
+				SQLNullHandler.setBigDecimalOrNull(preparedStatement, 2, shapePoint.getPosition().getLongitude());
+				SQLNullHandler.setBigDecimalOrNull(preparedStatement, 3, shapePoint.getPosition().getElevation());
+			}
+			else{
+				preparedStatement.setNull(1, java.sql.Types.NUMERIC);
+				preparedStatement.setNull(2, java.sql.Types.NUMERIC);
+				preparedStatement.setNull(3, java.sql.Types.NUMERIC);	
+			}
+			
+			SQLNullHandler.setIntegerOrNull(preparedStatement, 4, shapePoint.getLaneWidth());
+			SQLNullHandler.setIntegerOrNull(preparedStatement, 5, shapePoint.getDirectionality());
+			SQLNullHandler.setStringOrNull(preparedStatement, 6, shapePoint.getNodeType());
+			SQLNullHandler.setLongOrNull(preparedStatement, 7, computedLaneId);
 
 			// execute insert statement
  			Long shapePointId = null;

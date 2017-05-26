@@ -6,6 +6,7 @@ import { TimSample } from '../../classes/tim-sample';
 import { DataFrame } from '../../classes/data-frame';
 import { ItisCode } from '../../classes/itis-code';
 import { Region } from '../../classes/region';
+import { OldRegion } from '../../classes/old-region';
 import { J2735Position3D } from '../../classes/J2735-Position-3D';
 import { Geometry } from '../../classes/geometry';
 import { Path } from '../../classes/path';
@@ -20,7 +21,13 @@ import { NodeXY } from '../../classes/node-xy';
 import { Attributes } from '../../classes/attributes';
 import { LocalNode } from '../../classes/local-node';
 import { DisabledList } from '../../classes/disabled-list';
-
+import { EnabledList } from '../../classes/enabled-list';
+import { DataList } from '../../classes/data-list';
+import { SpeedLimits } from '../../classes/speed-limits';
+import { RegionPoint } from '../../classes/region-point';
+import { ShapePoint } from '../../classes/shape-point';
+import { RegionList } from '../../classes/region-list';
+ 
 @Component({
 	selector: 'tc-home',   
 	templateUrl: './home.component.html',
@@ -150,53 +157,172 @@ export class HomeComponent implements OnInit{
 		regionP.path.scale = "25";
 		regionP.path.type = "path type";
 
+		// path computed lane
+		regionP.path.computedLane = new ComputedLane();
+		regionP.path.computedLane.laneID = "44";
+		regionP.path.computedLane.offsetSmallX = "10";
+		regionP.path.computedLane.offsetLargeX = "11";
+		regionP.path.computedLane.offsetSmallY = "12";
+		regionP.path.computedLane.offsetLargeY = "13";
+		regionP.path.computedLane.angle = "14";
+		regionP.path.computedLane.xScale = "15";
+		regionP.path.computedLane.yScale = "16";
+
 		// path nodes
-		// regionP.path.nodes = [];
+		regionP.path.nodes = [];
 
-		// let node = new NodeXY();
-		// node.delta = "node-XY2";
-		// node.x = "2";
-		// node.y = "2";
-		// node.attributes = new Attributes();
-		// // local nodes
-	 //    node.attributes.localNodes = [];
-		// let localNode = new LocalNode();
-		// localNode.type = "1";
-		// node.attributes.localNodes.push(localNode);
+		let node1 = new NodeXY();
+		node1.delta = "node-XY2";
+		node1.x = "22";
+		node1.y = "234";
+		node1.nodeLat = "41";
+		node1.nodeLong = "-108";
+	    node1.attributes = new Attributes();
+	    node1.attributes.dWidth = "50";
+	    node1.attributes.dElevation = "60";
 
-		// // disabled list
-		// node.attributes.disabledLists = [];
-		// let disabledList1 = new DisabledList();
-		// disabledList1.type = "6";
-		// node.attributes.disabledLists.push(disabledList1);
+	    // local nodes
+	    node1.attributes.localNodes = [];
 
-		// let disabledList2 = new DisabledList();
-		// disabledList2.type = "66";
-		// node.attributes.disabledLists.push(disabledList2);
+		let localNode1 = new LocalNode();
+		localNode1.type = "1";
+		node1.attributes.localNodes.push(localNode1);
 
-		// // enabledList
-		// node.attributes.enabledLists = [];
-		// node.attributes.dataLists = [];
+		let localNode2 = new LocalNode();
+		localNode2.type = "2";
+		node1.attributes.localNodes.push(localNode2);
 
-		// regionP.path.nodes.push(node);
+		// disabled list
+		node1.attributes.disabledLists = [];
 
-		// let node2 = new NodeXY();
-		// node2.delta = "node-XY1";
-		// node2.x = "1";
-		// node2.y = "1";
-		// node2.attributes = new Attributes();
-	 //    node2.attributes.localNodes = [];
-		// let localNode2 = new LocalNode();
-		// localNode2.type = "1";
-		// node2.attributes.localNodes.push(localNode2);
-		// node2.attributes.disabledLists = [];
-		// node2.attributes.enabledLists = [];
-		// node2.attributes.dataLists = [];
+		let disabledList1 = new DisabledList();
+		disabledList1.type = "3";
+		node1.attributes.disabledLists.push(disabledList1);
 
-		// regionP.path.nodes.push(node2);
+		let disabledList2 = new DisabledList();
+		disabledList2.type = "4";
+		node1.attributes.disabledLists.push(disabledList2);
+
+		// enabled list
+		node1.attributes.enabledLists = [];
+
+		let enabledList1 = new EnabledList();
+		enabledList1.type = "5";
+		node1.attributes.enabledLists.push(enabledList1);
+
+		let enabledList2 = new EnabledList();
+		enabledList2.type = "6";
+		node1.attributes.enabledLists.push(enabledList2);
+
+		// datalists
+		node1.attributes.dataLists = [];
+
+		let dataLists1 = new DataList();
+		dataLists1.pathEndpointAngle = "7";
+		dataLists1.laneCrownCenter = "8";
+		dataLists1.laneCrownRight = "9";
+		dataLists1.laneCrownLeft = "10";
+		dataLists1.laneAngle = "11";
+		dataLists1.speedLimits = [];
+
+		let speedLimit1 = new SpeedLimits();
+		speedLimit1.type = "12";	
+		speedLimit1.velocity = "50";	
+
+		dataLists1.speedLimits.push(speedLimit1);
+
+		let speedLimit2 = new SpeedLimits();
+		speedLimit2.type = "13";
+		speedLimit2.velocity = "51";
+
+		dataLists1.speedLimits.push(speedLimit2);
+
+		node1.attributes.dataLists.push(dataLists1);
+
+	    regionP.path.nodes.push(node1);
+
+		// old region
+		regionP.oldRegion = new OldRegion();
+		regionP.oldRegion.direction = "old region direction";
+		regionP.oldRegion.extent = "88";
+		regionP.oldRegion.area = "old region area";
+
+		// old region circle
+		regionP.oldRegion.circle = new Circle();
+	    regionP.oldRegion.circle.position = new J2735Position3D();
+		regionP.oldRegion.circle.position.latitude = "41.678473";
+		regionP.oldRegion.circle.position.longitude = "-108.782775";
+		regionP.oldRegion.circle.position.elevation = "917.1432";
+		regionP.oldRegion.circle.radius = "15";
+		regionP.oldRegion.circle.units = "7";
+
+		// old region region point
+		regionP.oldRegion.regionPoint = new RegionPoint();
+		regionP.oldRegion.regionPoint.position = new J2735Position3D(); 
+	    regionP.oldRegion.regionPoint.position.latitude = "41.678473";
+		regionP.oldRegion.regionPoint.position.longitude = "-108.782775";
+		regionP.oldRegion.regionPoint.position.elevation = "917.1432";
+		regionP.oldRegion.regionPoint.scale = "99";
+
+		// region poit region list
+		regionP.oldRegion.regionPoint.regionList = [];
+		let regionList1 = new RegionList();
+		regionList1.xOffset = "90";
+		regionList1.yOffset = "91";
+		regionList1.zOffset = "92";
+		regionP.oldRegion.regionPoint.regionList.push(regionList1);
+
+		let regionList2 = new RegionList();
+		regionList2.xOffset = "93";
+		regionList2.yOffset = "94";
+		regionList2.zOffset = "95";
+		regionP.oldRegion.regionPoint.regionList.push(regionList2);
+
+		// shape point
+		regionP.oldRegion.shapePoint = new ShapePoint();
+		regionP.oldRegion.shapePoint.position = new J2735Position3D(); 
+	    regionP.oldRegion.shapePoint.position.latitude = "41.678473";
+		regionP.oldRegion.shapePoint.position.longitude = "-108.782775";
+		regionP.oldRegion.shapePoint.position.elevation = "917.1432";
+		regionP.oldRegion.shapePoint.laneWidth = "66";
+		regionP.oldRegion.shapePoint.directionality = "77";
+		regionP.oldRegion.shapePoint.nodeType = "shape point node type";
+
+		// old region shape point computed lane
+		regionP.oldRegion.shapePoint.computedLane = new ComputedLane();
+		regionP.oldRegion.shapePoint.computedLane.laneID = "444";
+		regionP.oldRegion.shapePoint.computedLane.offsetSmallX = "100";
+		regionP.oldRegion.shapePoint.computedLane.offsetLargeX = "110";
+		regionP.oldRegion.shapePoint.computedLane.offsetSmallY = "120";
+		regionP.oldRegion.shapePoint.computedLane.offsetLargeY = "130";
+		regionP.oldRegion.shapePoint.computedLane.angle = "140";
+		regionP.oldRegion.shapePoint.computedLane.xScale = "150";
+		regionP.oldRegion.shapePoint.computedLane.yScale = "160";
+
+		// old region shape point nodes list
+		regionP.oldRegion.shapePoint.nodexy = [];
+
+		let node3 = new NodeXY();
+		node3.delta = "node-XY2";
+		node3.x = "22";
+		node3.y = "234";
+		node3.nodeLat = "41";
+		node3.nodeLong = "-108";
+	    node3.attributes = new Attributes();
+	    node3.attributes.dWidth = "50";
+	    node3.attributes.dElevation = "60";
+
+	    // local nodes
+	    node3.attributes.localNodes = [];
+
+		let localNode3 = new LocalNode();
+		localNode3.type = "1";
+		node3.attributes.localNodes.push(localNode3);
+
+		regionP.oldRegion.shapePoint.nodexy.push(node3);
+
 
 		this.df.regions.push(regionP);
-
 
 		this.df.items = [];		
 		this.df.itisCodes = [];
@@ -221,6 +347,8 @@ export class HomeComponent implements OnInit{
 			}
 		}
 
+		var dateSent = new Date();
+		timSample.dateSent = dateSent.getFullYear() + "-" + (dateSent.getMonth()+1) + "-" + dateSent.getDate() + " " + dateSent.getHours() + ":" + dateSent.getMinutes() + ":" + dateSent.getSeconds();
 
 		timSample.snmp = new SNMP();
 		timSample.snmp.rsuid = "8300";
@@ -233,10 +361,20 @@ export class HomeComponent implements OnInit{
 		timSample.snmp.enable = "3";
 		timSample.snmp.status = "4";
 
+		var dateSent = new Date();
+		timSample.dateSent = "2017-01-01T17:47:11-05:00";
+        //tim.timeStamp = "2017-01-01T17:47:11-05:00";
+		//tim.timeStamp = today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDate() + " " + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
 		// today = new Date();
 		// date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
 		// time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 		// timSample.dateReceived = date + "T" + time;
+
+		var dateReceived = new Date();
+		timSample.dateReceived = "2017-01-01T17:47:11-05:00";
+		//timSample.dateReceived = dateReceived.getFullYear() + "-" + (dateReceived.getMonth()+1) + "-" + dateReceived.getDate() + " " + dateReceived.getHours() + ":" + dateReceived.getMinutes() + ":" + dateReceived.getSeconds();
+
 
 		this.testJSON = JSON.stringify(timSample);	
 

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import com.trihydro.timCreator.DBUtility;
 import com.trihydro.timCreator.model.SpeedLimits;
+import com.trihydro.timCreator.helpers.SQLNullHandler;
 
 public class SpeedLimitService {
 	
@@ -23,9 +24,9 @@ public class SpeedLimitService {
 
 			PreparedStatement preparedStatement = connection.prepareStatement(insertQueryStatement, new String[] {"speed_limits_id"});
 			
-			preparedStatement.setString(1, dataListId.toString());		
-			preparedStatement.setString(2, speedLimits.getType().toString());
-			preparedStatement.setString(3, speedLimits.getVelocity().toString());
+			SQLNullHandler.setLongOrNull(preparedStatement, 1, dataListId);
+			SQLNullHandler.setLongOrNull(preparedStatement, 2, speedLimits.getType());
+			SQLNullHandler.setIntegerOrNull(preparedStatement, 3, speedLimits.getVelocity());
 
 			// execute insert statement
  			Long speedLimitsId = null;

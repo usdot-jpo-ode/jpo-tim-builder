@@ -8,8 +8,6 @@ public class NodeXY
     private Long nodeLong;
     private Integer x;
     private Integer y;
-    private Integer dWidth;
-    private Integer dLength;
     private Attributes attributes;
 
     public Integer getNodeXYId() {
@@ -58,22 +56,6 @@ public class NodeXY
 	
 	public void setY(Integer y) {
 		this.y = y;
-	}
-
-	public Integer getDWidth() {
-		return this.dWidth;
-	}
-	
-	public void setDWidth(Integer dWidth) {
-		this.dWidth = dWidth;
-	}
-
-	public Integer getDLength() {
-		return this.dLength;
-	}
-	
-	public void setDLength(Integer dLength) {
-		this.dLength = dLength;
 	}
 	
 	public Attributes getAttributes() {

@@ -2,6 +2,7 @@ package com.trihydro.timCreator.dao;
 
 import com.trihydro.timCreator.DBUtility;
 import com.trihydro.timCreator.model.RSU;
+import com.trihydro.timCreator.helpers.SQLNullHandler;
 
 import java.sql.Connection;
 import java.sql.Statement;
@@ -47,11 +48,12 @@ public class RSUService
 			
 			PreparedStatement preparedStatement = connection.prepareStatement("insert into rsu(url, rsu_username, rsu_password, snmp_username, snmp_password) values (?,?,?,?,?)");
 	  
-			preparedStatement.setString(1, rsu.getRsuTarget());
-			preparedStatement.setString(2, rsu.getRsuUsername());   
-			preparedStatement.setString(3, rsu.getRsuPassword());
-			preparedStatement.setString(4, rsu.getSnmpUsername());
-			preparedStatement.setString(5, rsu.getSnmpPassword());			
+			SQLNullHandler.setStringOrNull(preparedStatement, 1, rsu.getRsuTarget());
+			SQLNullHandler.setStringOrNull(preparedStatement, 2, rsu.getRsuUsername());
+			SQLNullHandler.setStringOrNull(preparedStatement, 3, rsu.getRsuPassword());
+			SQLNullHandler.setStringOrNull(preparedStatement, 4, rsu.getSnmpUsername());
+			SQLNullHandler.setStringOrNull(preparedStatement, 5, rsu.getSnmpPassword());
+					
 			preparedStatement.executeUpdate();
 
 	  } catch (SQLException e) {

@@ -1,6 +1,7 @@
 import { J2735Position3D } from './J2735-Position-3D';
 import { Geometry } from './geometry';
 import { Path } from './path';
+import { OldRegion } from './old-region';
 
 export class Region{
 	name: string;
@@ -15,5 +16,5 @@ export class Region{
 	description: string;
 	path: Path;
 	geometry: Geometry;
-	//private OldRegion oldRegion;
+	oldRegion: OldRegion;
 }

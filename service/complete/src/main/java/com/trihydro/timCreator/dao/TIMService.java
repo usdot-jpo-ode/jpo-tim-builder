@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
+import com.trihydro.timCreator.helpers.SQLNullHandler;
 
 public class TIMService
 {
@@ -23,10 +24,10 @@ public class TIMService
 
 			PreparedStatement preparedStatement = connection.prepareStatement(insertQueryStatement, new String[] {"tim_id"});
 			
-			preparedStatement.setString(1, String.valueOf(tim.getMsgCnt()));		
-			preparedStatement.setString(2, tim.getPacketID());
-			preparedStatement.setString(3, tim.getUrlB());
-			preparedStatement.setTimestamp(4, new java.sql.Timestamp(System.currentTimeMillis()));   	
+			SQLNullHandler.setIntegerOrNull(preparedStatement, 1, tim.getMsgCnt());
+			SQLNullHandler.setStringOrNull(preparedStatement, 2, tim.getPacketID());
+			SQLNullHandler.setStringOrNull(preparedStatement, 3, tim.getUrlB());
+			SQLNullHandler.setTimestampOrNull(preparedStatement, 4, new java.sql.Timestamp(System.currentTimeMillis()));
 
 			// execute insert statement
  			Long timId = null;

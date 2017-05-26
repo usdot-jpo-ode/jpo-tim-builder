@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import com.trihydro.timCreator.DBUtility;
 import com.trihydro.timCreator.model.DataList;
+import com.trihydro.timCreator.helpers.SQLNullHandler;
 
 public class DataListService {
 	
@@ -22,12 +23,12 @@ public class DataListService {
 
 			PreparedStatement preparedStatement = connection.prepareStatement(insertQueryStatement, new String[] {"data_list_id"});
 			
-			preparedStatement.setString(1, nodeXYId.toString());	
-			preparedStatement.setString(2, dataList.getPathEndpointAngle().toString());
-			preparedStatement.setString(3, dataList.getLaneCrownCenter().toString());
-			preparedStatement.setString(4, dataList.getLaneCrownLeft().toString());
-			preparedStatement.setString(5, dataList.getLaneCrownRight().toString());
-			preparedStatement.setString(6, dataList.getLaneAngle().toString());
+			SQLNullHandler.setLongOrNull(preparedStatement, 1, nodeXYId);
+			SQLNullHandler.setIntegerOrNull(preparedStatement, 2, dataList.getPathEndpointAngle());
+			SQLNullHandler.setIntegerOrNull(preparedStatement, 3, dataList.getLaneCrownCenter());
+			SQLNullHandler.setIntegerOrNull(preparedStatement, 4, dataList.getLaneCrownLeft());
+			SQLNullHandler.setIntegerOrNull(preparedStatement, 5, dataList.getLaneCrownRight());
+			SQLNullHandler.setIntegerOrNull(preparedStatement, 6, dataList.getLaneAngle());
 			
 			// execute insert statement
  			Long dataListId = null;

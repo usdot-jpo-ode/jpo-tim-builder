@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import com.trihydro.timCreator.DBUtility;
 import com.trihydro.timCreator.model.DisabledList;
+import com.trihydro.timCreator.helpers.SQLNullHandler;
 
 public class DisabledListService {
 	
@@ -23,8 +24,8 @@ public class DisabledListService {
 
 			PreparedStatement preparedStatement = connection.prepareStatement(insertQueryStatement, new String[] {"disabled_list_id"});
 			
-			preparedStatement.setString(1, nodeXYId.toString());		
-			preparedStatement.setString(2, disabledList.getType().toString());
+			SQLNullHandler.setLongOrNull(preparedStatement, 1, nodeXYId);
+			SQLNullHandler.setLongOrNull(preparedStatement, 2, disabledList.getType());
 
 			// execute insert statement
  			Long disabledListId = null;

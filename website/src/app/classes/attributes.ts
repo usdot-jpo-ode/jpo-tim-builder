@@ -8,4 +8,6 @@ export class Attributes{
     disabledLists: DisabledList[];
     enabledLists: EnabledList[];
     dataLists: DataList[];  
+    dWidth: string;
+    dElevation: string;
 }

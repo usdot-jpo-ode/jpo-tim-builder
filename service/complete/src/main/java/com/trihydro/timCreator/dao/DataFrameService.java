@@ -4,15 +4,12 @@ import com.trihydro.timCreator.DBUtility;
 import com.trihydro.timCreator.model.DataFrame;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
+import com.trihydro.timCreator.helpers.SQLNullHandler;
 
 public class DataFrameService {
 	private Connection connection;
@@ -28,25 +25,37 @@ public class DataFrameService {
 			PreparedStatement preparedStatement = connection.prepareStatement(insertQueryStatement,
 					new String[] { "data_frame_id" });
 
-			preparedStatement.setString(1, String.valueOf(timId));
-			preparedStatement.setString(2, String.valueOf(dataFrame.getSspTimRights()));
-			preparedStatement.setString(3, String.valueOf(dataFrame.getFrameType()));
-			preparedStatement.setString(4, dataFrame.getMsgID());
-			preparedStatement.setString(5, dataFrame.getFurtherInfoID());
-			preparedStatement.setString(6, String.valueOf(dataFrame.getPosition().getLatitude()));
-			preparedStatement.setString(7, String.valueOf(dataFrame.getPosition().getLongitude()));
-			preparedStatement.setString(8, String.valueOf(dataFrame.getPosition().getElevation()));
-			preparedStatement.setString(9, dataFrame.getViewAngle());
-			preparedStatement.setString(10, String.valueOf(dataFrame.getMutcd()));
-			preparedStatement.setString(11, dataFrame.getCrc());			
-			preparedStatement.setTimestamp(12, java.sql.Timestamp.valueOf(LocalDateTime.parse(dataFrame.getStartDateTime(), DateTimeFormatter.ISO_DATE_TIME)));
-			preparedStatement.setString(13, String.valueOf(dataFrame.getDurationTime()));
-			preparedStatement.setString(14, String.valueOf(dataFrame.getPriority()));
-			preparedStatement.setString(15, String.valueOf(dataFrame.getSspLocationRights()));
-			preparedStatement.setString(16, String.valueOf(dataFrame.getSspMsgTypes()));
-			preparedStatement.setString(17, String.valueOf(dataFrame.getSspMsgContent()));
-			preparedStatement.setString(18, dataFrame.getContent());
-			preparedStatement.setString(19, dataFrame.getUrl());
+			SQLNullHandler.setLongOrNull(preparedStatement, 1, timId);
+			SQLNullHandler.setShortOrNull(preparedStatement, 2, dataFrame.getSspTimRights());
+			SQLNullHandler.setIntegerOrNull(preparedStatement, 3, dataFrame.getFrameType());
+			SQLNullHandler.setStringOrNull(preparedStatement, 4, dataFrame.getMsgID());
+			SQLNullHandler.setStringOrNull(preparedStatement, 5, dataFrame.getFurtherInfoID());
+			
+			if( dataFrame.getPosition() != null){
+				SQLNullHandler.setBigDecimalOrNull(preparedStatement, 6, dataFrame.getPosition().getLatitude());
+				SQLNullHandler.setBigDecimalOrNull(preparedStatement, 7, dataFrame.getPosition().getLongitude());
+				SQLNullHandler.setBigDecimalOrNull(preparedStatement, 8, dataFrame.getPosition().getElevation());
+			}
+			else{
+				preparedStatement.setNull(6, java.sql.Types.NUMERIC);
+				preparedStatement.setNull(7, java.sql.Types.NUMERIC);
+				preparedStatement.setNull(8, java.sql.Types.NUMERIC);
+			}
+				
+			SQLNullHandler.setStringOrNull(preparedStatement, 9, dataFrame.getViewAngle());
+			SQLNullHandler.setIntegerOrNull(preparedStatement, 10, dataFrame.getMutcd());
+			SQLNullHandler.setStringOrNull(preparedStatement, 11, dataFrame.getCrc());		
+			if(dataFrame.getStartDateTime() != null)
+				SQLNullHandler.setTimestampOrNull(preparedStatement, 12, java.sql.Timestamp.valueOf(LocalDateTime.parse(dataFrame.getStartDateTime(), DateTimeFormatter.ISO_DATE_TIME)));
+			else
+				preparedStatement.setNull(12, java.sql.Types.TIMESTAMP);
+		    SQLNullHandler.setIntegerOrNull(preparedStatement, 13, dataFrame.getDurationTime());
+		    SQLNullHandler.setIntegerOrNull(preparedStatement, 14, dataFrame.getPriority());
+		    SQLNullHandler.setShortOrNull(preparedStatement, 15, dataFrame.getSspLocationRights());
+		    SQLNullHandler.setShortOrNull(preparedStatement, 16, dataFrame.getSspMsgTypes());
+		    SQLNullHandler.setShortOrNull(preparedStatement, 17, dataFrame.getSspMsgContent());
+		    SQLNullHandler.setStringOrNull(preparedStatement, 18, dataFrame.getContent());
+		    SQLNullHandler.setStringOrNull(preparedStatement, 19, dataFrame.getUrl());
 
 			// execute insert statement
 			Long dataFrameId = null;

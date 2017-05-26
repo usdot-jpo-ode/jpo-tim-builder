@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import com.trihydro.timCreator.DBUtility;
 import com.trihydro.timCreator.model.LocalNode;
+import com.trihydro.timCreator.helpers.SQLNullHandler;
 
 public class LocalNodeService {
 	
@@ -23,8 +24,8 @@ public class LocalNodeService {
 
 			PreparedStatement preparedStatement = connection.prepareStatement(insertQueryStatement, new String[] {"local_node_id"});
 			
-			preparedStatement.setString(1, nodeXYId.toString());		
-			preparedStatement.setString(2, localNode.getType().toString());
+			SQLNullHandler.setLongOrNull(preparedStatement, 1, nodeXYId);
+			SQLNullHandler.setLongOrNull(preparedStatement, 2, localNode.getType());
 
 			// execute insert statement
  			Long localNodeId = null;

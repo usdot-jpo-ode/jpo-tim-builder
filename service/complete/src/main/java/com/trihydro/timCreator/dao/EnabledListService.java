@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import com.trihydro.timCreator.DBUtility;
 import com.trihydro.timCreator.model.EnabledList;
+import com.trihydro.timCreator.helpers.SQLNullHandler;
 
 public class EnabledListService {
 	
@@ -23,8 +24,8 @@ public class EnabledListService {
 
 			PreparedStatement preparedStatement = connection.prepareStatement(insertQueryStatement, new String[] {"enabled_list_id"});
 			
-			preparedStatement.setString(1, nodeXYId.toString());		
-			preparedStatement.setString(2, enabledList.getType().toString());
+			SQLNullHandler.setLongOrNull(preparedStatement, 1, nodeXYId);
+			SQLNullHandler.setLongOrNull(preparedStatement, 2, enabledList.getType());
 
 			// execute insert statement
  			Long enabledListId = null;

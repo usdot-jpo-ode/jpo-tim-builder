@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
+import com.trihydro.timCreator.helpers.SQLNullHandler;
 
 public class PathNodeXYService
 {
@@ -17,11 +18,11 @@ public class PathNodeXYService
     public Long insertPathNodeXY(Long pathId, Long nodeXYId) {
     	try {
 			
-			String insertQueryStatement = "insert into path_node_xy(path_id, node_xy_id values (?,?)";
+			String insertQueryStatement = "insert into path_node_xy(path_id, node_xy_id) values (?,?)";
 
-			PreparedStatement preparedStatement = connection.prepareStatement(insertQueryStatement, new String[] {"path_node_xy_id"});				
-			preparedStatement.setString(1, pathId.toString());		
-			preparedStatement.setString(2, nodeXYId.toString());
+			PreparedStatement preparedStatement = connection.prepareStatement(insertQueryStatement, new String[] {"path_node_xy_id"});
+			SQLNullHandler.setLongOrNull(preparedStatement, 1, pathId);
+			SQLNullHandler.setLongOrNull(preparedStatement, 2, nodeXYId);
 
 			// execute insert statement
  			Long pathNodeXYId = null;
@@ -34,7 +35,6 @@ public class PathNodeXYService
  					System.out.println("------ Generated Path Node XY ID: " + pathNodeXYId + " --------------");
  				}
  			}
-
  			
 			return pathNodeXYId;
 
