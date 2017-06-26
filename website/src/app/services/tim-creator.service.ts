@@ -9,7 +9,7 @@ import { TimSample } from '../classes/tim-sample';
 export class TimCreatorService{
   
 	private databaseUrl: string = 'http://localhost:8080';
-	private rsuUrl: string = 'http://localhost:8080';
+	private odeUrl: string = 'http://localhost:8080';
 
 	constructor(private http : Http){
 		
@@ -18,7 +18,7 @@ export class TimCreatorService{
 	sendTimToRSU(timSample: TimSample) : Observable<Response>{   
 		console.log(timSample);
 		return this.http
-		.post(`${this.rsuUrl}/tim`, JSON.stringify(timSample), {headers: this.getHeaders()});
+		.post(`${this.odeUrl}/tim`, JSON.stringify(timSample), {headers: this.getHeaders()});
 	}
 
 	sendTim(timSample: TimSample) : Observable<Response>{   
@@ -27,10 +27,34 @@ export class TimCreatorService{
 		.post(`${this.databaseUrl}/sendTim`, JSON.stringify(timSample), {headers: this.getHeaders()});
 	}
 
+	// TODO: Will need to change
+	getTIMs(): Observable<TimSample[]>{
+    	let tims$ = this.http
+         .get(this.odeUrl + '/getTims', {headers: this.getHeaders()})
+         .map((res:Response) => res.json())
+         .catch(handleError);
+    	return tims$;
+  	}
+
+  	// TODO: Will need to change
+  	disableTim(timSample: TimSample) : Observable<Response>{   
+		console.log(timSample);
+		return this.http
+		.post(`${this.odeUrl}/disableTim`, JSON.stringify(timSample), {headers: this.getHeaders()});
+	}
+
 	private getHeaders(){
 	    let headers = new Headers();
 	    headers.append('Content-Type', 'application/json');
 	    return headers;
 	}
+}
 
+function handleError (error: any) {
+	// log error
+	let errorMsg = error.message || `An error has occured.`
+	console.error(errorMsg);
+
+	// throw an application level error
+	return Observable.throw(errorMsg);
 }

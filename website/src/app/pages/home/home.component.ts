@@ -43,6 +43,8 @@ export class HomeComponent implements OnInit{
 	errorMessage: string = '';
 	isLoading: boolean = true;
 	selectedItisCodeId: number;
+	snmpIndex: number;
+	autoGenerateIndex: boolean;
 
    	constructor(private timCreatorService : TimCreatorService, private rsuService: RSUService, private itisCodeService: ItisCodeService){ }
 
