@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Tim } from '../../classes/tim';
 import { RSU } from '../../classes/rsu';
-import { TimMessage } from '../../classes/tim-message';
 import { TimSample } from '../../classes/tim-sample';
 import { DataFrame } from '../../classes/data-frame';
 import { ItisCode } from '../../classes/itis-code';
@@ -35,9 +34,9 @@ import { RegionList } from '../../classes/region-list';
 })
 export class HomeComponent implements OnInit{
 
-	tim: TimMessage;
 	itisCodes: ItisCode[];
 	testJSON: string;
+	tim: Tim;
 	df: DataFrame;
 	rsuData: RSU[];	
 	errorMessage: string = '';
@@ -49,7 +48,6 @@ export class HomeComponent implements OnInit{
    	constructor(private timCreatorService : TimCreatorService, private rsuService: RSUService, private itisCodeService: ItisCodeService){ }
 
 	ngOnInit(){			
-		this.tim = new TimMessage();
 		this.df = new DataFrame();
 
 		this.rsuService.getAll().subscribe(
@@ -82,13 +80,12 @@ export class HomeComponent implements OnInit{
 
 
 		let timSample = new TimSample();
-		let tim = new Tim();
-		tim.msgCnt = "13";
+		this.tim.msgCnt = "13";
 		
 		var today = new Date();
-		tim.timeStamp = today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDate() + " " + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-		tim.packetID = "1";
-		tim.urlB = "urlb";
+		this.tim.timeStamp = today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDate() + " " + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+		this.tim.packetID = "1";
+		this.tim.urlB = "urlb";
 
 		// dataframe 
 		this.df.sspTimRights = "1";
@@ -337,8 +334,8 @@ export class HomeComponent implements OnInit{
 
 		let dfa: DataFrame[] = [];
 		dfa.push(this.df);
-		tim.dataframes = dfa;
-		timSample.tim = tim;
+		this.tim.dataframes = dfa;
+		timSample.tim = this.tim;
 
 		timSample.rsus = [];
 

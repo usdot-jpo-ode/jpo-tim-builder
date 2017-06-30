@@ -7,5 +7,5 @@ export class TimMessage{
 	timeStamp: string;
 	packetID: number;
 	urlB: string;
-	//dataframes: Dataframes[];
+	index: string;
 }

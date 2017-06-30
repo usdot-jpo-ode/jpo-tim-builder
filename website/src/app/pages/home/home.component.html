@@ -28,7 +28,7 @@
 			<div class="col-sm-offset-3">
 				<label class="col-sm-2" style="padding-top:7px;">Choose Index:</label>
 				<div class="col-sm-3">
-					<input class="form-control" [(ngModel)]="snmpIndex" name="snmpIndex" type="Number" required />
+					<input class="form-control" [(ngModel)]="tim.index" name="timIndex" type="Number" required />
 				</div>
 				<label class="control-label col-sm-1">Or:</label>
 				<div class="col-sm-5" style="padding-left: 15px;">
@@ -36,7 +36,7 @@
 						<label>
 						<input type="checkbox" [(ngModel)]="autoGenerateIndex" name="autoGenerateIndex">
 						<span class="custom-control-indicator"></span>
-							Auto-generate next index
+							Use next available index
 						</label>
 					</div>
 				</div>

@@ -6,4 +6,5 @@ export class Tim{
     packetID: string;
     urlB: string;
     dataframes: DataFrame[];
+    index: string;
 }
