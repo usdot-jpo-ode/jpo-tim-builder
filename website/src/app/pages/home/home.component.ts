@@ -49,6 +49,7 @@ export class HomeComponent implements OnInit{
 
 	ngOnInit(){			
 		this.df = new DataFrame();
+		this.tim = new Tim();
 
 		this.rsuService.getAll().subscribe(
 		 /* happy path */ r => this.rsuData = r,
