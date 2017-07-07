@@ -8,6 +8,9 @@ import { HomeComponent }    from './pages/home/home.component';
 import { RSUComponent }    from './pages/rsu/add-rsu.component';
 import { NavComponent }    from './nav/nav.component';
 import { DisableTimsComponent }  from './pages/disable-tims/disable-tims.component'; 
+import { NguiDatetimePickerModule } from '@ngui/datetime-picker';
+
+
 
 import { AppRoutingModule }     from './app-routing.module';
 
@@ -19,7 +22,8 @@ import { AppRoutingModule }     from './app-routing.module';
     BrowserModule,
     FormsModule,
     HttpModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NguiDatetimePickerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

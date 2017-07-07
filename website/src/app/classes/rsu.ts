@@ -1,3 +1,5 @@
+import { Index } from './index';
+
 export class RSU{
 	rsuTarget: string;
 	rsuUsername: string;
@@ -5,5 +7,12 @@ export class RSU{
 	rsuRetries: string;
 	rsuTimeout: string;
 	isSelected: boolean;
-	rsuId: number;
+	index: number;
+	indicies_set: Index[];
+	indicies: number[];
+
+	constructor() {
+        this.rsuRetries = "1";
+        this.rsuTimeout = "2000";
+    }
 }

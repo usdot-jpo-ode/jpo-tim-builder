@@ -1,1 +1,22 @@
 <h2>Disable Tims</h2>
+
+<form class="form-horizontal" #deleteTimForm="ngForm" (ngSubmit)="deleteTIMs()">
+<ul>
+	<li *ngFor="let rsu of rsus">
+		{{ rsu.rsuTarget }}		
+			<div *ngFor="let i of rsu.indicies_set">			
+				<div class="checkbox custom-control custom-checkbox">
+					<label>
+					<input type="checkbox" name="{{i.index}}" [(ngModel)]="i.isSelected">
+					<span class="custom-control-indicator"></span>
+						{{ i.index }}
+					</label>
+				</div>
+			</div>
+	</li>
+</ul> 
+
+	<div style="text-align: center; clear: both;">			
+		<button type="submit" class="btn btn-primary">Delete TIM(s)</button>
+	</div>
+</form>

@@ -1,46 +1,41 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers} from '@angular/http';
+import { RequestOptions, Http, Response, Headers} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
 import { ItisCode } from '../classes/itis-code';
 import { TimSample } from '../classes/tim-sample';
+import { RSU } from '../classes/rsu';
 
 @Injectable()
 export class TimCreatorService{
   
-	private databaseUrl: string = 'http://localhost:8080';
 	private odeUrl: string = 'http://localhost:8080';
+	private dbUrl: string = 'http://localhost:9000';
 
 	constructor(private http : Http){
 		
 	}
 
-	sendTimToRSU(timSample: TimSample) : Observable<Response>{   
-		console.log(timSample);
+	sendTimToRSU(timSample: TimSample) : Observable<Response>{ 
 		return this.http
 		.post(`${this.odeUrl}/tim`, JSON.stringify(timSample), {headers: this.getHeaders()});
 	}
 
-	sendTim(timSample: TimSample) : Observable<Response>{   
-		console.log(timSample);
+	sendTimToDB(timSample: TimSample) : Observable<Response>{   
 		return this.http
-		.post(`${this.databaseUrl}/sendTim`, JSON.stringify(timSample), {headers: this.getHeaders()});
+		.post(`${this.dbUrl}/sendTim`, JSON.stringify(timSample), {headers: this.getHeaders()});
 	}
 
-	// TODO: Will need to change
-	getTIMs(): Observable<TimSample[]>{
-    	let tims$ = this.http
-         .get(this.odeUrl + '/getTims', {headers: this.getHeaders()})
-         .map((res:Response) => res.json())
-         .catch(handleError);
-    	return tims$;
-  	}
+	queryTim(rsu: RSU) : Observable<number[]>{   
+		let q = this.http
+		.post(`${this.odeUrl}/tim/query`, JSON.stringify(rsu), {headers: this.getHeaders()})
+		.map(mapTimQueryToArray);	
+		return q;
+	}
 
-  	// TODO: Will need to change
-  	disableTim(timSample: TimSample) : Observable<Response>{   
-		console.log(timSample);
+  	deleteTim(rsu: RSU, index: number) : Observable<Response>{ 
 		return this.http
-		.post(`${this.odeUrl}/disableTim`, JSON.stringify(timSample), {headers: this.getHeaders()});
+		.delete(`${this.odeUrl}/tim?index=${index}`, new RequestOptions({ headers: this.getHeaders(), body: rsu}));
 	}
 
 	private getHeaders(){
@@ -48,6 +43,10 @@ export class TimCreatorService{
 	    headers.append('Content-Type', 'application/json');
 	    return headers;
 	}
+}
+
+function mapTimQueryToArray(response: Response): number[]{
+	return JSON.parse(response.text().split('",')[1].split('}')[0]);;
 }
 
 function handleError (error: any) {
