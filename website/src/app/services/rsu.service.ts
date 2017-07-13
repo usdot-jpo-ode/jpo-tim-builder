@@ -3,18 +3,19 @@ import { Http, Response, Headers} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
 import { RSU } from '../classes/rsu';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class RSUService{
   
-	private baseUrl: string = 'http://localhost:9000';
+	private dbUrl: string = environment.dbUrl;
 
 	constructor(private http : Http){		
 	}
 
 	getAll(): Observable<RSU[]>{
 		let rsu$ = this.http
-		.get(this.baseUrl + '/rsus', {headers: this.getHeaders()})
+		.get(this.dbUrl + '/rsus', {headers: this.getHeaders()})
 		.map((res:Response) => res.json())
 		.catch(handleError);
 		return rsu$;
@@ -22,7 +23,7 @@ export class RSUService{
 
     add(rsu: RSU) : Observable<Response>{  
     	return this.http
-    	.post(`${this.baseUrl}/rsus`, JSON.stringify(rsu), {headers: this.getHeaders()});
+    	.post(`${this.dbUrl}/rsus`, JSON.stringify(rsu), {headers: this.getHeaders()});
 	}
 
 	private getHeaders(){

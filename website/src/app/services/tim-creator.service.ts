@@ -5,12 +5,13 @@ import { Observable } from 'rxjs/Rx';
 import { ItisCode } from '../classes/itis-code';
 import { TimSample } from '../classes/tim-sample';
 import { RSU } from '../classes/rsu';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class TimCreatorService{
   
-	private odeUrl: string = 'http://localhost:8080';
-	private dbUrl: string = 'http://localhost:9000';
+	private odeUrl: string = environment.odeUrl;
+	private dbUrl: string = environment.dbUrl;
 
 	constructor(private http : Http){
 		

@@ -3,18 +3,19 @@ import { Http, Response, Headers} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
 import { ItisCode } from '../classes/itis-code';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class ItisCodeService{
   
-	private baseUrl: string = 'http://localhost:9000';
+	private dbUrl: string = environment.dbUrl;
 
 	constructor(private http : Http){		
 	}
 
 	getAll(): Observable<ItisCode[]>{
 		let itisCode$ = this.http
-		.get(this.baseUrl + '/itiscodes', {headers: this.getHeaders()})
+		.get(this.dbUrl + '/itiscodes', {headers: this.getHeaders()})
 		.map((res:Response) => res.json())
 		.catch(handleError);
 		return itisCode$;
