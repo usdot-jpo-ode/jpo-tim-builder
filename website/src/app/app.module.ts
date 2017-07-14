@@ -9,14 +9,14 @@ import { RSUComponent }    from './pages/rsu/add-rsu.component';
 import { NavComponent }    from './nav/nav.component';
 import { DisableTimsComponent }  from './pages/disable-tims/disable-tims.component'; 
 import { NguiDatetimePickerModule } from '@ngui/datetime-picker';
-
-
+import { EsriLoaderService } from 'angular2-esri-loader';
+import { EsriMapComponent } from './pages/esri-map/esri-map.component';
 
 import { AppRoutingModule }     from './app-routing.module';
 
 @NgModule({
   declarations: [
-    AppComponent, HomeComponent, NavComponent, RSUComponent, DisableTimsComponent
+    AppComponent, HomeComponent, NavComponent, RSUComponent, DisableTimsComponent, EsriMapComponent
   ],
   imports: [
     BrowserModule,
@@ -25,7 +25,7 @@ import { AppRoutingModule }     from './app-routing.module';
     AppRoutingModule,
     NguiDatetimePickerModule
   ],
-  providers: [],
+  providers: [EsriLoaderService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
