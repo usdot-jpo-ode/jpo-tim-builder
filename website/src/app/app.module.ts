@@ -13,6 +13,7 @@ import { EsriLoaderService } from 'angular2-esri-loader';
 import { EsriMapComponent } from './pages/esri-map/esri-map.component';
 
 import { AppRoutingModule }     from './app-routing.module';
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,11 @@ import { AppRoutingModule }     from './app-routing.module';
     AppRoutingModule,
     NguiDatetimePickerModule
   ],
-  providers: [EsriLoaderService],
+  providers: [EsriLoaderService, 
+    {
+      provide: LocationStrategy, 
+      useClass: HashLocationStrategy
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

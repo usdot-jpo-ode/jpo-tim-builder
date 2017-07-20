@@ -8,6 +8,8 @@ public class RSU
 	private String rsuPassword;
 	private String snmpUsername;
 	private String snmpPassword;
+	private Double latitude;
+	private Double longitude;
 
 	public Integer getRsuId() 
 	{
@@ -67,5 +69,25 @@ public class RSU
 	public void setSnmpPassword(String snmpPassword) 
 	{
 		this.snmpPassword = snmpPassword;
+	}
+
+	public Double getLatitude() 
+	{
+		return this.latitude;
+	}
+
+	public void setLatitude(Double latitude) 
+	{
+		this.latitude = latitude;
+	}
+
+	public Double getLongitude() 
+	{
+		return this.longitude;
+	}
+
+	public void setLongitude(Double longitude) 
+	{
+		this.longitude = longitude;
 	}
 }

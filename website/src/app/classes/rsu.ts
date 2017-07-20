@@ -10,6 +10,8 @@ export class RSU{
 	index: number;
 	indicies_set: Index[];
 	indicies: number[];
+	latitude: number;
+	longitude: number;
 
 	constructor() {
         this.rsuRetries = "1";

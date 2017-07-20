@@ -43,6 +43,31 @@ public class RSUService
   		return rsus;
 	}
 
+	public List<RSU> selectActiveRSUs(){
+		List<RSU> rsus = new ArrayList<RSU>();
+		try {
+			// select all RSUs from RSU table
+   		    Statement statement = connection.createStatement();
+   			ResultSet rs = statement.executeQuery("select rsu.*, rsu_vw.latitude, rsu_vw.longitude from rsu inner join rsu_vw on rsu.deviceid = rsu_vw.deviceid where rsu_vw.status = 'Existing'");
+   			while (rs.next()) {
+			    RSU rsu = new RSU();
+			    rsu.setRsuId(rs.getInt("rsu_id"));
+			    rsu.setRsuTarget(rs.getString("url"));
+			    rsu.setRsuUsername(rs.getString("rsu_username"));    
+			    rsu.setRsuPassword(rs.getString("rsu_password"));
+			    rsu.setSnmpUsername(rs.getString("snmp_username"));
+			    rsu.setSnmpPassword(rs.getString("snmp_password"));
+			    rsu.setLatitude(rs.getDouble("latitude"));
+			    rsu.setLongitude(rs.getDouble("longitude"));
+			    rsus.add(rsu);
+   			}
+  		} 
+  		catch (SQLException e) {
+   			e.printStackTrace();
+  		}
+  		return rsus;
+	}
+
 	public void addRSU(RSU rsu) {
 		try {
 			

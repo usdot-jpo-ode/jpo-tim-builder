@@ -30,8 +30,6 @@ public class TIMRSUService
 
 				SQLNullHandler.setIntegerOrNull(preparedStatement, 1, submittedTIM.getRSUs()[i].getRsuId());
 				SQLNullHandler.setLongOrNull(preparedStatement, 2, timId);
-				//SQLNullHandler.setStringOrNull(preparedStatement, 3, submittedTIM.getDateSent());
-				//SQLNullHandler.setStringOrNull(preparedStatement, 4, submittedTIM.getDateReceived());
 				SQLNullHandler.setTimestampOrNull(preparedStatement, 3, java.sql.Timestamp.valueOf(LocalDateTime.parse(submittedTIM.getDateSent(), DateTimeFormatter.ISO_DATE_TIME)));
 				SQLNullHandler.setTimestampOrNull(preparedStatement, 4, java.sql.Timestamp.valueOf(LocalDateTime.parse(submittedTIM.getDateReceived(), DateTimeFormatter.ISO_DATE_TIME)));
 				if(submittedTIM.getSNMP() != null){
@@ -40,8 +38,6 @@ public class TIMRSUService
 					SQLNullHandler.setIntegerOrNull(preparedStatement, 7, submittedTIM.getSNMP().getMode());
 					SQLNullHandler.setIntegerOrNull(preparedStatement, 8, submittedTIM.getSNMP().getChannel());
 					SQLNullHandler.setIntegerOrNull(preparedStatement, 9, submittedTIM.getSNMP().getInterval());
-					//SQLNullHandler.setStringOrNull(preparedStatement, 10, submittedTIM.getSNMP().getDeliverystart());
-					//SQLNullHandler.setStringOrNull(preparedStatement, 11, submittedTIM.getSNMP().getDeliverystop());
 				    SQLNullHandler.setTimestampOrNull(preparedStatement, 10, java.sql.Timestamp.valueOf(LocalDateTime.parse(submittedTIM.getSNMP().getDeliverystart(), DateTimeFormatter.ISO_DATE_TIME)));
 				    SQLNullHandler.setTimestampOrNull(preparedStatement, 11, java.sql.Timestamp.valueOf(LocalDateTime.parse(submittedTIM.getSNMP().getDeliverystop(), DateTimeFormatter.ISO_DATE_TIME)));
 					SQLNullHandler.setIntegerOrNull(preparedStatement, 12, submittedTIM.getSNMP().getEnable());

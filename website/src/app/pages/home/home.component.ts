@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Tim } from '../../classes/tim';
 import { RSU } from '../../classes/rsu';
 import { TimSample } from '../../classes/tim-sample';
@@ -46,15 +46,19 @@ export class HomeComponent implements OnInit{
 	snmpIndex: number;
 	autoGenerateIndex: boolean;
 	messages: string[];
+	mapPoint: any;
 
    	constructor(private timCreatorService : TimCreatorService, private rsuService: RSUService, private itisCodeService: ItisCodeService){ }
 
-	ngOnInit(){			
+	ngOnInit(){	
+
+
+
 		this.df = new DataFrame();
 		this.tim = new Tim();
 		this.messages = [];
 
-		this.rsuService.getAll().subscribe(
+		this.rsuService.getActiveRSUs().subscribe(
 		 /* happy path */ r => this.rsuData = r,
          /* error path */ e => this.errorMessage = e,
          /* onComplete */ () => { this.isLoading = false; console.log(this.rsuData); } 
@@ -78,7 +82,12 @@ export class HomeComponent implements OnInit{
 		}
 	}
 
+	public doSomething(mapPoint: any):void {
+    	this.mapPoint = mapPoint;
+	}
+
 	submitFormGeometry(){    
+
 		let builtTim: TimSample;
 		// for each selected RSU
 		for(let r of this.rsuData){ 
@@ -151,10 +160,9 @@ export class HomeComponent implements OnInit{
 		region.geometry.laneWidth = "33";
 		region.geometry.circle = new Circle();
 		region.geometry.circle.position = new J2735Position3D();
-		region.geometry.circle.position.latitude = "41.678473";
-		region.geometry.circle.position.longitude = "-108.782775";
-		region.geometry.circle.position.elevation = "917.1432";
-		region.geometry.circle.radius = "15";
+		region.geometry.circle.position.latitude = this.mapPoint.latitude;
+		region.geometry.circle.position.longitude = this.mapPoint.longitude;
+		region.geometry.circle.radius = "5";
 		region.geometry.circle.units = "7";
 
 		this.df.sspMsgTypes = "2"; 

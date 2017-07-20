@@ -10,7 +10,8 @@ import { FormsModule } from '@angular/forms';
 @Component({
 	selector: 'tc-disable-tims',
 	templateUrl: './disable-tims.component.html',
-	providers: [RSUService, TimCreatorService]
+	providers: [RSUService, TimCreatorService],
+	styleUrls: ['./disable-tims.component.css']
 })
 export class DisableTimsComponent implements OnInit{
 
@@ -27,7 +28,7 @@ export class DisableTimsComponent implements OnInit{
 		this.rsuService.getAll().subscribe(
 		 /* happy path */ r => this.rsuData = r,
          /* error path */ e => this.errorMessage = e,
-         /* onComplete */ () => { this.isLoading = false; this.getTIMIndices(); } 
+         /* onComplete */ () => { this.getTIMIndices(); } 
 		);
 	}
 

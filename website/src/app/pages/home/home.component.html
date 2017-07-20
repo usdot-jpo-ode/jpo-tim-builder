@@ -38,13 +38,12 @@
 			</div>
 		</div>			
 	</div>
-	<app-esri-map></app-esri-map>
+	<app-esri-map [rsuData]="rsuData" (onPointPicked)="doSomething($event)"></app-esri-map>
 	<div style="text-align: center; clear: both;">		
 		<button type="submit" class="btn btn-primary">Send New TIM</button>
 	</div>
 
-	<!-- <div>{{ testJSON }}</div> 
- 	<div> {{ responseMessages }}</div> -->
+	<!-- <div>{{ testJSON }}</div>  -->
 
  	<ul style="padding-top: 15px;">
 		<li *ngFor="let message of messages">

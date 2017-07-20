@@ -20,20 +20,26 @@ public class RSUController {
 	RSUService rsuService = new RSUService();
 
 	@RequestMapping(value="/rsus", method = RequestMethod.GET, headers="Accept=application/json")
-  	public List<RSU> selectAllRsus() { 
-   		List<RSU> rsus = rsuService.selectAll();
-   		return rsus;      
-  	}
+	public List<RSU> selectAllRsus() { 
+ 		List<RSU> rsus = rsuService.selectAll();
+ 		return rsus;      
+	}
 
-  	@RequestMapping(value="/rsus", method = RequestMethod.POST, headers="Accept=application/json")
-  	public ResponseEntity<?> addRSU(@RequestBody RSU newRsu) { 
-   		
-   		rsuService.addRSU(newRsu);
+  @RequestMapping(value="/selectActiveRSUs", method = RequestMethod.GET, headers="Accept=application/json")
+  public List<RSU> selectActiveRsus() { 
+    List<RSU> rsus = rsuService.selectActiveRSUs();
+    return rsus;      
+  }
 
-		  URI location = ServletUriComponentsBuilder
-							.fromCurrentRequest().path("/{id}")
-							.buildAndExpand(newRsu.getRsuId())
-							.toUri();
-		  return ResponseEntity.created(location).build();   		
-  	}
+	@RequestMapping(value="/rsus", method = RequestMethod.POST, headers="Accept=application/json")
+	public ResponseEntity<?> addRSU(@RequestBody RSU newRsu) { 
+ 		
+ 		rsuService.addRSU(newRsu);
+
+	  URI location = ServletUriComponentsBuilder
+						.fromCurrentRequest().path("/{id}")
+						.buildAndExpand(newRsu.getRsuId())
+						.toUri();
+	  return ResponseEntity.created(location).build();   		
+	}
 }
