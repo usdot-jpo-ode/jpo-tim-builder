@@ -2,23 +2,44 @@
 	<div class="col-sm-12">
 		<div class="form-group">
 			<label class="control-label col-sm-3">Broadcast Date/Time Start:<span style="color: red;">*</span></label>
-			<div class="col-sm-9"> 
+			<div class="col-sm-3"> 
 				<input ngui-datetime-picker class="form-control" [(ngModel)]="df.startDateTime" name="startTime" required />
 			</div>
-		</div>
-
-		<div class="form-group">
-			<label class="control-label col-sm-3">Duration (Minutes):<span style="color: red;">*</span></label>
-			<div class="col-sm-9">
+			<label class="control-label col-sm-2">Duration (Minutes):<span style="color: red;">*</span></label>
+			<div class="col-sm-3">
 				<input class="form-control" [(ngModel)]="df.durationTime" name="durationTime" type="Number" required />
 			</div>
 		</div>
 
 		<div class="form-group">
 			<label class="control-label col-sm-3">TIM Type (ITIS code):<span style="color: red;">*</span></label>
-			<div class="col-sm-9"> 
+			<div class="col-sm-3"> 
 				<select class="form-control" [(ngModel)]="selectedItisCodeId" name="itisCode" required>
 		        	<option *ngFor="let i of itisCodes" [ngValue]="i.itisCodeId">{{ i.description }}</option> 
+	  			</select>
+			</div>
+
+			<label class="control-label col-sm-2">Direction:<span style="color: red;">*</span></label>
+			<div class="col-sm-3"> 
+				<select class="form-control" [(ngModel)]="direction" (change)="directionChanged()" name="direction" required>
+		        	<option>Eastbound</option> 
+		        	<option>Westbound</option> 
+	  			</select>
+			</div>
+		</div>
+
+		<div class="form-group" *ngIf="direction != null">
+			<label class="control-label col-sm-3">Starting Mile Post:<span style="color: red;">*</span></label>
+			<div class="col-sm-3"> 
+				<select class="form-control" [(ngModel)]="startingMilePost" name="startingMilePost" (change)="milePostChanged()" required>
+		        	<option *ngFor="let i of milePostDD" [ngValue]="i.milepost">{{ i.milepost }}</option> 
+	  			</select>
+			</div>
+
+			<label class="control-label col-sm-2">Ending Mile Post:<span style="color: red;">*</span></label>
+			<div class="col-sm-3"> 
+				<select class="form-control" [(ngModel)]="endingMilePost" name="endingMilePost" (change)="milePostChanged()" required>
+		        	<option *ngFor="let i of milePostDD" [ngValue]="i.milepost">{{ i.milepost }}</option> 
 	  			</select>
 			</div>
 		</div>
@@ -36,9 +57,10 @@
 					</div>
 				</div>
 			</div>
-		</div>			
+		</div>	
+
 	</div>
-	<app-esri-map [rsuData]="rsuData" (onPointPicked)="doSomething($event)"></app-esri-map>
+	<app-esri-map [rsuData]="rsuData" [milePosts]="milePosts" [pathPosts]="pathPosts" (onPointPicked)="doSomething($event)"></app-esri-map>
 	<div style="text-align: center; clear: both;">		
 		<button type="submit" class="btn btn-primary">Send New TIM</button>
 	</div>

@@ -15,6 +15,7 @@ import { SNMP } from '../../classes/snmp';
 import { TimCreatorService } from '../../services/tim-creator.service';
 import { RSUService } from '../../services/rsu.service';
 import { ItisCodeService } from '../../services/itis-code.service';
+import { MilePostService } from '../../services/mile-post.service';
 import { Response } from '@angular/http';
 import { NodeXY } from '../../classes/node-xy';
 import { Attributes } from '../../classes/attributes';
@@ -27,14 +28,16 @@ import { RegionPoint } from '../../classes/region-point';
 import { ShapePoint } from '../../classes/shape-point';
 import { RegionList } from '../../classes/region-list';
 import { Index } from '../../classes/index';
+import { MilePost } from '../../classes/mile-post';
 
 @Component({
 	selector: 'tc-home',   
 	templateUrl: './home.component.html',
-	providers: [TimCreatorService, RSUService, ItisCodeService]
+	providers: [TimCreatorService, RSUService, ItisCodeService, MilePostService]
 })
 export class HomeComponent implements OnInit{
 
+	milePosts: MilePost[];
 	itisCodes: ItisCode[];
 	testJSON: string;
 	tim: Tim;
@@ -47,13 +50,16 @@ export class HomeComponent implements OnInit{
 	autoGenerateIndex: boolean;
 	messages: string[];
 	mapPoint: any;
+	direction: string;
+	startingMilePost: number;
+	endingMilePost: number;
+	milePostDD: MilePost[];
+	pathPosts: MilePost[];	
 
-   	constructor(private timCreatorService : TimCreatorService, private rsuService: RSUService, private itisCodeService: ItisCodeService){ }
+   	constructor(private timCreatorService : TimCreatorService, private rsuService: RSUService, private itisCodeService: ItisCodeService, private milePostService: MilePostService){ }
 
 	ngOnInit(){	
-
-
-
+		
 		this.df = new DataFrame();
 		this.tim = new Tim();
 		this.messages = [];
@@ -61,14 +67,27 @@ export class HomeComponent implements OnInit{
 		this.rsuService.getActiveRSUs().subscribe(
 		 /* happy path */ r => this.rsuData = r,
          /* error path */ e => this.errorMessage = e,
-         /* onComplete */ () => { this.isLoading = false; console.log(this.rsuData); } 
+         /* onComplete */ () => { this.isLoading = false; } 
+		);
+
+		this.milePostService.getAll().subscribe(
+		 /* happy path */ i => this.milePosts = i,
+         /* error path */ e => this.errorMessage = e,
+         /* onComplete */ () => { this.isLoading = false; console.log(this.milePosts); } 
 		);
 
 		this.itisCodeService.getAll().subscribe(
 		 /* happy path */ i => this.itisCodes = i,
          /* error path */ e => this.errorMessage = e,
-         /* onComplete */ () => { this.isLoading = false; console.log(this.itisCodes); } 
+         /* onComplete */ () => { this.isLoading = false; } 
 		);
+	}
+
+	directionChanged(){
+		if(this.direction == "Eastbound")
+			this.milePostDD = this.milePosts.filter(function(i) { return i.direction == "eastbound" }); 
+		else
+			this.milePostDD = this.milePosts.filter(function(i) { return i.direction == "westbound" }); 
 	}
 
 	checkChanged(e){
@@ -79,6 +98,30 @@ export class HomeComponent implements OnInit{
 				else
 					r.isSelected = false;
 			}
+		}
+	}	
+
+	filterWestBoundMilePosts(p){
+		return p.milepost >= this.startingMilePost && p.milepost <= this.endingMilePost && p.direction == "westbound";
+	}
+
+	filterEastBoundMilePosts(p){
+		return p.milepost >= this.startingMilePost && p.milepost <= this.endingMilePost && p.direction == "eastbound";
+	}
+
+	milePostChanged(){
+		if(this.startingMilePost != null && this.endingMilePost != null){
+			if(this.direction == "Westbound"){
+				this.milePostService.getPath(this.startingMilePost, this.endingMilePost, "westbound").subscribe(
+					i => this.pathPosts = i,
+			        e => this.errorMessage = e,
+			        () => { this.isLoading = false; console.log(this.pathPosts); } 
+				);
+				//this.pathPosts = this.milePosts.filter(this.filterWestBoundMilePosts, this);
+			}	
+			else
+				this.pathPosts = this.milePosts.filter(this.filterEastBoundMilePosts, this);
+			console.log(this.pathPosts);
 		}
 	}
 
@@ -104,6 +147,8 @@ export class HomeComponent implements OnInit{
 						builtTim = this.buildJSON(r);       
 						// send TIM to RSU
 						this.sendTimToRSU(builtTim); 
+						// send TIM to DB
+						this.sendTimToDB(builtTim);
 					} 
 				);				
 			}
@@ -139,7 +184,7 @@ export class HomeComponent implements OnInit{
 		this.df.priority = "0";
 		this.df.sspLocationRights = "3";
 		this.df.regions = [];
-		//this.df.furtherInfoID = "test";
+		this.df.furtherInfoID = "test";
 
 		let region = new Region();
 		region.name = "bob";
@@ -201,13 +246,6 @@ export class HomeComponent implements OnInit{
 
 		timSample.rsus.push(rsu);
 	
-		// this.timCreatorService
-  //     	.sendTimToRSU(timSample)
-  //     	.subscribe(
-  //     		(r: Response) => { console.log('rsu response: ' + r); }
-  // 		);
-
-
 		this.testJSON = JSON.stringify(timSample);	
 
 		return timSample;
