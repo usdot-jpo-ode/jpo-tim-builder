@@ -37,7 +37,6 @@ import { MilePost } from '../../classes/mile-post';
 })
 export class HomeComponent implements OnInit{
 
-	milePosts: MilePost[];
 	itisCodes: ItisCode[];
 	testJSON: string;
 	tim: Tim;
@@ -50,12 +49,8 @@ export class HomeComponent implements OnInit{
 	autoGenerateIndex: boolean;
 	messages: string[];
 	mapPoint: any;
-	direction: string;
-	startingMilePost: number;
-	endingMilePost: number;
-	milePostDD: MilePost[];
-	pathPosts: MilePost[];	
-
+	milePosts: MilePost[];  
+		
    	constructor(private timCreatorService : TimCreatorService, private rsuService: RSUService, private itisCodeService: ItisCodeService, private milePostService: MilePostService){ }
 
 	ngOnInit(){	
@@ -73,7 +68,7 @@ export class HomeComponent implements OnInit{
 		this.milePostService.getAll().subscribe(
 		 /* happy path */ i => this.milePosts = i,
          /* error path */ e => this.errorMessage = e,
-         /* onComplete */ () => { this.isLoading = false; console.log(this.milePosts); } 
+         /* onComplete */ () => { this.isLoading = false; } 
 		);
 
 		this.itisCodeService.getAll().subscribe(
@@ -81,13 +76,6 @@ export class HomeComponent implements OnInit{
          /* error path */ e => this.errorMessage = e,
          /* onComplete */ () => { this.isLoading = false; } 
 		);
-	}
-
-	directionChanged(){
-		if(this.direction == "Eastbound")
-			this.milePostDD = this.milePosts.filter(function(i) { return i.direction == "eastbound" }); 
-		else
-			this.milePostDD = this.milePosts.filter(function(i) { return i.direction == "westbound" }); 
 	}
 
 	checkChanged(e){
@@ -101,33 +89,9 @@ export class HomeComponent implements OnInit{
 		}
 	}	
 
-	filterWestBoundMilePosts(p){
-		return p.milepost >= this.startingMilePost && p.milepost <= this.endingMilePost && p.direction == "westbound";
-	}
-
-	filterEastBoundMilePosts(p){
-		return p.milepost >= this.startingMilePost && p.milepost <= this.endingMilePost && p.direction == "eastbound";
-	}
-
-	milePostChanged(){
-		if(this.startingMilePost != null && this.endingMilePost != null){
-			if(this.direction == "Westbound"){
-				this.milePostService.getPath(this.startingMilePost, this.endingMilePost, "westbound").subscribe(
-					i => this.pathPosts = i,
-			        e => this.errorMessage = e,
-			        () => { this.isLoading = false; console.log(this.pathPosts); } 
-				);
-				//this.pathPosts = this.milePosts.filter(this.filterWestBoundMilePosts, this);
-			}	
-			else
-				this.pathPosts = this.milePosts.filter(this.filterEastBoundMilePosts, this);
-			console.log(this.pathPosts);
-		}
-	}
-
-	public doSomething(mapPoint: any):void {
-    	this.mapPoint = mapPoint;
-	}
+	// public doSomething(mapPoint: any):void {
+ //    	this.mapPoint = mapPoint;
+	// }
 
 	submitFormGeometry(){    
 

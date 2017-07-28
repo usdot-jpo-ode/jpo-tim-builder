@@ -1,13 +1,15 @@
-import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, Input } from '@angular/core';
 import { EsriLoaderService } from 'angular2-esri-loader';
 import { RSUService } from '../../services/rsu.service';
 import { RSU } from '../../classes/rsu';
 import { MilePost } from '../../classes/mile-post';
+import { MilePostService } from '../../services/mile-post.service';
 
 @Component({
   selector: 'app-esri-map',
   templateUrl: './esri-map.component.html',
-  styleUrls: ['./esri-map.component.css']
+  styleUrls: ['./esri-map.component.css'],
+  providers: [MilePostService]
 })
 export class EsriMapComponent implements OnInit {
 
@@ -17,119 +19,34 @@ export class EsriMapComponent implements OnInit {
 
   @Input() rsuData: RSU[]; 
   @Input() milePosts: MilePost[];  
-  @Input() pathPosts: MilePost[];
+  pathPosts: MilePost[];
+  direction: string;
+  startingMilePost: number;
+  endingMilePost: number;
+  errorMessage: string = '';
+  isLoading: boolean = true;
+  milePostDD: MilePost[];
 
   public mapView: any;
 
-  constructor(private esriLoader: EsriLoaderService) {}
+  constructor(private esriLoader: EsriLoaderService, private milePostService: MilePostService) {}
 
-  public findRSU(lat: number, long: number): RSU{
-    for (var i = 0; i < this.rsuData.length; i++) {
-      if(this.rsuData[i].latitude == lat && this.rsuData[i].longitude == long)
-        return this.rsuData[i];
-    }
+  public findRSU(lat: number, long: number): RSU[]{
+    return this.rsuData.filter(function(i) { return i.latitude == lat && i.longitude == long }); 
   }
 
-  ngOnChanges(...args: any[]) {    
-
-    if(args[0].pathPosts != null && !args[0].pathPosts.firstChange){
-        this.esriLoader.load({
-      // use a specific version of the JSAPI
-      url: 'https://js.arcgis.com/4.4/'
-      }).then(() => {
-        // load the needed Map and MapView modules from the JSAPI
-        this.esriLoader.loadModules([       
-          'esri/Graphic',
-          'esri/geometry/Polyline',
-          'esri/symbols/SimpleLineSymbol'
-          ]).then(([
-          Graphic,
-          Polyline,
-          SimpleLineSymbol       
-        ]) => { 
-
-            if(this.pathPosts != null){
-              var arr = [];
-
-              for(var i = 0; i < this.pathPosts.length; i++){
-                arr.push([this.pathPosts[i].longitude, this.pathPosts[i].latitude]);
-              }
-
-              // drawing a line
-              var polyline = new Polyline({
-                paths: 
-                  arr                
-              });                
-
-              // Create a symbol for drawing the line
-              var lineSymbol = new SimpleLineSymbol({
-                color: [0, 100, 0],
-                width: 4
-              });
-
-              var polylineGraphic = new Graphic({
-                geometry: polyline,
-                symbol: lineSymbol       
-              });
-
-              this.mapView.graphics.add(polylineGraphic);   
-            }          
-         });  
-       });           
-    }
-
-
-    if(args[0].milePosts != null && !args[0].milePosts.firstChange){
-          
-    }
-  }            
-
-  loadMilePosts(){
-    this.esriLoader.load({
-    // use a specific version of the JSAPI
-    url: 'https://js.arcgis.com/4.4/'
-    }).then(() => {
-    // load the needed Map and MapView modules from the JSAPI
-    this.esriLoader.loadModules([       
-      'esri/Graphic',
-      'esri/geometry/Point',
-      'esri/symbols/SimpleMarkerSymbol'
-      ]).then(([
-        Graphic,
-        Point,
-        SimpleMarkerSymbol       
-      ]) => { 
-
-        // add mile posts to map
-        // Create a symbol for mile markers
-        var milePostSymbol = new SimpleMarkerSymbol({
-            color: [66, 122, 181],
-            outline: { 
-            color: [255, 255, 255],
-            width: 2
-          }
-        });
-
-        var mileMakerPoint;
-        var milePostGraphic;
-        for (var i = 0; i < this.milePosts.length; i++) {
-          mileMakerPoint = new Point({
-            longitude: this.milePosts[i].longitude,
-            latitude: this.milePosts[i].latitude
-          });
-
-          milePostGraphic = new Graphic({
-            geometry: mileMakerPoint,
-            symbol: milePostSymbol
-          });
-
-          this.mapView.graphics.add(milePostGraphic);   
-        }                 
-      });  
-    }); 
+  public findMilePost(lat: number, long: number): MilePost[]{
+    return this.milePosts.filter(function(i) { return i.latitude == lat && i.longitude == long }); 
   }
 
-  public ngOnInit() {   
+  directionChanged(){
+    if(this.direction == "Eastbound")
+      this.milePostDD = this.milePosts.filter(function(i) { return i.direction == "eastbound" }); 
+    else
+      this.milePostDD = this.milePosts.filter(function(i) { return i.direction == "westbound" }); 
+  }
+
+  public ngOnInit() {       
 
     // only load the ArcGIS API for JavaScript when this component is loaded
     return this.esriLoader.load({
@@ -143,6 +60,7 @@ export class EsriMapComponent implements OnInit {
       'esri/symbols/SimpleFillSymbol',
       'esri/symbols/SimpleMarkerSymbol',
       'esri/layers/GraphicsLayer',
+      'dojo/on',
       'dojo/dom',
       'esri/geometry/Circle',
       'esri/Graphic',
@@ -155,6 +73,7 @@ export class EsriMapComponent implements OnInit {
       SimpleFillSymbol,
       SimpleMarkerSymbol,
       GraphicsLayer,
+      on,
       dom,
       Circle,
       Graphic,
@@ -183,7 +102,7 @@ export class EsriMapComponent implements OnInit {
 
          console.log("from esri: " + this.rsuData);
 
-        // add rsus to map
+        //add rsus to map
         // Create a symbol for rsus
         var rsuSymbol = new SimpleMarkerSymbol({
           color: [226, 119, 40],
@@ -207,20 +126,111 @@ export class EsriMapComponent implements OnInit {
           });
 
           this.mapView.graphics.add(rsuGraphic);   
-        }        
+        }   
+
+        // add mile posts to map
+        // Create a symbol for mile markers
+        var milePostSymbol = new SimpleMarkerSymbol({
+            color: [66, 122, 181],
+            outline: { 
+            color: [255, 255, 255],
+            width: 2
+          }
+        });
+
+        var mileMakerPoint;
+        var milePostGraphic;
+        for (var i = 0; i < this.milePosts.length; i++) {
+          mileMakerPoint = new Point({
+            longitude: this.milePosts[i].longitude,
+            latitude: this.milePosts[i].latitude
+          });
+
+          milePostGraphic = new Graphic({
+            geometry: mileMakerPoint,
+            symbol: milePostSymbol
+          });
+
+          this.mapView.graphics.add(milePostGraphic);   
+        } 
+      
+        on(dom.byId("endingMilePost"), "change", milePostChanged);
+        on(dom.byId("startingMilePost"), "change", milePostChanged);
+
+        // function that will filter by the selected floor
+        function milePostChanged(evt) {
+          if(self.startingMilePost != null && self.endingMilePost != null) {
+            if(self.direction == "Westbound") {
+              self.milePostService.getPath(self.startingMilePost, self.endingMilePost, "westbound").subscribe(
+              i => self.pathPosts = i,
+              e => self.errorMessage = e,
+              () => { self.isLoading = false; console.log(self.pathPosts); drawPath(); } 
+              );          
+            }  
+            else {
+              self.milePostService.getPath(self.startingMilePost, self.endingMilePost, "eastbound").subscribe(
+              i => self.pathPosts = i,
+              e => self.errorMessage = e,
+              () => { self.isLoading = false; console.log(self.pathPosts); drawPath(); } 
+              );          
+            }  
+          }
+        }
+
+        function drawPath(){
+          if(self.pathPosts != null && self.pathPosts.length > 0){
+          
+            var arr = [];
+            for(var i = 0; i < self.pathPosts.length; i++){
+              arr.push([self.pathPosts[i].longitude, self.pathPosts[i].latitude]);
+            }
+
+            // drawing a line
+            var polyline = new Polyline({
+              paths: 
+                arr                
+            });                
+
+            // Create a symbol for drawing the line
+            var lineSymbol = new SimpleLineSymbol({
+              color: [0, 100, 0],
+              width: 4
+            });
+
+            var polylineGraphic = new Graphic({
+              geometry: polyline,
+              symbol: lineSymbol       
+            });
+
+            self.mapView.graphics.add(polylineGraphic);             
+          }
+        }
 
         // on map click
         this.mapView.on('click', function(e) {
           e.stopPropagation();
           self.mapView.hitTest(e).then(function(response){
             if(response.results.length > 0){
-                let selectedRSU = self.findRSU(response.results[0].graphic.geometry.latitude, response.results[0].graphic.geometry.longitude);
+              let selectedRSU = self.findRSU(response.results[0].graphic.geometry.latitude, response.results[0].graphic.geometry.longitude);
+              if(selectedRSU.length > 0){
                 self.mapView.popup.open({
                   // Set the popup's title to the coordinates of the location
-                  title: "RSU at [" + response.results[0].graphic.geometry.latitude + ", " + response.results[0].graphic.geometry.longitude + "]",
+                  title: "RSU " + selectedRSU[0].rsuTarget,
                   location: e.mapPoint, // Set the location of the popup to the clicked location
-                  content: selectedRSU.rsuTarget
-                });
+                  content: selectedRSU[0].latitude + ", " +  selectedRSU[0].longitude
+                });                
+              }
+              else{
+                let selectedMilePost = self.findMilePost(response.results[0].graphic.geometry.latitude, response.results[0].graphic.geometry.longitude);
+                if(selectedMilePost.length > 0){
+                  self.mapView.popup.open({
+                    // Set the popup's title to the coordinates of the location
+                    title: "Mile Post " +  selectedMilePost[0].milepost,
+                    location: e.mapPoint, // Set the location of the popup to the clicked location
+                    content: selectedMilePost[0].latitude + ", " +  selectedMilePost[0].longitude
+                  });     
+                }
+              }
             }
             else{
               console.log("nope");
