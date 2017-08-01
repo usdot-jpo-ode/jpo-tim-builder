@@ -2,14 +2,14 @@ import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, Input }
 import { EsriLoaderService } from 'angular2-esri-loader';
 import { RSUService } from '../../services/rsu.service';
 import { RSU } from '../../classes/rsu';
-import { MilePost } from '../../classes/mile-post';
-import { MilePostService } from '../../services/mile-post.service';
+import { Milepost } from '../../classes/mile-post';
+import { MilepostService } from '../../services/mile-post.service';
 
 @Component({
   selector: 'app-esri-map',
   templateUrl: './esri-map.component.html',
   styleUrls: ['./esri-map.component.css'],
-  providers: [MilePostService]
+  providers: [MilepostService]
 })
 export class EsriMapComponent implements OnInit {
 
@@ -18,32 +18,33 @@ export class EsriMapComponent implements OnInit {
   @Output() onPointPicked: EventEmitter<any> = new EventEmitter<any>();
 
   @Input() rsuData: RSU[]; 
-  @Input() milePosts: MilePost[];  
-  pathPosts: MilePost[];
+  @Input() mileposts: Milepost[];  
+  @Output() onEmit = new EventEmitter<Milepost[]>();
+  pathposts: Milepost[];
   direction: string;
-  startingMilePost: number;
-  endingMilePost: number;
+  startingMilepost: number;
+  endingMilepost: number;
   errorMessage: string = '';
   isLoading: boolean = true;
-  milePostDD: MilePost[];
+  milepostDD: Milepost[];
 
   public mapView: any;
 
-  constructor(private esriLoader: EsriLoaderService, private milePostService: MilePostService) {}
+  constructor(private esriLoader: EsriLoaderService, private milepostService: MilepostService) {}
 
   public findRSU(lat: number, long: number): RSU[]{
     return this.rsuData.filter(function(i) { return i.latitude == lat && i.longitude == long }); 
   }
 
-  public findMilePost(lat: number, long: number): MilePost[]{
-    return this.milePosts.filter(function(i) { return i.latitude == lat && i.longitude == long }); 
+  public findMilepost(lat: number, long: number): Milepost[]{
+    return this.mileposts.filter(function(i) { return i.latitude == lat && i.longitude == long }); 
   }
 
   directionChanged(){
     if(this.direction == "Eastbound")
-      this.milePostDD = this.milePosts.filter(function(i) { return i.direction == "eastbound" }); 
+      this.milepostDD = this.mileposts.filter(function(i) { return i.direction == "eastbound" }); 
     else
-      this.milePostDD = this.milePosts.filter(function(i) { return i.direction == "westbound" }); 
+      this.milepostDD = this.mileposts.filter(function(i) { return i.direction == "westbound" }); 
   }
 
   public ngOnInit() {       
@@ -130,7 +131,7 @@ export class EsriMapComponent implements OnInit {
 
         // add mile posts to map
         // Create a symbol for mile markers
-        var milePostSymbol = new SimpleMarkerSymbol({
+        var milepostSymbol = new SimpleMarkerSymbol({
             color: [66, 122, 181],
             outline: { 
             color: [255, 255, 255],
@@ -139,50 +140,60 @@ export class EsriMapComponent implements OnInit {
         });
 
         var mileMakerPoint;
-        var milePostGraphic;
-        for (var i = 0; i < this.milePosts.length; i++) {
+        var milepostGraphic;
+        for (var i = 0; i < this.mileposts.length; i++) {
           mileMakerPoint = new Point({
-            longitude: this.milePosts[i].longitude,
-            latitude: this.milePosts[i].latitude
+            longitude: this.mileposts[i].longitude,
+            latitude: this.mileposts[i].latitude
           });
 
-          milePostGraphic = new Graphic({
+          milepostGraphic = new Graphic({
             geometry: mileMakerPoint,
-            symbol: milePostSymbol
+            symbol: milepostSymbol
           });
 
-          this.mapView.graphics.add(milePostGraphic);   
+          this.mapView.graphics.add(milepostGraphic);   
         } 
       
-        on(dom.byId("endingMilePost"), "change", milePostChanged);
-        on(dom.byId("startingMilePost"), "change", milePostChanged);
+        on(dom.byId("endingMilepost"), "change", milepostChanged);
+        on(dom.byId("startingMilepost"), "change", milepostChanged);
 
         // function that will filter by the selected floor
-        function milePostChanged(evt) {
-          if(self.startingMilePost != null && self.endingMilePost != null) {
+        function milepostChanged(evt) {          
+          if(self.startingMilepost != null && self.endingMilepost != null) {
             if(self.direction == "Westbound") {
-              self.milePostService.getPath(self.startingMilePost, self.endingMilePost, "westbound").subscribe(
-              i => self.pathPosts = i,
+              self.milepostService.getPath(self.startingMilepost, self.endingMilepost, "westbound").subscribe(
+              i => self.pathposts = i,
               e => self.errorMessage = e,
-              () => { self.isLoading = false; console.log(self.pathPosts); drawPath(); } 
+              () => { self.isLoading = false; drawPath(); } 
               );          
             }  
             else {
-              self.milePostService.getPath(self.startingMilePost, self.endingMilePost, "eastbound").subscribe(
-              i => self.pathPosts = i,
+              self.milepostService.getPath(self.startingMilepost, self.endingMilepost, "eastbound").subscribe(
+              i => self.pathposts = i,
               e => self.errorMessage = e,
-              () => { self.isLoading = false; console.log(self.pathPosts); drawPath(); } 
+              () => { self.isLoading = false; drawPath(); } 
               );          
             }  
           }
         }
 
+         var polylineGraphic = new Graphic({
+                 
+          });
+
+
         function drawPath(){
-          if(self.pathPosts != null && self.pathPosts.length > 0){
+
+          self.onEmit.emit(self.pathposts);
+
+          self.mapView.graphics.remove(polylineGraphic);  
+
+          if(self.pathposts != null && self.pathposts.length > 0){
           
             var arr = [];
-            for(var i = 0; i < self.pathPosts.length; i++){
-              arr.push([self.pathPosts[i].longitude, self.pathPosts[i].latitude]);
+            for(var i = 0; i < self.pathposts.length; i++){
+              arr.push([self.pathposts[i].longitude, self.pathposts[i].latitude]);
             }
 
             // drawing a line
@@ -197,7 +208,7 @@ export class EsriMapComponent implements OnInit {
               width: 4
             });
 
-            var polylineGraphic = new Graphic({
+            polylineGraphic = new Graphic({
               geometry: polyline,
               symbol: lineSymbol       
             });
@@ -221,45 +232,18 @@ export class EsriMapComponent implements OnInit {
                 });                
               }
               else{
-                let selectedMilePost = self.findMilePost(response.results[0].graphic.geometry.latitude, response.results[0].graphic.geometry.longitude);
-                if(selectedMilePost.length > 0){
+                let selectedMilepost = self.findMilepost(response.results[0].graphic.geometry.latitude, response.results[0].graphic.geometry.longitude);
+                if(selectedMilepost.length > 0){
                   self.mapView.popup.open({
                     // Set the popup's title to the coordinates of the location
-                    title: "Mile Post " +  selectedMilePost[0].milepost,
+                    title: "Milepost " +  selectedMilepost[0].milepost,
                     location: e.mapPoint, // Set the location of the popup to the clicked location
-                    content: selectedMilePost[0].latitude + ", " +  selectedMilePost[0].longitude
+                    content: selectedMilepost[0].latitude + ", " +  selectedMilepost[0].longitude
                   });     
                 }
               }
             }
-            else{
-              console.log("nope");
-              // draw circle
-              //mapView.graphics.removeAt(0);
-              self.onPointPicked.emit(e.mapPoint);
-
-              // Create a symbol for rendering the circle
-              var fillSymbol = new SimpleFillSymbol({
-                color: [66, 134, 244, 0.8],
-                outline: { // autocasts as new SimpleLineSymbol()
-                  color: [255, 255, 255],
-                  width: 1
-                }
-              });
-
-              var circle = new Circle({
-                center: e.mapPoint,
-                radius: 5,
-                radiusUnit: 'miles'
-              });
-
-              // Create a graphic and add the geometry and symbol to it
-              var pointGraphic = new Graphic({
-                geometry: circle,
-                symbol: fillSymbol
-              });
-              // add circle to the map
-              //mapView.graphics.add(pointGraphic); 
+            else{       
             }
           });          
         }); 

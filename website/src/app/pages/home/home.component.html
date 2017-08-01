@@ -1,4 +1,8 @@
-<form class="form-horizontal" #createTimForm="ngForm" (ngSubmit)="submitFormGeometry()">
+<div *ngIf="!mileposts || !rsuData" style="text-align: center;">
+	<div class="loader"></div>
+	LOADING...
+</div>
+<form *ngIf="mileposts && rsuData" class="form-horizontal" #createTimForm="ngForm" (ngSubmit)="submitFormGeometry()">
 	<div class="col-sm-12">
 		<div class="form-group">
 			<label class="control-label col-sm-3">Broadcast Date/Time Start:<span style="color: red;">*</span></label>
@@ -18,10 +22,19 @@
 		        	<option *ngFor="let i of itisCodes" [ngValue]="i.itisCodeId">{{ i.description }}</option> 
 	  			</select>
 			</div>
+			<label class="control-label col-sm-2">Frame Type:<span style="color: red;">*</span></label>
+			<div class="col-sm-3"> 
+				<select class="form-control" [(ngModel)]="df.frameType" id="frameType" name="frameType" required>
+		        	<option value="0">Unknown</option> 
+		        	<option value="1">Advisory</option> 
+		        	<option value="2">Road Signage</option> 
+		        	<option value="3">Commercial Signage</option> 
+	  			</select>
+			</div>
 		</div>
 
 		<div class="form-group">
-		<label class="control-label col-sm-3">RSUs (choose at least one):<span style="color: red;">*</span></label>
+			<label class="control-label col-sm-3">RSUs (choose at least one):<span style="color: red;">*</span></label>
 			<div *ngFor="let r of rsuData">
 				<div class="col-sm-offset-3" style="padding-left: 15px;">
 					<div class="checkbox custom-control custom-checkbox">
@@ -36,12 +49,12 @@
 		</div>	
 
 	</div>
-	<app-esri-map *ngIf="milePosts && rsuData" [rsuData]="rsuData" [milePosts]="milePosts"></app-esri-map>
+	<app-esri-map *ngIf="mileposts && rsuData" [rsuData]="rsuData" [mileposts]="mileposts" (onEmit)="onEmit($event)"></app-esri-map>
 	<div style="text-align: center; clear: both;">		
 		<button type="submit" class="btn btn-primary">Send New TIM</button>
 	</div>
 
-	<!-- <div>{{ testJSON }}</div>  -->
+	<div>{{ testJSON }}</div> 
 
  	<ul style="padding-top: 15px;">
 		<li *ngFor="let message of messages">

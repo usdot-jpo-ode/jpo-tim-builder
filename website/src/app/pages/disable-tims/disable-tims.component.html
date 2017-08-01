@@ -1,4 +1,7 @@
-<div *ngIf="isLoading && !errorMessage" class="loader">LOADING....</div>
+<div *ngIf="isLoading && !errorMessage" style="text-align: center;">
+	<div class="loader"></div>
+	LOADING...
+</div>
 <div *ngIf="!isLoading">
 	<form class="form-horizontal" #deleteTimForm="ngForm" (ngSubmit)="deleteTIMs()">
 	<ul>

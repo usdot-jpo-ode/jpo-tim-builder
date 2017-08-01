@@ -10,8 +10,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
 	selector: 'tc-disable-tims',
 	templateUrl: './disable-tims.component.html',
-	providers: [RSUService, TimCreatorService],
-	styleUrls: ['./disable-tims.component.css']
+	providers: [RSUService, TimCreatorService]
 })
 export class DisableTimsComponent implements OnInit{
 

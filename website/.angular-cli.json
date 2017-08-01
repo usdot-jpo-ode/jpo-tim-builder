@@ -19,7 +19,7 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "theme-dashboard/dist/toolkit-light.min.css"
+        "theme-dashboard/dist/toolkit-light.min.css", "styles.css"
       ],
       "scripts": ["theme-dashboard/dist/toolkit.min.js"],
       "environmentSource": "environments/environment.ts",

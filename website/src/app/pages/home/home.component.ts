@@ -15,7 +15,7 @@ import { SNMP } from '../../classes/snmp';
 import { TimCreatorService } from '../../services/tim-creator.service';
 import { RSUService } from '../../services/rsu.service';
 import { ItisCodeService } from '../../services/itis-code.service';
-import { MilePostService } from '../../services/mile-post.service';
+import { MilepostService } from '../../services/mile-post.service';
 import { Response } from '@angular/http';
 import { NodeXY } from '../../classes/node-xy';
 import { Attributes } from '../../classes/attributes';
@@ -28,12 +28,12 @@ import { RegionPoint } from '../../classes/region-point';
 import { ShapePoint } from '../../classes/shape-point';
 import { RegionList } from '../../classes/region-list';
 import { Index } from '../../classes/index';
-import { MilePost } from '../../classes/mile-post';
+import { Milepost } from '../../classes/mile-post';
 
 @Component({
 	selector: 'tc-home',   
 	templateUrl: './home.component.html',
-	providers: [TimCreatorService, RSUService, ItisCodeService, MilePostService]
+	providers: [TimCreatorService, RSUService, ItisCodeService, MilepostService]
 })
 export class HomeComponent implements OnInit{
 
@@ -49,9 +49,10 @@ export class HomeComponent implements OnInit{
 	autoGenerateIndex: boolean;
 	messages: string[];
 	mapPoint: any;
-	milePosts: MilePost[];  
+	mileposts: Milepost[];  
+	pathposts: Milepost[];	
 		
-   	constructor(private timCreatorService : TimCreatorService, private rsuService: RSUService, private itisCodeService: ItisCodeService, private milePostService: MilePostService){ }
+   	constructor(private timCreatorService : TimCreatorService, private rsuService: RSUService, private itisCodeService: ItisCodeService, private milepostService: MilepostService){ }
 
 	ngOnInit(){	
 		
@@ -65,8 +66,8 @@ export class HomeComponent implements OnInit{
          /* onComplete */ () => { this.isLoading = false; } 
 		);
 
-		this.milePostService.getAll().subscribe(
-		 /* happy path */ i => this.milePosts = i,
+		this.milepostService.getAll().subscribe(
+		 /* happy path */ i => this.mileposts = i,
          /* error path */ e => this.errorMessage = e,
          /* onComplete */ () => { this.isLoading = false; } 
 		);
@@ -89,12 +90,11 @@ export class HomeComponent implements OnInit{
 		}
 	}	
 
-	// public doSomething(mapPoint: any):void {
- //    	this.mapPoint = mapPoint;
-	// }
+	onEmit(newPath: Milepost[]) {
+    	this.pathposts = newPath;
+  	}
 
 	submitFormGeometry(){    
-
 		let builtTim: TimSample;
 		// for each selected RSU
 		for(let r of this.rsuData){ 
@@ -102,19 +102,20 @@ export class HomeComponent implements OnInit{
 			r.rsuTimeout = "2000"; 	 			
 			if(r.isSelected){ 
 				console.log(r);
-		     	this.timCreatorService.queryTim(r).subscribe(
-					i => r.indicies = i,
-					e => this.errorMessage = e,
-					() => { 
-						this.isLoading = false;	
-						// build JSON 
-						builtTim = this.buildJSON(r);       
-						// send TIM to RSU
-						this.sendTimToRSU(builtTim); 
-						// send TIM to DB
-						this.sendTimToDB(builtTim);
-					} 
-				);				
+				this.buildJSON(r); 
+		  //    	this.timCreatorService.queryTim(r).subscribe(
+				// 	i => r.indicies = i,
+				// 	e => this.errorMessage = e,
+				// 	() => { 
+				// 		this.isLoading = false;	
+				// 		// build JSON 
+				// 		builtTim = this.buildJSON(r);       
+				// 		// send TIM to RSU
+				// 		this.sendTimToRSU(builtTim); 
+				// 		// send TIM to DB
+				// 		this.sendTimToDB(builtTim);
+				// 	} 
+				// );				
 			}
 		}				
 	}
@@ -123,60 +124,97 @@ export class HomeComponent implements OnInit{
 
 		let timSample = new TimSample();
 		let tim = new Tim();		
-		tim.msgCnt = "13";
-		tim.index = this.findFirstAvailableIndex(rsu.indicies).toString();
+		tim.msgCnt = "1"; // a sequence number within a stream of messages with the same DSRCmsgID from the same sender. 
+		//tim.index = this.findFirstAvailableIndex(rsu.indicies).toString();
 
 		console.log("index: " + tim.index);
 		console.log("start date time : " + this.df.startDateTime);
       
 		var today = new Date();
-		tim.timeStamp = today.toISOString();
+		tim.timeStamp = today.toISOString(); // OPTIONAL
 
-		tim.packetID = "1";
-		tim.urlB = "null";
+		//tim.packetID = "1";  // OPTIONAL
+		//tim.urlB = "null"; // OPTIONAL
 
-		this.df.sspTimRights = "0";
-		this.df.frameType = "0";
-		this.df.msgID = "RoadSignID";
-		this.df.position = new J2735Position3D();
-		this.df.position.latitude = "41.678473";
-		this.df.position.longitude = "-108.782775";
-		this.df.position.elevation = "917.1432";
-		this.df.viewAngle = "1010101010101010";
-		this.df.mutcd = "5";
-		this.df.crc = "0000000000000000";
-		this.df.priority = "0";
-		this.df.sspLocationRights = "3";
+		//The SSP index is used to control the data elements that follow the occurrence of the index. 
+		//The index relates back to the SSP contents in the CERT used to declare what content is allowed by that CERT. 
+		//In the absence of a matching index in the message sender’s CERT, the message contents are not valid. 
+		this.df.sspTimRights = "0"; // integer 0-31, ??
+		//this.df.frameType = "0";
+
+		this.df.msgID = "RoadSignID"; // ??
+		// this.df.position = new J2735Position3D(); // optional
+		// this.df.position.latitude = "41.678473"; // optional
+		// this.df.position.longitude = "-108.782775"; // optional
+		// this.df.position.elevation = "917.1432"; // optional
+		this.df.viewAngle = "1010101010101010"; // road sign related, heading slice, vehicle direction of travel while facing active side of sign
+		this.df.mutcd = "5"; // road sign related, optional, tag for MUTCD code or "generic sign"
+		this.df.crc = "0000000000000000"; // road sign related, Msg CRC, OPTIONAL, used to provide a cherck sum
+		
+
+		this.df.priority = "0"; // 0-7, 0 being least important, 7 being most important
+		this.df.sspLocationRights = "3"; // integer 0-31, ??
 		this.df.regions = [];
-		this.df.furtherInfoID = "test";
+		// this.df.furtherInfoID = "test"; // optional
 
 		let region = new Region();
-		region.name = "bob";
-		region.regulatorID = "23";
-		region.segmentID = "33";
-		region.anchorPosition = new J2735Position3D();
+
+		//The DescriptiveName data element is used in maps and intersections to provide a human readable and recognizable name for the feature that follows. 
+		//It is typically used when debugging a data flow and not in production use. 
+		//One key exception to this general rule is to provide a human-readable string for disabled travelers in the case of crosswalks and sidewalk lane objects.  
+		region.name = "Testing TIM"; // OPTIONAL
+		region.regulatorID = "0"; // OPTIONAL, a globally unique regional assignment value. typically assigned to a regional DOT authority. use zero for testing
+		region.segmentID = "33"; // a unique mapping to the road segment in question within the above region of use during its period of assignment and use note that unlike intersectionID values, this value can be reused by the region 
+		region.anchorPosition = new J2735Position3D(); // optional
 		region.anchorPosition.latitude = "41.678473";
 		region.anchorPosition.longitude = "-108.782775";
 		region.anchorPosition.elevation = "917.1432";
-		region.laneWidth = "7";
-		region.directionality = "3";
-		region.closedPath = "false";
-		region.direction = "1010101010101010";
-		region.description = "geometry";
-		region.geometry = new Geometry();
-		region.geometry.direction = "1010101010101010";
-		region.geometry.extent = "1";
-		region.geometry.laneWidth = "33";
-		region.geometry.circle = new Circle();
-		region.geometry.circle.position = new J2735Position3D();
-		region.geometry.circle.position.latitude = this.mapPoint.latitude;
-		region.geometry.circle.position.longitude = this.mapPoint.longitude;
-		region.geometry.circle.radius = "5";
-		region.geometry.circle.units = "7";
+		region.laneWidth = "7";  // integer 0-32767, units of 1 cm
 
-		this.df.sspMsgTypes = "2"; 
-		this.df.sspMsgContent = "3";
-		this.df.content = "Advisory";
+		// enum
+		// unavailable (0), -- unknown or NA, not typically used in valid expressions    
+		// forward     (1), -- direction of travel follows node ordering     
+		// reverse     (2), -- direction of travel is the reverse of node ordering     
+		// both        (3)  -- direction of travel allowed in both directions
+		region.directionality = "3"; // optional ??
+		region.closedPath = "false"; // closed path, BOOLEAN, when true, last point closes to first
+		
+	
+		// 
+		//
+		//
+
+		region.description = "path";
+		region.path = new Path();
+
+		// -- A zoom scale applied in units of 2^N    
+		// -- A value of 0 is a 1:1 zoom (no zoom)    
+		// -- A value of 1 is a 2:1 zoom  
+		// -- A value of 2 is a 4:1 zoom, etc.
+		// -- The zoom value is applied to one or more offsets    
+		// -- increase the span or range while reducing its precision  
+		// -- The absence of a zoom, any offset element in a data     
+		// -- frame implies a 1:1 zoom
+		region.path.scale = "0"; // optional
+		region.path.type = "ll";
+		region.path.nodes = []; 
+
+		
+		let direction = 0;
+		for(var i = 0; i < this.pathposts.length; i++){
+			let node = new NodeXY();
+			node.delta = "node-LL1";
+			node.nodeLong = this.pathposts[i].longitude.toString();
+			node.nodeLat = this.pathposts[i].latitude.toString();
+			region.path.nodes.push(node);
+			direction |= this.getDirection(this.pathposts[i].bearing);
+		}
+
+		region.direction = direction.toString(); // heading slice
+
+		this.df.sspMsgTypes = "2"; // allowed message types, integer 0-31
+		this.df.sspMsgContent = "3"; // allowed message content, integer 0-31
+		this.df.content = "Advisory"; // for now use advisory, can also be workzone, genericSign, speedLimit, or exitService
 
 		this.df.items = [];		
 
@@ -188,7 +226,7 @@ export class HomeComponent implements OnInit{
 			}
 		}
 
-		this.df.url = "null";
+		this.df.url = "null"; // OPTIONAL
 		this.df.regions.push(region);
 		let dfa: DataFrame[] = [];
 		dfa.push(this.df);
@@ -215,6 +253,47 @@ export class HomeComponent implements OnInit{
 		return timSample;
   	
 	}
+
+	getDirection(bearing): number{
+		let direction = 0;
+
+		if(bearing >= 0 && bearing <= 22.5)
+			direction = 0;
+		else if(bearing > 22.5 && bearing <= 45)
+			direction = 1;
+		else if(bearing > 45 && bearing <= 67.5)
+			direction = 2;
+		else if(bearing > 67.5 && bearing <= 90)
+			direction = 3;
+		else if(bearing > 90 && bearing <= 112.5)
+			direction = 4;
+		else if(bearing > 112.5 && bearing <= 135)
+			direction = 5;
+		else if(bearing > 135 && bearing <= 157.5)
+			direction = 6;
+		else if(bearing > 157.5 && bearing <= 180)
+			direction = 7;
+		else if(bearing > 180 && bearing <= 202.5)
+			direction = 8;		
+		else if(bearing > 202.5 && bearing <= 225)
+			direction = 9;
+		else if(bearing > 225 && bearing <= 247.5)
+			direction = 10;
+		else if(bearing > 247.5 && bearing <= 270)
+			direction = 11;
+		else if(bearing > 270 && bearing <= 292.5)
+			direction = 12;
+		else if(bearing > 292.5 && bearing <= 315)
+			direction = 13;
+		else if(bearing > 315 && bearing <= 337.5)
+			direction = 14;
+		else if(bearing > 337.5 && bearing <= 360)
+			direction = 15;
+
+		return direction;
+	}
+
+
 
 	sendTimToRSU(tim: TimSample){
 		// set date sent
