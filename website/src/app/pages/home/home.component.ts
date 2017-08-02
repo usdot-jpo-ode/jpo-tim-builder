@@ -165,10 +165,15 @@ export class HomeComponent implements OnInit{
 		region.name = "Testing TIM"; // OPTIONAL
 		region.regulatorID = "0"; // OPTIONAL, a globally unique regional assignment value. typically assigned to a regional DOT authority. use zero for testing
 		region.segmentID = "33"; // a unique mapping to the road segment in question within the above region of use during its period of assignment and use note that unlike intersectionID values, this value can be reused by the region 
-		region.anchorPosition = new J2735Position3D(); // optional
-		region.anchorPosition.latitude = "41.678473";
-		region.anchorPosition.longitude = "-108.782775";
-		region.anchorPosition.elevation = "917.1432";
+		
+		// 
+		if(this.pathposts.length > 0){
+			region.anchorPosition = new J2735Position3D(); // optional
+			region.anchorPosition.latitude = this.pathposts[0].latitude.toString();
+			region.anchorPosition.longitude = this.pathposts[0].longitude.toString();
+			region.anchorPosition.elevation = this.pathposts[0].elevation.toString();
+		}
+		
 		region.laneWidth = "7";  // integer 0-32767, units of 1 cm
 
 		// enum
@@ -179,10 +184,6 @@ export class HomeComponent implements OnInit{
 		region.directionality = "3"; // optional ??
 		region.closedPath = "false"; // closed path, BOOLEAN, when true, last point closes to first
 		
-	
-		// 
-		//
-		//
 
 		region.description = "path";
 		region.path = new Path();
@@ -201,16 +202,16 @@ export class HomeComponent implements OnInit{
 
 		
 		let direction = 0;
-		for(var i = 0; i < this.pathposts.length; i++){
+		for(var i = 1; i < this.pathposts.length; i++){
 			let node = new NodeXY();
-			node.delta = "node-LL1";
-			node.nodeLong = this.pathposts[i].longitude.toString();
-			node.nodeLat = this.pathposts[i].latitude.toString();
+			node.delta = "node-LL2";
+			node.nodeLong = Math.round(((this.pathposts[i].longitude - this.pathposts[i-1].longitude) * 10000000)).toString();
+			node.nodeLat = Math.round(((this.pathposts[i].latitude - this.pathposts[i-1].latitude) * 10000000)).toString();						
 			region.path.nodes.push(node);
 			direction |= this.getDirection(this.pathposts[i].bearing);
 		}
 
-		region.direction = direction.toString(); // heading slice
+		region.direction = direction.toString(2); // heading slice	
 
 		this.df.sspMsgTypes = "2"; // allowed message types, integer 0-31
 		this.df.sspMsgContent = "3"; // allowed message content, integer 0-31
