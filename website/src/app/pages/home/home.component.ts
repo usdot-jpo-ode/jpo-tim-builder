@@ -203,10 +203,13 @@ export class HomeComponent implements OnInit{
 		
 		let direction = 0;
 		for(var i = 1; i < this.pathposts.length; i++){
-			let node = new NodeXY();
-			node.delta = "node-LL2";
+			let node = new NodeXY();	
 			node.nodeLong = Math.round(((this.pathposts[i].longitude - this.pathposts[i-1].longitude) * 10000000)).toString();
-			node.nodeLat = Math.round(((this.pathposts[i].latitude - this.pathposts[i-1].latitude) * 10000000)).toString();						
+			node.nodeLat = Math.round(((this.pathposts[i].latitude - this.pathposts[i-1].latitude) * 10000000)).toString();	
+		    node.delta = this.getDelta(Math.max(Number(node.nodeLat), Number(node.nodeLong)));
+			console.log("long: " + node.nodeLong);		
+			console.log("lat: " + node.nodeLat);		
+			console.log(node.delta);			
 			region.path.nodes.push(node);
 			direction |= this.getDirection(this.pathposts[i].bearing);
 		}
@@ -253,6 +256,21 @@ export class HomeComponent implements OnInit{
 
 		return timSample;
   	
+	}
+
+	getDelta(distance): string{
+		if(distance >= -2048 && distance < 2048)
+			return "node-LL1";
+		else if(distance >= -8192 && distance < 8192)
+			return "node-LL2";
+		else if(distance >= -32768 && distance < 32768)
+			return "node-LL3";
+		else if(distance >= -131072 && distance < 131072)
+			return "node-LL4";
+		else if(distance >= -2097152 && distance < 2097152)
+			return "node-LL5";
+		else
+			return "node-LL6";
 	}
 
 	getDirection(bearing): number{
