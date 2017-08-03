@@ -125,7 +125,7 @@ export class HomeComponent implements OnInit{
 		let timSample = new TimSample();
 		let tim = new Tim();		
 		tim.msgCnt = "1"; // a sequence number within a stream of messages with the same DSRCmsgID from the same sender. 
-		//tim.index = this.findFirstAvailableIndex(rsu.indicies).toString();
+		tim.index = this.findFirstAvailableIndex(rsu.indicies).toString();
 
 		console.log("index: " + tim.index);
 		console.log("start date time : " + this.df.startDateTime);
@@ -134,7 +134,7 @@ export class HomeComponent implements OnInit{
 		tim.timeStamp = today.toISOString(); // OPTIONAL
 
 		//tim.packetID = "1";  // OPTIONAL
-		//tim.urlB = "null"; // OPTIONAL
+		tim.urlB = "null"; // OPTIONAL
 
 		//The SSP index is used to control the data elements that follow the occurrence of the index. 
 		//The index relates back to the SSP contents in the CERT used to declare what content is allowed by that CERT. 
@@ -143,10 +143,10 @@ export class HomeComponent implements OnInit{
 		//this.df.frameType = "0";
 
 		this.df.msgID = "RoadSignID"; // ??
-		// this.df.position = new J2735Position3D(); // optional
-		// this.df.position.latitude = "41.678473"; // optional
-		// this.df.position.longitude = "-108.782775"; // optional
-		// this.df.position.elevation = "917.1432"; // optional
+		this.df.position = new J2735Position3D(); // optional
+		this.df.position.latitude = "41.678473"; // optional ???
+		this.df.position.longitude = "-108.782775"; // optional
+		this.df.position.elevation = "917.1432"; // optional
 		this.df.viewAngle = "1010101010101010"; // road sign related, heading slice, vehicle direction of travel while facing active side of sign
 		this.df.mutcd = "5"; // road sign related, optional, tag for MUTCD code or "generic sign"
 		this.df.crc = "0000000000000000"; // road sign related, Msg CRC, OPTIONAL, used to provide a cherck sum
@@ -171,7 +171,7 @@ export class HomeComponent implements OnInit{
 			region.anchorPosition = new J2735Position3D(); // optional
 			region.anchorPosition.latitude = this.pathposts[0].latitude.toString();
 			region.anchorPosition.longitude = this.pathposts[0].longitude.toString();
-			region.anchorPosition.elevation = (this.convertFeetToCm(this.pathposts[0].elevation) / 10).toString();
+			region.anchorPosition.elevation = (this.convertFeetToM(this.pathposts[0].elevation)).toString();
 		}
 		
 		region.laneWidth = "7";  // integer 0-32767, units of 1 cm
@@ -216,6 +216,8 @@ export class HomeComponent implements OnInit{
 
 		region.direction = direction.toString(2); // heading slice	
 
+		region.direction = "0".repeat((16 - region.direction.length)) + region.direction;
+
 		this.df.sspMsgTypes = "2"; // allowed message types, integer 0-31
 		this.df.sspMsgContent = "3"; // allowed message content, integer 0-31
 		this.df.content = "Advisory"; // for now use advisory, can also be workzone, genericSign, speedLimit, or exitService
@@ -238,7 +240,6 @@ export class HomeComponent implements OnInit{
 		timSample.tim = tim;
 
 		timSample.rsus = [];
-
 		timSample.snmp = new SNMP();
 		timSample.snmp.rsuid = "0083";
 		timSample.snmp.msgid = "31";
@@ -258,8 +259,12 @@ export class HomeComponent implements OnInit{
   	
 	}
 
-	convertFeetToCm(feet):cm{
+	convertFeetToCm(feet){
 		return feet * 12 * 2.54;		
+	}
+
+	convertFeetToM(feet){
+		return feet * .3;		
 	}
 
 	getDelta(distance): string{
