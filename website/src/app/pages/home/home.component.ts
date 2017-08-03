@@ -171,7 +171,7 @@ export class HomeComponent implements OnInit{
 			region.anchorPosition = new J2735Position3D(); // optional
 			region.anchorPosition.latitude = this.pathposts[0].latitude.toString();
 			region.anchorPosition.longitude = this.pathposts[0].longitude.toString();
-			region.anchorPosition.elevation = this.pathposts[0].elevation.toString();
+			region.anchorPosition.elevation = (this.convertFeetToCm(this.pathposts[0].elevation) / 10).toString();
 		}
 		
 		region.laneWidth = "7";  // integer 0-32767, units of 1 cm
@@ -256,6 +256,10 @@ export class HomeComponent implements OnInit{
 
 		return timSample;
   	
+	}
+
+	convertFeetToCm(feet):cm{
+		return feet * 12 * 2.54;		
 	}
 
 	getDelta(distance): string{
