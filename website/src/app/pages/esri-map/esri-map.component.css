@@ -2,5 +2,6 @@
 @import 'https://js.arcgis.com/4.3/esri/css/main.css';
 
 .esri-view {
-    height: 400px;
+    height: 450px;
+   	margin: 20px;
 }

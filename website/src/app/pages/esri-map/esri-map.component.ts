@@ -93,7 +93,7 @@ export class EsriMapComponent implements OnInit {
           container: this.mapViewEl.nativeElement,
           // supply additional options
           center: [-107.523193, 41.701115],
-          zoom: 7,
+          zoom: 8,
           map // property shorthand for object literal
         };
 
@@ -135,7 +135,7 @@ export class EsriMapComponent implements OnInit {
             color: [66, 122, 181],
             outline: { 
             color: [255, 255, 255],
-            width: 2
+            width: 1
           }
         });
 
@@ -204,7 +204,7 @@ export class EsriMapComponent implements OnInit {
 
             // Create a symbol for drawing the line
             var lineSymbol = new SimpleLineSymbol({
-              color: [0, 100, 0],
+              color: [181,66,122],
               width: 4
             });
 
