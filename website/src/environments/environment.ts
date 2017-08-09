@@ -6,5 +6,7 @@
 export const environment = {
   production: false,
   odeUrl: 'http://localhost:8080',
-  dbUrl: 'http://localhost:7777'
+  dbUrl: 'http://localhost:7777',
+  mapCenterPoint: [-107.523193, 41.701115],
+  zoom: 8
 };

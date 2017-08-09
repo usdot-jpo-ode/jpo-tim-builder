@@ -21,13 +21,13 @@ export class RSUService{
 		return rsu$;
     }
 
-    getActiveRSUs(): Observable<RSU[]>{
-		let rsu$ = this.http
-		.get(this.dbUrl + '/selectActiveRSUs', {headers: this.getHeaders()})
-		.map((res:Response) => res.json())
-		.catch(handleError);
-		return rsu$;
-    }
+  //   getActiveRSUs(): Observable<RSU[]>{
+		// let rsu$ = this.http
+		// .get(this.dbUrl + '/selectActiveRSUs', {headers: this.getHeaders()})
+		// .map((res:Response) => res.json())
+		// .catch(handleError);
+		// return rsu$;
+  //   }
 
     add(rsu: RSU) : Observable<Response>{  
     	return this.http

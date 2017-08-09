@@ -4,6 +4,7 @@ import { RSUService } from '../../services/rsu.service';
 import { RSU } from '../../classes/rsu';
 import { Milepost } from '../../classes/mile-post';
 import { MilepostService } from '../../services/mile-post.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-esri-map',
@@ -92,8 +93,8 @@ export class EsriMapComponent implements OnInit {
           // create the map view at the DOM element in this component
           container: this.mapViewEl.nativeElement,
           // supply additional options
-          center: [-107.523193, 41.701115],
-          zoom: 8,
+          center: environment.mapCenterPoint,
+          zoom: environment.zoom,
           map // property shorthand for object literal
         };
 

@@ -60,10 +60,10 @@ export class HomeComponent implements OnInit{
 		this.tim = new Tim();
 		this.messages = [];
 
-		this.rsuService.getActiveRSUs().subscribe(
+		this.rsuService.getAll().subscribe(
 		 /* happy path */ r => this.rsuData = r,
          /* error path */ e => this.errorMessage = e,
-         /* onComplete */ () => { this.isLoading = false; } 
+         /* onComplete */ () => { this.isLoading = false; console.log(this.rsuData);} 
 		);
 
 		this.milepostService.getAll().subscribe(
