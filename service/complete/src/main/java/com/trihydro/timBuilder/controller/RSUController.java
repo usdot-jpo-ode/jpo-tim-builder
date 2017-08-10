@@ -12,12 +12,19 @@ import java.net.URI;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @CrossOrigin
 @RestController
 public class RSUController {
 
-	RSUService rsuService = new RSUService();
+	private final RSUService rsuService;
+	
+	@Autowired
+	RSUController(RSUService rsuService) 
+	{
+		this.rsuService = rsuService;
+	}
 
 	@RequestMapping(value="/rsus", method = RequestMethod.GET, headers="Accept=application/json")
 	public List<RSU> selectAllRsus() { 

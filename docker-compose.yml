@@ -1,0 +1,23 @@
+version: '2'
+services:
+  mysql:
+      image: mysql
+      ports:
+          - "3306:3306"
+      environment:
+        MYSQL_ROOT_PASSWORD: "password"
+      restart: always     
+      #command: "mysql -uroot -pmypassword -h 172.17.0.2 -P 3306"
+      #command: --init-file ./testSql.sql
+  kperry-tim-rest-service:
+    depends_on:
+      - mysql
+    build: service/complete
+    ports:
+      - "7777:7777"
+    links:
+      - mysql:mysql
+    environment:
+      databaseurl: jdbc:mysql://mysql:3306/timBuilder 
+
+        

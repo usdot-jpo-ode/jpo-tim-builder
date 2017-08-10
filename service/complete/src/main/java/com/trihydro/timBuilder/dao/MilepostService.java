@@ -1,6 +1,6 @@
 package com.trihydro.timCreator.dao;
 
-import com.trihydro.timCreator.DBUtility;
+import com.trihydro.timCreator.helpers.DBUtility;
 import com.trihydro.timCreator.model.Milepost;
 import com.trihydro.timCreator.helpers.SQLNullHandler;
 
@@ -12,19 +12,25 @@ import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 
+import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+
+@Component
 public class MilepostService
 {
-	private Connection connection;
+	private DBUtility dbUtility;
 
-	public MilepostService(){
-		connection = DBUtility.getConnection();	
+	@Autowired
+	MilepostService(DBUtility dbUtility) 
+	{
+		this.dbUtility = dbUtility;		
 	}
 
 	public List<Milepost> selectAll(){
 		List<Milepost> mileposts = new ArrayList<Milepost>();
 		try {
 			// select all Mileposts from Milepost table
-   		    Statement statement = connection.createStatement();
+   		    Statement statement = dbUtility.getConnection().createStatement();
    			ResultSet rs = statement.executeQuery("select * from MILEPOST where MOD(milepost, 1) = 0 order by milepost asc");
    			while (rs.next()) {   				
 			    Milepost milepost = new Milepost();
@@ -48,7 +54,7 @@ public class MilepostService
 		List<Milepost> mileposts = new ArrayList<Milepost>();
 		try {
 			// select all Mileposts from Milepost table
-   		    Statement statement = connection.createStatement();
+   		    Statement statement = dbUtility.getConnection().createStatement();
    			ResultSet rs = statement.executeQuery("select * from MILEPOST where direction = '" + direction + "' and milepost >= " + startingMilepost + " and milepost <= "+ endingMilepost + " order by milepost asc");
    			while (rs.next()) {   				
 			    Milepost milepost = new Milepost();

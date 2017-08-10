@@ -1,6 +1,6 @@
 package com.trihydro.timCreator.dao;
 
-import com.trihydro.timCreator.DBUtility;
+import com.trihydro.timCreator.helpers.DBUtility;
 import com.trihydro.timCreator.model.ItisCode;
 
 import java.sql.Connection;
@@ -9,20 +9,25 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
 import java.sql.ResultSet;
+import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public class ItisCodeService
-{
-	private Connection connection;
-
-	public ItisCodeService(){
-		connection = DBUtility.getConnection();	
+@Component
+public class ItisCodeService 
+{	
+	private DBUtility dbUtility;
+	
+	@Autowired
+	ItisCodeService(DBUtility dbUtility) 
+	{
+		this.dbUtility = dbUtility;		
 	}
 
 	public List<ItisCode> selectAll(){
 		List<ItisCode> itisCodes = new ArrayList<ItisCode>();
 		try {
 			// select all Itis Codes from ItisCode table   			
-   		    Statement statement = connection.createStatement();
+   		    Statement statement = dbUtility.getConnection().createStatement();
    			ResultSet rs = statement.executeQuery("select * from ITIS_CODE");
    			// convert to ItisCode objects   			
    			while (rs.next()) {   			
@@ -39,5 +44,4 @@ public class ItisCodeService
   		}
   		return itisCodes;
 	}
-
 }

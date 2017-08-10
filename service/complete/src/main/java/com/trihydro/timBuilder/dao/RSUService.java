@@ -1,6 +1,6 @@
 package com.trihydro.timCreator.dao;
 
-import com.trihydro.timCreator.DBUtility;
+import com.trihydro.timCreator.helpers.DBUtility;
 import com.trihydro.timCreator.model.RSU;
 import com.trihydro.timCreator.helpers.SQLNullHandler;
 
@@ -12,19 +12,25 @@ import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 
+import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+
+@Component
 public class RSUService
 {
-	private Connection connection;
+	private DBUtility dbUtility;
 
-	public RSUService(){
-		connection = DBUtility.getConnection();	
+	@Autowired
+	RSUService(DBUtility dbUtility) 
+	{
+		this.dbUtility = dbUtility;		
 	}
 
 	public List<RSU> selectAll(){
 		List<RSU> rsus = new ArrayList<RSU>();
 		try {
 			// select all RSUs from RSU table
-   		    Statement statement = connection.createStatement();
+   		    Statement statement = dbUtility.getConnection().createStatement();
    			ResultSet rs = statement.executeQuery("select * from RSU");
    			while (rs.next()) {
 			    RSU rsu = new RSU();
