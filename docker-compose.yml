@@ -5,10 +5,10 @@ services:
       ports:
           - "3306:3306"
       environment:
-        MYSQL_ROOT_PASSWORD: "password"
+        MYSQL_ROOT_PASSWORD: "mypassword"
       restart: always     
-      #command: "mysql -uroot -pmypassword -h 172.17.0.2 -P 3306"
-      #command: --init-file ./testSql.sql
+      volumes:       
+        - ./mysql:/docker-entrypoint-initdb.d/:ro
   kperry-tim-rest-service:
     depends_on:
       - mysql
@@ -19,5 +19,9 @@ services:
       - mysql:mysql
     environment:
       databaseurl: jdbc:mysql://mysql:3306/timBuilder 
+  angular:
+    build: website 
+    ports:
+      - "4200:4200"
 
-        
+

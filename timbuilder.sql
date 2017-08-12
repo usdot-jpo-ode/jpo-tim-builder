@@ -1,4 +1,5 @@
-CREATE DATABASE timbuilder
+CREATE DATABASE IF NOT EXISTS timBuilder;
+USE timBuilder;
 
 CREATE TABLE RSU(
 	rsu_id INT NOT NULL AUTO_INCREMENT,
@@ -66,78 +67,78 @@ INSERT INTO ITIS_CODE (description, category_id, itis_code)
 VALUES ('Incident', 2, 531);
 
 INSERT INTO MILEPOST (route, milepost, direction, latitude, longitude, elevation_ft, bearing)
-VALUES ('I 80', 0.0, 'westbound')
+VALUES ('I 80', 0.0, 'westbound');
 
 INSERT INTO MILEPOST (route, milepost, direction, latitude, longitude, elevation_ft, bearing)
-VALUES ('I 80', 0.2, 'westbound')
+VALUES ('I 80', 0.2, 'westbound');
 
 INSERT INTO MILEPOST (route, milepost, direction, latitude, longitude, elevation_ft, bearing)
-VALUES ('I 80', 0.6, 'westbound')
+VALUES ('I 80', 0.6, 'westbound');
 
 INSERT INTO MILEPOST (route, milepost, direction, latitude, longitude, elevation_ft, bearing)
-VALUES ('I 80', 0.8, 'westbound')
+VALUES ('I 80', 0.8, 'westbound');
 
 INSERT INTO MILEPOST (route, milepost, direction, latitude, longitude, elevation_ft, bearing)
-VALUES ('I 80', 1.0, 'westbound')
+VALUES ('I 80', 1.0, 'westbound');
 
 INSERT INTO MILEPOST (route, milepost, direction, latitude, longitude, elevation_ft, bearing)
-VALUES ('I 80', 1.2, 'westbound')
+VALUES ('I 80', 1.2, 'westbound');
 
 INSERT INTO MILEPOST (route, milepost, direction, latitude, longitude, elevation_ft, bearing)
-VALUES ('I 80', 1.4, 'westbound')
+VALUES ('I 80', 1.4, 'westbound');
 
 INSERT INTO MILEPOST (route, milepost, direction, latitude, longitude, elevation_ft, bearing)
-VALUES ('I 80', 1.6, 'westbound')
+VALUES ('I 80', 1.6, 'westbound');
 
 INSERT INTO MILEPOST (route, milepost, direction, latitude, longitude, elevation_ft, bearing)
-VALUES ('I 80', 1.8, 'westbound')
+VALUES ('I 80', 1.8, 'westbound');
 
 INSERT INTO MILEPOST (route, milepost, direction, latitude, longitude, elevation_ft, bearing)
-VALUES ('I 80', 2.0, 'westbound')
+VALUES ('I 80', 2.0, 'westbound');
 
 INSERT INTO MILEPOST (route, milepost, direction, latitude, longitude, elevation_ft, bearing)
-VALUES ('I 80', 2.2, 'westbound')
+VALUES ('I 80', 2.2, 'westbound');
 
 INSERT INTO MILEPOST (route, milepost, direction, latitude, longitude, elevation_ft, bearing)
-VALUES ('I 80', 2.4, 'westbound')
+VALUES ('I 80', 2.4, 'westbound');
 
 INSERT INTO MILEPOST (route, milepost, direction, latitude, longitude, elevation_ft, bearing)
-VALUES ('I 80', 2.6, 'westbound')
+VALUES ('I 80', 2.6, 'westbound');
 
 INSERT INTO MILEPOST (route, milepost, direction, latitude, longitude, elevation_ft, bearing)
-VALUES ('I 80', 2.8, 'westbound')
+VALUES ('I 80', 2.8, 'westbound');
 
 INSERT INTO MILEPOST (route, milepost, direction, latitude, longitude, elevation_ft, bearing)
-VALUES ('I 80', 3.0, 'westbound')
+VALUES ('I 80', 3.0, 'westbound');
 
 INSERT INTO MILEPOST (route, milepost, direction, latitude, longitude, elevation_ft, bearing)
-VALUES ('I 80', 3.2, 'westbound')
+VALUES ('I 80', 3.2, 'westbound');
 
 INSERT INTO MILEPOST (route, milepost, direction, latitude, longitude, elevation_ft, bearing)
-VALUES ('I 80', 3.4, 'westbound')
+VALUES ('I 80', 3.4, 'westbound');
 
 INSERT INTO MILEPOST (route, milepost, direction, latitude, longitude, elevation_ft, bearing)
-VALUES ('I 80', 3.6, 'westbound')
+VALUES ('I 80', 3.6, 'westbound');
 
 INSERT INTO MILEPOST (route, milepost, direction, latitude, longitude, elevation_ft, bearing)
-VALUES ('I 80', 3.8, 'westbound')
+VALUES ('I 80', 3.8, 'westbound');
 
 INSERT INTO MILEPOST (route, milepost, direction, latitude, longitude, elevation_ft, bearing)
-VALUES ('I 80', 4.0, 'westbound')
+VALUES ('I 80', 4.0, 'westbound');
 
 INSERT INTO MILEPOST (route, milepost, direction, latitude, longitude, elevation_ft, bearing)
-VALUES ('I 80', 4.2, 'westbound')
+VALUES ('I 80', 4.2, 'westbound');
 
 INSERT INTO MILEPOST (route, milepost, direction, latitude, longitude, elevation_ft, bearing)
-VALUES ('I 80', 4.4, 'westbound')
+VALUES ('I 80', 4.4, 'westbound');
 
 INSERT INTO MILEPOST (route, milepost, direction, latitude, longitude, elevation_ft, bearing)
-VALUES ('I 80', 4.6, 'westbound')
+VALUES ('I 80', 4.6, 'westbound');
 
 INSERT INTO MILEPOST (route, milepost, direction, latitude, longitude, elevation_ft, bearing)
-VALUES ('I 80', 4.8, 'westbound')
+VALUES ('I 80', 4.8, 'westbound');
 
 INSERT INTO MILEPOST (route, milepost, direction, latitude, longitude, elevation_ft, bearing)
-VALUES ('I 80', 5.0, 'westbound')
+VALUES ('I 80', 5.0, 'westbound');
 
 
