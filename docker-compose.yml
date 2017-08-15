@@ -8,7 +8,8 @@ services:
         MYSQL_ROOT_PASSWORD: "mypassword"
       restart: always     
       volumes:       
-        - ./mysql:/docker-entrypoint-initdb.d/:ro
+        - ./mysql/data:/var/lib/mysql-files
+        - ./mysql/init:/docker-entrypoint-initdb.d/:ro
   kperry-tim-rest-service:
     depends_on:
       - mysql

@@ -65,3 +65,5 @@ VALUES ('Accident', 2, 513);
 
 INSERT INTO ITIS_CODE (description, category_id, itis_code)
 VALUES ('Incident', 2, 531);
+
+load data local infile '/var/lib/mysql-files/milepost.csv' into table MILEPOST columns terminated by ';' OPTIONALLY enclosed by '"' escaped by '"' (route, milepost, direction, latitude, longitude, elevation_ft, bearing);
