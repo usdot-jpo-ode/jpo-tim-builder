@@ -38,7 +38,7 @@ public class ITISCodeTests {
 
     @Test
     public void testITISCodes() throws Exception {
-		//test the group get 
+		// test selecting all ITISCodes
 		mockMvc.perform(get("/itiscodes"))
 			.andExpect(status().isOk())
 			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

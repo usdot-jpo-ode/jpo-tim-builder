@@ -1,7 +1,7 @@
 package com.trihydro.timBuilder.model;
 
-public class Milepost
-{
+public class Milepost {
+
     private Integer milepostId;
     private String route;
     private Double milepost;
@@ -11,13 +11,11 @@ public class Milepost
     private Double elevation;
     private Double bearing;
 
-    public Integer getMilepostId() 
-    {
+    public Integer getMilepostId() {
         return this.milepostId;
     }
 
-    public void setMilepostId(Integer milepostId) 
-    {
+    public void setMilepostId(Integer milepostId) {
         this.milepostId = milepostId;
     }
 

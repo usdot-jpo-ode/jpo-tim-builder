@@ -3,7 +3,6 @@ package com.trihydro.timBuilder.dao;
 import com.trihydro.timBuilder.helpers.DBUtility;
 import com.trihydro.timBuilder.model.ItisCode;
 
-import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.SQLException;
 import java.util.List;
@@ -18,15 +17,17 @@ public class ItisCodeService
 	private DBUtility dbUtility;
 	
 	@Autowired
-	ItisCodeService(DBUtility dbUtility) 
-	{
+	ItisCodeService(DBUtility dbUtility) {
 		this.dbUtility = dbUtility;		
 	}
 
-	public List<ItisCode> selectAll(){
+	// select all ITIS Codes from the database
+	public List<ItisCode> selectAll() {
+
 		List<ItisCode> itisCodes = new ArrayList<ItisCode>();
+		
 		try {
-			// select all Itis Codes from ItisCode table   			
+			// build SQL statement
    		    Statement statement = dbUtility.getConnection().createStatement();
    			ResultSet rs = statement.executeQuery("select * from ITIS_CODE");
    			// convert to ItisCode objects   			

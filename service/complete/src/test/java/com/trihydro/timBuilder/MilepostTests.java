@@ -38,7 +38,7 @@ public class MilepostTests {
 
     @Test
     public void testMilepostsGetAll() throws Exception {
-		//test the group get 
+		//test getting all mileposts
 		mockMvc.perform(get("/mileposts"))
 			.andExpect(status().isOk())
 			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -67,14 +67,12 @@ public class MilepostTests {
 			.andExpect(jsonPath("$[2].longitude", is(-111.027816)))
 			.andExpect(jsonPath("$[2].elevation", is(6753.52824038)))
 			.andExpect(jsonPath("$[2].bearing", is(89.08132948)))
-			.andDo(print());		
-		
+			.andDo(print());				
     }
 
     @Test
     public void testMilepostsGetRange() throws Exception {
-
-		// select mileposts range
+		// test selecting mileposts by range and direction
 		mockMvc.perform(get("/getMilepostRange/eastbound/0/1"))
 			.andExpect(status().isOk())
 			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

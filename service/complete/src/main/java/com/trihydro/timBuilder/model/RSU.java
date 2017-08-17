@@ -11,83 +11,67 @@ public class RSU
 	private Double latitude;
 	private Double longitude;
 
-	public Integer getRsuId() 
-	{
+	public Integer getRsuId() {
 		return this.rsuId;
 	}
 
-	public void setRsuId(Integer rsuId) 
-	{
+	public void setRsuId(Integer rsuId) {
 		this.rsuId = rsuId;
 	}
 
-	public String getRsuTarget() 
-	{
+	public String getRsuTarget() {
 		return this.rsuTarget;
 	}
 
-	public void setRsuTarget(String rsuTarget) 
-	{
+	public void setRsuTarget(String rsuTarget) {
 		this.rsuTarget = rsuTarget;
 	}
 
-	public String getRsuUsername() 
-	{
+	public String getRsuUsername() {
 		return this.rsuUsername;
 	}
 
-	public void setRsuUsername(String rsuUsername) 
-	{
+	public void setRsuUsername(String rsuUsername) {
 		this.rsuUsername = rsuUsername;
 	}
 
-	public String getRsuPassword() 
-	{
+	public String getRsuPassword() {
 		return this.rsuPassword;
 	}
 
-	public void setRsuPassword(String rsuPassword) 
-	{
+	public void setRsuPassword(String rsuPassword) {
 		this.rsuPassword = rsuPassword;
 	}
 
-	public String getSnmpUsername() 
-	{
+	public String getSnmpUsername() {
 		return this.snmpUsername;
 	}
 
-	public void setSnmpUsername(String snmpUsername) 
-	{
+	public void setSnmpUsername(String snmpUsername) {
 		this.snmpUsername = snmpUsername;
 	}
 
-	public String getSnmpPassword() 
-	{
+	public String getSnmpPassword() {
 		return this.snmpPassword;
 	}
 
-	public void setSnmpPassword(String snmpPassword) 
-	{
+	public void setSnmpPassword(String snmpPassword) {
 		this.snmpPassword = snmpPassword;
 	}
 
-	public Double getLatitude() 
-	{
+	public Double getLatitude() {
 		return this.latitude;
 	}
 
-	public void setLatitude(Double latitude) 
-	{
+	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
 	}
 
-	public Double getLongitude() 
-	{
+	public Double getLongitude() {
 		return this.longitude;
 	}
 
-	public void setLongitude(Double longitude) 
-	{
+	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
 }

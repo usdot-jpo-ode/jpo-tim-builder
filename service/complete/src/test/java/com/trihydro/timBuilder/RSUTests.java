@@ -37,8 +37,8 @@ public class RSUTests {
 	}
 
     @Test
-    public void testRSUs() throws Exception {
-		//test the group get 
+    public void testRSUsGetAll() throws Exception {
+		// test selecting all RSUS 
 		mockMvc.perform(get("/rsus"))
 			.andExpect(status().isOk())
 			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

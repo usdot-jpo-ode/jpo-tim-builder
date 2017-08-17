@@ -18,17 +18,18 @@ public class MilepostController {
 	private final MilepostService milepostService;
 	
 	@Autowired
-	MilepostController(MilepostService milepostService) 
-	{
+	MilepostController(MilepostService milepostService) {
 		this.milepostService = milepostService;
 	}
 
+	// select all mileposts
 	@RequestMapping(value="/mileposts",method = RequestMethod.GET,headers="Accept=application/json")
 	public List<Milepost> getMileposts() { 
  		List<Milepost> mileposts = milepostService.selectAll();
  		return mileposts;
 	}
 
+	// select mileposts within a given range in a given direction
 	@RequestMapping(method = RequestMethod.GET, value = "/getMilepostRange/{direction}/{startingMilepost}/{endingMilepost}")
 	public List<Milepost> getMilepostRange(@PathVariable String direction, @PathVariable Integer startingMilepost, @PathVariable Integer endingMilepost) { 
  		List<Milepost> mileposts = milepostService.selectMilepostRange(direction, startingMilepost, endingMilepost);
