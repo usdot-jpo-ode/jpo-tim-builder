@@ -1,8 +1,8 @@
-package com.trihydro.timCreator.dao;
+package com.trihydro.timBuilder.dao;
 
-import com.trihydro.timCreator.helpers.DBUtility;
-import com.trihydro.timCreator.model.Milepost;
-import com.trihydro.timCreator.helpers.SQLNullHandler;
+import com.trihydro.timBuilder.helpers.DBUtility;
+import com.trihydro.timBuilder.model.Milepost;
+import com.trihydro.timBuilder.helpers.SQLNullHandler;
 
 import java.sql.Connection;
 import java.sql.Statement;
@@ -34,6 +34,7 @@ public class MilepostService
    			ResultSet rs = statement.executeQuery("select * from MILEPOST where MOD(milepost, 1) = 0 order by milepost asc");
    			while (rs.next()) {   				
 			    Milepost milepost = new Milepost();
+			    milepost.setMilepostId(rs.getInt("milepost_id"));
 	    	    milepost.setRoute(rs.getString("route"));
 	    	    milepost.setMilepost(rs.getDouble("milepost"));
 			    milepost.setDirection(rs.getString("direction"));	
@@ -58,6 +59,7 @@ public class MilepostService
    			ResultSet rs = statement.executeQuery("select * from MILEPOST where direction = '" + direction + "' and milepost >= " + startingMilepost + " and milepost <= "+ endingMilepost + " order by milepost asc");
    			while (rs.next()) {   				
 			    Milepost milepost = new Milepost();
+			    milepost.setMilepostId(rs.getInt("milepost_id"));
 	    	    milepost.setRoute(rs.getString("route"));
 	    	    milepost.setMilepost(rs.getDouble("milepost"));
 			    milepost.setDirection(rs.getString("direction"));	

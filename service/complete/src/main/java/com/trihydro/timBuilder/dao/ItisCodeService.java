@@ -1,7 +1,7 @@
-package com.trihydro.timCreator.dao;
+package com.trihydro.timBuilder.dao;
 
-import com.trihydro.timCreator.helpers.DBUtility;
-import com.trihydro.timCreator.model.ItisCode;
+import com.trihydro.timBuilder.helpers.DBUtility;
+import com.trihydro.timBuilder.model.ItisCode;
 
 import java.sql.Connection;
 import java.sql.Statement;

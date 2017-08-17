@@ -1,4 +1,4 @@
-package com.trihydro.timCreator.model;
+package com.trihydro.timBuilder.model;
 
 public class RSU
 {

@@ -1,7 +1,8 @@
-package com.trihydro.timCreator.model;
+package com.trihydro.timBuilder.model;
 
 public class Milepost
 {
+    private Integer milepostId;
     private String route;
     private Double milepost;
     private String direction;
@@ -9,6 +10,16 @@ public class Milepost
     private Double longitude;
     private Double elevation;
     private Double bearing;
+
+    public Integer getMilepostId() 
+    {
+        return this.milepostId;
+    }
+
+    public void setMilepostId(Integer milepostId) 
+    {
+        this.milepostId = milepostId;
+    }
 
     public String getRoute() {
         return route;

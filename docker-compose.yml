@@ -20,6 +20,7 @@ services:
       - mysql:mysql
     environment:
       databaseurl: jdbc:mysql://mysql:3306/timBuilder 
+      databaseclass: com.mysql.jdbc.Driver
   angular:
     build: website 
     ports:

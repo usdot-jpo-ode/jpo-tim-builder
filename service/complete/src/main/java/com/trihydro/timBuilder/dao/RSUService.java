@@ -1,8 +1,8 @@
-package com.trihydro.timCreator.dao;
+package com.trihydro.timBuilder.dao;
 
-import com.trihydro.timCreator.helpers.DBUtility;
-import com.trihydro.timCreator.model.RSU;
-import com.trihydro.timCreator.helpers.SQLNullHandler;
+import com.trihydro.timBuilder.helpers.DBUtility;
+import com.trihydro.timBuilder.model.RSU;
+import com.trihydro.timBuilder.helpers.SQLNullHandler;
 
 import java.sql.Connection;
 import java.sql.Statement;
