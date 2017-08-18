@@ -12,7 +12,7 @@ There are environment config files located in website/src/environments
 * mapCenterPoint - The longitude/latitude point for centering the map
 * zoom - The zoom level for the map. See Esri documentation for more details
 
-To choose which environment files to use: 
+To choose which environment file to use: 
 * Change what "environment" is set to on the line "start": "ng serve --environment=dev -H 0.0.0.0" in website/package.json 
 * "environment=dev" will use environment.ts
 * "environment=test" will use environment.test.ts
