@@ -10,7 +10,7 @@ services:
       volumes:       
         - ./mysql/data:/var/lib/mysql-files
         - ./mysql/init:/docker-entrypoint-initdb.d/:ro
-  kperry-tim-rest-service:
+  tim-rest-service:
     depends_on:
       - mysql
     build: service/complete

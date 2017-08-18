@@ -2,7 +2,7 @@ import { J2735Position3D } from './J2735-Position-3D';
 import { Region } from './region';
 import { ItisCode } from './itis-code';
 
-export class DataFrame{
+export class DataFrame {
 	sspTimRights: string;
 	frameType: string;
 	msgID: string;

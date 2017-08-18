@@ -1,6 +1,6 @@
 import { Attributes } from './attributes';
 
-export class NodeXY{
+export class NodeXY {
 	delta: string;
 	x: string;
 	y: string;

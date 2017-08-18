@@ -1,4 +1,4 @@
-export class SpeedLimits{
+export class SpeedLimits {
 	type: string;
 	velocity: string;
 }

@@ -1,6 +1,6 @@
 import { Index } from './index';
 
-export class RSU{
+export class RSU {
 	rsuTarget: string;
 	rsuUsername: string;
 	rsuPassword: string;
@@ -12,9 +12,4 @@ export class RSU{
 	indicies: number[];
 	latitude: number;
 	longitude: number;
-
-	constructor() {
-        this.rsuRetries = "1";
-        this.rsuTimeout = "2000";
-    }
 }

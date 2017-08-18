@@ -1,3 +1,3 @@
-export class EnabledList{
+export class EnabledList {
 	type: string;
 }

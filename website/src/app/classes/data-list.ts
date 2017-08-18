@@ -1,6 +1,6 @@
 import { SpeedLimits } from './speed-limits';
 
-export class DataList{
+export class DataList {
 	pathEndpointAngle: string;
 	laneCrownCenter: string;
 	laneCrownRight: string;

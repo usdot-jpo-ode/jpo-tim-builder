@@ -1,4 +1,4 @@
-export class SNMP{
+export class SNMP {
 	rsuid: string;
 	msgid: string;
 	mode: string;

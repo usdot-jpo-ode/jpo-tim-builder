@@ -3,7 +3,7 @@ import { Geometry } from './geometry';
 import { Path } from './path';
 import { OldRegion } from './old-region';
 
-export class Region{
+export class Region {
 	name: string;
 	regulatorID: string;
 	segmentID: string;

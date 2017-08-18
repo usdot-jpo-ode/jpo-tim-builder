@@ -1,6 +1,6 @@
 import { Circle } from './circle';
 
-export class Geometry{
+export class Geometry {
 	direction: string;
 	extent: string;
 	laneWidth: string;

@@ -1,6 +1,6 @@
 import { DataFrame } from './data-frame';
 
-export class Tim{
+export class Tim {
 	msgCnt: string;
     timeStamp: string;
     packetID: string;

@@ -1,4 +1,4 @@
-export class Milepost{
+export class Milepost {
     route: string;
     milepost: number;
     direction: string;

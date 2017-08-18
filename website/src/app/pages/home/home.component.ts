@@ -61,21 +61,21 @@ export class HomeComponent implements OnInit{
 		this.messages = [];
 
 		this.rsuService.getAll().subscribe(
-		 /* happy path */ r => this.rsuData = r,
-         /* error path */ e => this.errorMessage = e,
-         /* onComplete */ () => { this.isLoading = false; console.log(this.rsuData);} 
+			r => this.rsuData = r,
+        	e => this.errorMessage = e,
+        	() => { this.isLoading = false; console.log(this.rsuData);} 
 		);
 
 		this.milepostService.getAll().subscribe(
-		 /* happy path */ i => this.mileposts = i,
-         /* error path */ e => this.errorMessage = e,
-         /* onComplete */ () => { this.isLoading = false; } 
+			i => this.mileposts = i,
+        	e => this.errorMessage = e,
+        	() => { this.isLoading = false; } 
 		);
 
 		this.itisCodeService.getAll().subscribe(
-		 /* happy path */ i => this.itisCodes = i,
-         /* error path */ e => this.errorMessage = e,
-         /* onComplete */ () => { this.isLoading = false; } 
+			i => this.itisCodes = i,
+        	e => this.errorMessage = e,
+        	() => { this.isLoading = false; } 
 		);
 	}
 

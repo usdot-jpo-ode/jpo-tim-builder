@@ -15,7 +15,7 @@ public class DBUtility {
     @Autowired
     public Environment env;
     
-    private static Connection connection = null;
+    private Connection connection = null;
     
     // database connection, dependent on the application.properties variables                 
     public Connection getConnection() {

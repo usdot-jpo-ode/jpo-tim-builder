@@ -1,4 +1,4 @@
-export class ComputedLane{
+export class ComputedLane {
 	laneID: string;
 	offsetSmallX: string;
 	offsetLargeX: string;

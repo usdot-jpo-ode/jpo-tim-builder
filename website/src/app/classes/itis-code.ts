@@ -1,4 +1,4 @@
-export class ItisCode{
+export class ItisCode {
 	itisCodeId: number;
 	itisCode: string;
 	description: string;

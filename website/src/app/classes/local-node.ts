@@ -1,3 +1,3 @@
-export class LocalNode{
+export class LocalNode {
 	type: string;
 }

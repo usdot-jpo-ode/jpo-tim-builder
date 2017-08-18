@@ -1,4 +1,4 @@
-export class Index{
+export class Index {
 	index: number;
 	isSelected: boolean;
 
