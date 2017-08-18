@@ -101,8 +101,6 @@ export class HomeComponent implements OnInit{
 			r.rsuRetries = "1";
 			r.rsuTimeout = "2000"; 	 			
 			if(r.isSelected){ 
-				console.log(r);
-				this.buildJSON(r); 
 		     	this.timCreatorService.queryTim(r).subscribe(
 					i => r.indicies = i,
 					e => this.errorMessage = e,
