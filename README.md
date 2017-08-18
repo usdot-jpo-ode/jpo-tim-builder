@@ -41,10 +41,10 @@ This repository will be updated with adjustments to TIM fields.
 The following instructions describe the procedure to fetch, build, and run the application. 
 
 ### Prerequisites
+* JDK 1.8: http://www.oracle.com/technetwork/pt/java/javase/downloads/jdk8-downloads-2133151.html
 * Maven: https://maven.apache.org/install.html
 * Git: https://git-scm.com/
 * Docker: https://docs.docker.com/engine/installation/
-* Docker Compose: https://docs.docker.com/compose/install/
 
 ---
 ### Obtain the Source Code
@@ -56,7 +56,7 @@ Clone the source code from the GitHub repository using Git command:
 
 ```bash
 git clone https://github.com/Trihydro/jpo-tim-builder.git
-(git clone https://github.com/usdot-jpo-ode/jpo-tim-builder.git)
+(after pull request change to  -> git clone https://github.com/usdot-jpo-ode/jpo-tim-builder.git)
 ```
 
 ## IV. Running the Application
@@ -67,7 +67,7 @@ The REST service relies on Maven to manage builds.
 
 **Step 1**: Build the REST service
 
-Navigate to the root directory of the service and build:
+Navigate to the service directory and build:
 
 ```bash
  cd service/complete
@@ -77,7 +77,7 @@ This build will run unit tests using an in-memory H2 database created with the S
 
 **Step 2**: Build Docker services 
 
-Navigate back to the root directory and build. This may take a few minutes to complete initially.
+Navigate back to the root directory and build the Docker services. This may take a some time to complete initially because Docker needs to download Node, Java, and MYSQL. 
 
 ```bash
  cd ../../
