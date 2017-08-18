@@ -89,7 +89,7 @@ Navigate back to the root directory and build. This may take a few minutes to co
 This command will start the MYSQL, REST service, and web application containers. The application will then be accessable at  `localhost:4200`. 
 
 ```bash
- docker-compose build
+ docker-compose up
 ```
 
 [Back to top](#toc)

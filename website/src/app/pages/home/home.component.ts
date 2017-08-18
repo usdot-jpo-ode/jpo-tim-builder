@@ -103,19 +103,17 @@ export class HomeComponent implements OnInit{
 			if(r.isSelected){ 
 				console.log(r);
 				this.buildJSON(r); 
-		  //    	this.timCreatorService.queryTim(r).subscribe(
-				// 	i => r.indicies = i,
-				// 	e => this.errorMessage = e,
-				// 	() => { 
-				// 		this.isLoading = false;	
-				// 		// build JSON 
-				// 		builtTim = this.buildJSON(r);       
-				// 		// send TIM to RSU
-				// 		this.sendTimToRSU(builtTim); 
-				// 		// send TIM to DB
-				// 		this.sendTimToDB(builtTim);
-				// 	} 
-				// );				
+		     	this.timCreatorService.queryTim(r).subscribe(
+					i => r.indicies = i,
+					e => this.errorMessage = e,
+					() => { 
+						this.isLoading = false;	
+						// build JSON 
+						builtTim = this.buildJSON(r);       
+						// send TIM to RSU
+						this.sendTimToRSU(builtTim); 
+					} 
+				);				
 			}
 		}				
 	}
@@ -321,8 +319,6 @@ export class HomeComponent implements OnInit{
 		return direction;
 	}
 
-
-
 	sendTimToRSU(tim: TimSample){
 		// set date sent
 		tim.dateSent = new Date().toISOString();
@@ -336,14 +332,6 @@ export class HomeComponent implements OnInit{
      		this.verifyDeposit(parseInt(tim.tim.index), tim.rsus[0]);
      		//this.sendTimToDB(tim);
      	})   
-	}
-
-	sendTimToDB(tim: TimSample){
-		this.timCreatorService
-		    	.sendTimToDB(tim)
-		    	.subscribe(
-		    		(r: Response) => { console.log("db response: " + r); }
-				);
 	}
 
 	findFirstAvailableIndex(indicies: number[]): number{

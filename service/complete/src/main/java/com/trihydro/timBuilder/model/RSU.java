@@ -6,8 +6,6 @@ public class RSU
 	private String rsuTarget;
 	private String rsuUsername;
 	private String rsuPassword;
-	private String snmpUsername;
-	private String snmpPassword;
 	private Double latitude;
 	private Double longitude;
 
@@ -42,23 +40,7 @@ public class RSU
 	public void setRsuPassword(String rsuPassword) {
 		this.rsuPassword = rsuPassword;
 	}
-
-	public String getSnmpUsername() {
-		return this.snmpUsername;
-	}
-
-	public void setSnmpUsername(String snmpUsername) {
-		this.snmpUsername = snmpUsername;
-	}
-
-	public String getSnmpPassword() {
-		return this.snmpPassword;
-	}
-
-	public void setSnmpPassword(String snmpPassword) {
-		this.snmpPassword = snmpPassword;
-	}
-
+	
 	public Double getLatitude() {
 		return this.latitude;
 	}
