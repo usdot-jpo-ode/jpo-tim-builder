@@ -43,8 +43,8 @@ The following instructions describe the procedure to fetch, build, and run the a
 ### Prerequisites
 * Maven: https://maven.apache.org/install.html
 * Git: https://git-scm.com/
-* Docker: (link)
-* Docker Compose: (link)
+* Docker: https://docs.docker.com/engine/installation/
+* Docker Compose: https://docs.docker.com/compose/install/
 
 ---
 ### Obtain the Source Code
