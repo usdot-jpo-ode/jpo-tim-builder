@@ -16,6 +16,7 @@ import { TimCreatorService } from '../../services/tim-creator.service';
 import { RSUService } from '../../services/rsu.service';
 import { ItisCodeService } from '../../services/itis-code.service';
 import { MilepostService } from '../../services/mile-post.service';
+import { CategoryService } from '../../services/category.service';
 import { Response } from '@angular/http';
 import { NodeXY } from '../../classes/node-xy';
 import { Attributes } from '../../classes/attributes';
@@ -29,11 +30,12 @@ import { ShapePoint } from '../../classes/shape-point';
 import { RegionList } from '../../classes/region-list';
 import { Index } from '../../classes/index';
 import { Milepost } from '../../classes/mile-post';
+import { Category } from '../../classes/category';
 
 @Component({
 	selector: 'tc-home',   
 	templateUrl: './home.component.html',
-	providers: [TimCreatorService, RSUService, ItisCodeService, MilepostService]
+	providers: [TimCreatorService, RSUService, ItisCodeService, MilepostService, CategoryService]
 })
 export class HomeComponent implements OnInit{
 
@@ -45,14 +47,16 @@ export class HomeComponent implements OnInit{
 	errorMessage: string = '';
 	isLoading: boolean = true;
 	selectedItisCodeId: number;
+	selectedCategory: string;
 	snmpIndex: number;
 	autoGenerateIndex: boolean;
 	messages: string[];
 	mapPoint: any;
 	mileposts: Milepost[];  
 	pathposts: Milepost[];	
+	categories: Category[];	
 		
-   	constructor(private timCreatorService : TimCreatorService, private rsuService: RSUService, private itisCodeService: ItisCodeService, private milepostService: MilepostService){ }
+   	constructor(private timCreatorService : TimCreatorService, private rsuService: RSUService, private itisCodeService: ItisCodeService, private milepostService: MilepostService, private categoryService: CategoryService){ }
 
 	ngOnInit(){	
 		
@@ -74,6 +78,12 @@ export class HomeComponent implements OnInit{
 
 		this.itisCodeService.getAll().subscribe(
 			i => this.itisCodes = i,
+        	e => this.errorMessage = e,
+        	() => { this.isLoading = false; } 
+		);
+
+		this.categoryService.getAll().subscribe(
+			i => this.categories = i,
         	e => this.errorMessage = e,
         	() => { this.isLoading = false; } 
 		);
@@ -102,7 +112,7 @@ export class HomeComponent implements OnInit{
 			r.rsuTimeout = "2000"; 	 			
 			if(r.isSelected){ 
 		     	this.timCreatorService.queryTim(r).subscribe(
-					i => r.indicies = i,
+					i => r.indicies = JSON.parse(i.indicies_set),
 					e => this.errorMessage = e,
 					() => { 
 						this.isLoading = false;	
@@ -200,8 +210,8 @@ export class HomeComponent implements OnInit{
 		let direction = 0;
 		for(var i = 1; i < this.pathposts.length; i++){
 			let node = new NodeXY();	
-			node.nodeLong = Math.round(((this.pathposts[i].longitude - this.pathposts[i-1].longitude) * 10000000)).toString();
-			node.nodeLat = Math.round(((this.pathposts[i].latitude - this.pathposts[i-1].latitude) * 10000000)).toString();	
+			node.nodeLong = (this.pathposts[i].longitude - this.pathposts[i-1].longitude).toString();
+			node.nodeLat = Math.round(this.pathposts[i].latitude - this.pathposts[i-1].latitude).toString();	
 		    node.delta = this.getDelta(Math.max(Number(node.nodeLat), Number(node.nodeLong)));
 			console.log("long: " + node.nodeLong);		
 			console.log("lat: " + node.nodeLat);		
@@ -237,7 +247,7 @@ export class HomeComponent implements OnInit{
 
 		timSample.rsus = [];
 		timSample.snmp = new SNMP();
-		timSample.snmp.rsuid = "0083";
+		timSample.snmp.rsuid = "00000083";
 		timSample.snmp.msgid = "31";
 		timSample.snmp.mode = "1";
 		timSample.snmp.channel = "178";
@@ -264,15 +274,15 @@ export class HomeComponent implements OnInit{
 	}
 
 	getDelta(distance): string{
-		if(distance >= -2048 && distance < 2048)
+		if(distance >= -.0002048 && distance < .0002048)
 			return "node-LL1";
-		else if(distance >= -8192 && distance < 8192)
+		else if(distance >= -.0008192 && distance < .0008192)
 			return "node-LL2";
-		else if(distance >= -32768 && distance < 32768)
+		else if(distance >= -.0032768 && distance < .0032768)
 			return "node-LL3";
-		else if(distance >= -131072 && distance < 131072)
+		else if(distance >= -.0131072 && distance < .0131072)
 			return "node-LL4";
-		else if(distance >= -2097152 && distance < 2097152)
+		else if(distance >= -.2097152 && distance < .2097152)
 			return "node-LL5";
 		else
 			return "node-LL6";
@@ -343,7 +353,7 @@ export class HomeComponent implements OnInit{
 	verifyDeposit(index: number, rsu: RSU){
 		let indicies: number[];
 		this.timCreatorService.queryTim(rsu).subscribe(
-			i => indicies = i,
+			i => indicies = JSON.parse(i.indicies_set),
 			e => this.errorMessage = e,
 			() => { 
 				if(indicies.includes(index))

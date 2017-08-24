@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RSU } from '../../classes/rsu';
+import { TimQuery } from '../../classes/tim-query';
 import { RSUService } from '../../services/rsu.service';
 import { Response } from '@angular/http';
 import { TimCreatorService } from '../../services/tim-creator.service';
@@ -36,11 +37,13 @@ export class DisableTimsComponent implements OnInit{
 			r.rsuRetries = "1";
 			r.rsuTimeout = "2000"; 			
 			r.indicies_set = [];
+			let timQuery = new TimQuery; 
 			this.timCreatorService.queryTim(r).subscribe(
-				i => r.indicies = i,
+				i => timQuery = i, 
 				e => this.errorMessage = e,
 				() => { 
 					this.isLoading = false; 
+					r.indicies = JSON.parse(timQuery.indicies_set);
 					for (var i = 0; i < r.indicies.length; i++) {
 				 		r.indicies_set.push(new Index(r.indicies[i], false));
 					} 

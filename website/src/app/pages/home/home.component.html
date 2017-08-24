@@ -16,12 +16,21 @@
 		</div>
 
 		<div class="form-group">
+
+		<!-- 	<label class="control-label col-sm-3">ITIS Code Category:<span style="color: red;">*</span></label>
+			<div class="col-sm-3"> 
+				<select class="form-control" [(ngModel)]="selectedCategory" name="category" required>
+		        	<option *ngFor="let i of categories" [ngValue]="i.category">{{ i.category }}</option> 
+	  			</select>
+			</div> -->
+
 			<label class="control-label col-sm-3">TIM Type (ITIS code):<span style="color: red;">*</span></label>
 			<div class="col-sm-3"> 
 				<select class="form-control" [(ngModel)]="selectedItisCodeId" name="itisCode" required>
 		        	<option *ngFor="let i of itisCodes" [ngValue]="i.itisCodeId">{{ i.description }}</option> 
 	  			</select>
 			</div>
+
 			<label class="control-label col-sm-2">Frame Type:<span style="color: red;">*</span></label>
 			<div class="col-sm-3"> 
 				<select class="form-control" [(ngModel)]="df.frameType" id="frameType" name="frameType" required>
@@ -31,7 +40,20 @@
 		        	<option value="3">Commercial Signage</option> 
 	  			</select>
 			</div>
+
 		</div>
+
+		<!-- <div  class="form-group">
+			<label class="control-label col-sm-3">Frame Type:<span style="color: red;">*</span></label>
+			<div class="col-sm-3"> 
+				<select class="form-control" [(ngModel)]="df.frameType" id="frameType" name="frameType" required>
+		        	<option value="0">Unknown</option> 
+		        	<option value="1">Advisory</option> 
+		        	<option value="2">Road Signage</option> 
+		        	<option value="3">Commercial Signage</option> 
+	  			</select>
+			</div>
+		</div> -->
 
 		<div class="form-group">
 			<label class="control-label col-sm-3">RSUs (choose at least one):<span style="color: red;">*</span></label>

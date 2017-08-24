@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Rx';
 
 import { ItisCode } from '../classes/itis-code';
 import { TimSample } from '../classes/tim-sample';
+import { TimQuery } from '../classes/tim-query';
 import { RSU } from '../classes/rsu';
 import { environment } from '../../environments/environment';
 
@@ -13,24 +14,19 @@ export class TimCreatorService{
 	private odeUrl: string = environment.odeUrl;
 	private dbUrl: string = environment.dbUrl;
 
-	constructor(private http : Http){
-		
+	constructor(private http : Http){		
 	}
 
 	sendTimToRSU(timSample: TimSample) : Observable<Response>{ 
 		return this.http
 		.post(`${this.odeUrl}/tim`, JSON.stringify(timSample), {headers: this.getHeaders()});
-	}
+	}	
 
-	sendTimToDB(timSample: TimSample) : Observable<Response>{   
-		return this.http
-		.post(`${this.dbUrl}/sendTim`, JSON.stringify(timSample), {headers: this.getHeaders()});
-	}
-
-	queryTim(rsu: RSU) : Observable<number[]>{   
+	queryTim(rsu: RSU) : Observable<TimQuery>{   
 		let q = this.http
 		.post(`${this.odeUrl}/tim/query`, JSON.stringify(rsu), {headers: this.getHeaders()})
-		.map(mapTimQueryToArray);	
+	    .map((res:Response) => res.json())
+	    .catch(handleError);
 		return q;
 	}
 
