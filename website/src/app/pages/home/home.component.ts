@@ -360,7 +360,6 @@ export class HomeComponent implements OnInit{
      		// set date received 
      		tim.dateReceived = new Date().toISOString();
      		this.verifyDeposit(parseInt(tim.tim.index), tim.rsus[0]);
-     		//this.sendTimToDB(tim);
      	})   
 	}
 
