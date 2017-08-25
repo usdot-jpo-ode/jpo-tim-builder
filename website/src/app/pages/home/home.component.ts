@@ -118,7 +118,7 @@ export class HomeComponent implements OnInit{
 			r.rsuTimeout = "2000"; 	 			
 			if(r.isSelected){ 
 		     	this.timCreatorService.queryTim(r).subscribe(
-					i => r.indicies = JSON.parse(i.indicies_set),
+					i => r.indicies = i.indicies_set,
 					e => this.errorMessage = e,
 					() => { 
 						this.isLoading = false;	
@@ -253,7 +253,7 @@ export class HomeComponent implements OnInit{
 
 		timSample.rsus = [];
 		timSample.snmp = new SNMP();
-		timSample.snmp.rsuid = "0083";
+		timSample.snmp.rsuid = "00000083";
 		timSample.snmp.msgid = "31";
 		timSample.snmp.mode = "1";
 		timSample.snmp.channel = "178";
@@ -375,7 +375,7 @@ export class HomeComponent implements OnInit{
 	verifyDeposit(index: number, rsu: RSU){
 		let indicies: number[];
 		this.timCreatorService.queryTim(rsu).subscribe(
-			i => indicies = JSON.parse(i.indicies_set),
+			i => indicies = i.indicies_set,
 			e => this.errorMessage = e,
 			() => { 
 				if(indicies.includes(index))

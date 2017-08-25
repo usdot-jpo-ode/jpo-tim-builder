@@ -1,3 +1,3 @@
 export class TimQuery {
-	indicies_set: string;
+	indicies_set: number[];
 }

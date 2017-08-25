@@ -43,7 +43,7 @@ export class DisableTimsComponent implements OnInit{
 				e => this.errorMessage = e,
 				() => { 
 					this.isLoading = false; 
-					r.indicies = JSON.parse(timQuery.indicies_set);
+					r.indicies = timQuery.indicies_set;
 					for (var i = 0; i < r.indicies.length; i++) {
 				 		r.indicies_set.push(new Index(r.indicies[i], false));
 					} 

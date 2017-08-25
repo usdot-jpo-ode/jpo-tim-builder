@@ -205,7 +205,7 @@ export class EsriMapComponent implements OnInit {
 
             // Create a symbol for drawing the line
             var lineSymbol = new SimpleLineSymbol({
-              color: [226, 119, 40],
+              color: [122, 181, 66],
               width: 4
             });
 
