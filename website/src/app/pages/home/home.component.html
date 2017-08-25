@@ -9,10 +9,13 @@
 			<div class="col-sm-3"> 
 				<input ngui-datetime-picker class="form-control" [(ngModel)]="df.startDateTime" name="startTime" required />
 			</div>
+			
 			<label class="control-label col-sm-2">Duration (Minutes):<span style="color: red;">*</span></label>
 			<div class="col-sm-3">
 				<input class="form-control" [(ngModel)]="df.durationTime" name="durationTime" type="Number" required />
 			</div>
+
+
 		</div>
 
 		<div class="form-group">
@@ -55,6 +58,19 @@
 			</div>
 		</div> -->
 
+		<div>
+	    	<!-- <label class="control-label col-sm-3">Download JSON:</label>			 -->
+			<div class="col-sm-offset-3" style="padding-left: 7px;">
+				<div class="checkbox custom-control custom-checkbox">
+					<label>
+					<input type="checkbox" (change)="downloadJsonChanged($event)" name="downloadJson">
+					<span class="custom-control-indicator"></span>
+						Download JSON
+					</label>
+				</div>
+			</div>			
+		</div>
+
 		<div class="form-group">
 			<label class="control-label col-sm-3">RSUs (choose at least one):<span style="color: red;">*</span></label>
 			<div *ngFor="let r of rsuData">
@@ -76,8 +92,8 @@
 		<button type="submit" class="btn btn-primary">Send New TIM</button>
 	</div>
 
-	<div>{{ testJSON }}</div> 
-
+	<!-- <div>{{ testJSON }}</div> 
+ -->
  	<ul style="padding-top: 15px;">
 		<li *ngFor="let message of messages">
 			{{ message }}

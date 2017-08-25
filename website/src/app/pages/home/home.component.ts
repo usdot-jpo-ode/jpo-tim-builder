@@ -55,6 +55,7 @@ export class HomeComponent implements OnInit{
 	mileposts: Milepost[];  
 	pathposts: Milepost[];	
 	categories: Category[];	
+	downloadJsonFlag: boolean;
 		
    	constructor(private timCreatorService : TimCreatorService, private rsuService: RSUService, private itisCodeService: ItisCodeService, private milepostService: MilepostService, private categoryService: CategoryService){ }
 
@@ -63,6 +64,7 @@ export class HomeComponent implements OnInit{
 		this.df = new DataFrame();
 		this.tim = new Tim();
 		this.messages = [];
+		this.downloadJsonFlag = false;
 
 		this.rsuService.getAll().subscribe(
 			r => this.rsuData = r,
@@ -98,6 +100,10 @@ export class HomeComponent implements OnInit{
 					r.isSelected = false;
 			}
 		}
+	}	
+
+	downloadJsonChanged(e){
+		this.downloadJsonFlag = !this.downloadJsonFlag;
 	}	
 
 	onEmit(newPath: Milepost[]) {
@@ -247,7 +253,7 @@ export class HomeComponent implements OnInit{
 
 		timSample.rsus = [];
 		timSample.snmp = new SNMP();
-		timSample.snmp.rsuid = "00000083";
+		timSample.snmp.rsuid = "0083";
 		timSample.snmp.msgid = "31";
 		timSample.snmp.mode = "1";
 		timSample.snmp.channel = "178";
@@ -261,8 +267,24 @@ export class HomeComponent implements OnInit{
 	
 		this.testJSON = JSON.stringify(timSample);	
 
+		if(this.downloadJsonFlag)
+			this.downloadJSON(this.testJSON);
+
 		return timSample;
   	
+	}
+
+	downloadJSON(json: string){		
+		var element = document.createElement('a');
+	    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(this.testJSON));
+	    element.setAttribute('download', "tim.json");
+
+	    element.style.display = 'none';
+	    document.body.appendChild(element);
+
+	    element.click();
+
+	    document.body.removeChild(element);
 	}
 
 	convertFeetToCm(feet){
