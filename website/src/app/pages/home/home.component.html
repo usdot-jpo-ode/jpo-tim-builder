@@ -22,19 +22,29 @@
 
 			<label class="control-label col-sm-3">ITIS Code Category:<span style="color: red;">*</span></label>
 			<div class="col-sm-3"> 
-				<select class="form-control" [(ngModel)]="selectedCategory" name="category" required>
-		        	<option *ngFor="let i of categories" [ngValue]="i.category">{{ i.category }}</option> 
+				<select class="form-control" [(ngModel)]="selectedCategory" name="category" (change)="onCategoryChanged()" required>
+		        	<option *ngFor="let i of categories" [ngValue]="i.categoryId">{{ i.category }}</option> 
 	  			</select>
 			</div>
 
-			<label class="control-label col-sm-3">TIM Type (ITIS code):<span style="color: red;">*</span></label>
+		<!-- 	<label class="control-label col-sm-3">TIM Type (ITIS code):<span style="color: red;">*</span></label>
 			<div class="col-sm-3"> 
 				<select class="form-control" [(ngModel)]="selectedItisCodeId" name="itisCode" [disabled]="selectedCategory == null" required>
-		        	<option *ngFor="let i of itisCodes" [ngValue]="i.itisCodeId">{{ i.description }}</option> 
+		        	<option *ngFor="let i of filteredItisCodes" [ngValue]="i.itisCodeId">{{ i.description }}</option> 
 	  			</select>
+			</div> -->
+
+			<label class="control-label col-sm-2">ITIS code(s):<span style="color: red;">*</span></label>
+			<div class="col-sm-3"> 
+				<ss-multiselect-dropdown [options]="filteredItisCodes" [texts]="ddText" [(ngModel)]="selectedItisCodes" [disabled]="selectedCategory == null" required [settings]="ddSettings" name="codes"></ss-multiselect-dropdown>
 			</div>
 
-			<label class="control-label col-sm-2">Frame Type:<span style="color: red;">*</span></label>
+			
+		</div>
+
+		<div class="form-group">
+
+			<label class="control-label col-sm-3">Frame Type:<span style="color: red;">*</span></label>
 			<div class="col-sm-3"> 
 				<select class="form-control" [(ngModel)]="df.frameType" id="frameType" name="frameType" required>
 		        	<option value="0">Unknown</option> 
@@ -44,7 +54,23 @@
 	  			</select>
 			</div>
 
+			<div class="col-sm-offset-7">
+				<div class="checkbox custom-control custom-checkbox">
+					<label>
+					<input type="checkbox" (change)="downloadJsonChanged($event)" name="downloadJson">
+					<span class="custom-control-indicator"></span>
+						Download JSON
+					</label>
+				</div>
+			</div>		
+
+			
 		</div>
+
+		<!-- <ss-multiselect-dropdown [options]="filteredItisCodes" [(ngModel)]="selectedItisCodes" [settings]="ddSettings" name="codes"></ss-multiselect-dropdown> -->
+
+		<!-- <ss-multiselect-dropdown ></ss-multiselect-dropdown>
+ -->
 
 		<!-- <div  class="form-group">
 			<label class="control-label col-sm-3">Frame Type:<span style="color: red;">*</span></label>
@@ -58,8 +84,7 @@
 			</div>
 		</div> -->
 
-		<div>
-	    	<!-- <label class="control-label col-sm-3">Download JSON:</label>			 -->
+	<!-- 	<div>
 			<div class="col-sm-offset-3" style="padding-left: 7px;">
 				<div class="checkbox custom-control custom-checkbox">
 					<label>
@@ -69,7 +94,7 @@
 					</label>
 				</div>
 			</div>			
-		</div>
+		</div> -->
 
 		<div class="form-group">
 			<label class="control-label col-sm-3">RSUs (choose at least one):<span style="color: red;">*</span></label>

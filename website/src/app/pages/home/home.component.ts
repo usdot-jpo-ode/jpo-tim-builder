@@ -31,6 +31,7 @@ import { RegionList } from '../../classes/region-list';
 import { Index } from '../../classes/index';
 import { Milepost } from '../../classes/mile-post';
 import { Category } from '../../classes/category';
+import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts  } from 'angular-2-dropdown-multiselect';
 
 @Component({
 	selector: 'tc-home',   
@@ -47,7 +48,7 @@ export class HomeComponent implements OnInit{
 	errorMessage: string = '';
 	isLoading: boolean = true;
 	selectedItisCodeId: number;
-	selectedCategory: string;
+	selectedCategory: number;
 	snmpIndex: number;
 	autoGenerateIndex: boolean;
 	messages: string[];
@@ -56,11 +57,24 @@ export class HomeComponent implements OnInit{
 	pathposts: Milepost[];	
 	categories: Category[];	
 	downloadJsonFlag: boolean;
-		
+	filteredItisCodes: IMultiSelectOption[];
+    selectedItisCodes: number[];
+    ddSettings: IMultiSelectSettings;
+	ddText: IMultiSelectTexts;
+
    	constructor(private timCreatorService : TimCreatorService, private rsuService: RSUService, private itisCodeService: ItisCodeService, private milepostService: MilepostService, private categoryService: CategoryService){ }
 
 	ngOnInit(){	
-		
+
+        this.ddSettings = {
+			displayAllSelectedText: true
+		};
+
+		this.ddText = {
+			defaultTitle: ''
+		}; 
+    	
+    	this.selectedItisCodes = [];
 		this.df = new DataFrame();
 		this.tim = new Tim();
 		this.messages = [];
@@ -101,6 +115,14 @@ export class HomeComponent implements OnInit{
 			}
 		}
 	}	
+
+	onCategoryChanged(){	
+		this.filteredItisCodes = this.itisCodes.filter(i => i.categoryId == this.selectedCategory ).map( function(obj){
+			let rObj = { id: obj.itisCodeId, name: obj.description };
+			return rObj;
+		}); 
+		this.selectedItisCodes = [];
+	}
 
 	downloadJsonChanged(e){
 		this.downloadJsonFlag = !this.downloadJsonFlag;
@@ -236,12 +258,8 @@ export class HomeComponent implements OnInit{
 
 		this.df.items = [];		
 
-		this.df.itisCodes = [];
-		for(let i of this.itisCodes){  			
-			if(i.itisCodeId == this.selectedItisCodeId){ 
-				this.df.items.push(i.itisCode.toString());
-				this.df.itisCodes.push(i);
-			}
+		for(let i of this.selectedItisCodes){  						
+			this.df.items.push(i.toString());			
 		}
 
 		this.df.url = "null"; // OPTIONAL
@@ -270,8 +288,7 @@ export class HomeComponent implements OnInit{
 		if(this.downloadJsonFlag)
 			this.downloadJSON(this.testJSON);
 
-		return timSample;
-  	
+		return timSample;  	
 	}
 
 	downloadJSON(json: string){		

@@ -14,6 +14,7 @@ import { EsriMapComponent } from './pages/esri-map/esri-map.component';
 
 import { AppRoutingModule }     from './app-routing.module';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { LocationStrategy, HashLocationStrategy } from '@angular/common';
     FormsModule,
     HttpModule,
     AppRoutingModule,
-    NguiDatetimePickerModule
+    NguiDatetimePickerModule,
+    MultiselectDropdownModule
   ],
   providers: [EsriLoaderService, 
     {
