@@ -1,6 +1,6 @@
 import { browser, element, by } from 'protractor';
 
-export class TimCreatorPage {
+export class TimBuilderPage {
   navigateTo() {
     return browser.get('/');
   }

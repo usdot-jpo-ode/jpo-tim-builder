@@ -5,7 +5,6 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { HomeComponent }    from './pages/home/home.component';
-import { RSUComponent }    from './pages/rsu/add-rsu.component';
 import { NavComponent }    from './nav/nav.component';
 import { DisableTimsComponent }  from './pages/disable-tims/disable-tims.component'; 
 import { NguiDatetimePickerModule } from '@ngui/datetime-picker';
@@ -18,7 +17,7 @@ import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 
 @NgModule({
   declarations: [
-    AppComponent, HomeComponent, NavComponent, RSUComponent, DisableTimsComponent, EsriMapComponent
+    AppComponent, HomeComponent, NavComponent, DisableTimsComponent, EsriMapComponent
   ],
   imports: [
     BrowserModule,

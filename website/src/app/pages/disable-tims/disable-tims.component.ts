@@ -3,7 +3,7 @@ import { RSU } from '../../classes/rsu';
 import { TimQuery } from '../../classes/tim-query';
 import { RSUService } from '../../services/rsu.service';
 import { Response } from '@angular/http';
-import { TimCreatorService } from '../../services/tim-creator.service';
+import { TimBuilderService } from '../../services/tim-builder.service';
 import { Index } from '../../classes/index';
 import { Observable } from 'rxjs/Rx';
 import { FormsModule } from '@angular/forms';
@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
 	selector: 'tc-disable-tims',
 	templateUrl: './disable-tims.component.html',
-	providers: [RSUService, TimCreatorService]
+	providers: [RSUService, TimBuilderService]
 })
 export class DisableTimsComponent implements OnInit{
 
@@ -20,7 +20,7 @@ export class DisableTimsComponent implements OnInit{
 	isLoading: boolean = true;
 	rsus: RSU[];
 
-   	constructor(private timCreatorService : TimCreatorService, private rsuService: RSUService){ }
+   	constructor(private timBuilderService : TimBuilderService, private rsuService: RSUService){ }
 
 	ngOnInit(){				
 		this.rsus = [];
@@ -38,7 +38,7 @@ export class DisableTimsComponent implements OnInit{
 			r.rsuTimeout = "2000"; 			
 			r.indicies_set = [];
 			let timQuery = new TimQuery; 
-			this.timCreatorService.queryTim(r).subscribe(
+			this.timBuilderService.queryTim(r).subscribe(
 				i => timQuery = i, 
 				e => this.errorMessage = e,
 				() => { 
@@ -68,7 +68,7 @@ export class DisableTimsComponent implements OnInit{
 				if(this.rsus[i].indicies_set[j].isSelected){
 					// delete
 					observableBatch.push( 
-						this.timCreatorService.deleteTim(this.rsus[i], this.rsus[i].indicies_set[j].index) 
+						this.timBuilderService.deleteTim(this.rsus[i], this.rsus[i].indicies_set[j].index) 
 					);
 				}
 			}

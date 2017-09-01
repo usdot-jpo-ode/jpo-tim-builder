@@ -1,10 +1,10 @@
-import { TimCreatorPage } from './app.po';
+import { TimBuilderPage } from './app.po';
 
-describe('tim-creator App', () => {
-  let page: TimCreatorPage;
+describe('tim-builder App', () => {
+  let page: TimBuilderPage;
 
   beforeEach(() => {
-    page = new TimCreatorPage();
+    page = new TimBuilderPage();
   });
 
   it('should display message saying app works', () => {

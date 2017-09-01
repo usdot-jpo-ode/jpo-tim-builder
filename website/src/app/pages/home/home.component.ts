@@ -12,7 +12,7 @@ import { Path } from '../../classes/path';
 import { ComputedLane } from '../../classes/computed-lane';
 import { Circle } from '../../classes/circle';
 import { SNMP } from '../../classes/snmp';
-import { TimCreatorService } from '../../services/tim-creator.service';
+import { TimBuilderService } from '../../services/tim-builder.service';
 import { RSUService } from '../../services/rsu.service';
 import { ItisCodeService } from '../../services/itis-code.service';
 import { MilepostService } from '../../services/mile-post.service';
@@ -36,7 +36,7 @@ import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts  } from 'an
 @Component({
 	selector: 'tc-home',   
 	templateUrl: './home.component.html',
-	providers: [TimCreatorService, RSUService, ItisCodeService, MilepostService, CategoryService]
+	providers: [TimBuilderService, RSUService, ItisCodeService, MilepostService, CategoryService]
 })
 export class HomeComponent implements OnInit{
 
@@ -62,7 +62,7 @@ export class HomeComponent implements OnInit{
     ddSettings: IMultiSelectSettings;
 	ddText: IMultiSelectTexts;
 
-   	constructor(private timCreatorService : TimCreatorService, private rsuService: RSUService, private itisCodeService: ItisCodeService, private milepostService: MilepostService, private categoryService: CategoryService){ }
+   	constructor(private timBuilderService : TimBuilderService, private rsuService: RSUService, private itisCodeService: ItisCodeService, private milepostService: MilepostService, private categoryService: CategoryService){ }
 
 	ngOnInit(){	
 
@@ -139,7 +139,7 @@ export class HomeComponent implements OnInit{
 			r.rsuRetries = "1";
 			r.rsuTimeout = "2000"; 	 			
 			if(r.isSelected){ 
-		     	this.timCreatorService.queryTim(r).subscribe(
+		     	this.timBuilderService.queryTim(r).subscribe(
 					i => r.indicies = i.indicies_set,
 					e => this.errorMessage = e,
 					() => { 
@@ -271,7 +271,7 @@ export class HomeComponent implements OnInit{
 
 		timSample.rsus = [];
 		timSample.snmp = new SNMP();
-		timSample.snmp.rsuid = "00000083";
+		timSample.snmp.rsuid = "0083";
 		timSample.snmp.msgid = "31";
 		timSample.snmp.mode = "1";
 		timSample.snmp.channel = "178";
@@ -371,7 +371,7 @@ export class HomeComponent implements OnInit{
 		tim.dateSent = new Date().toISOString();
 		// send to RSU
 		console.log(tim);
-		this.timCreatorService
+		this.timBuilderService
      	.sendTimToRSU(tim)
      	.subscribe((r: Response) => {
      		// set date received 
@@ -390,7 +390,7 @@ export class HomeComponent implements OnInit{
 
 	verifyDeposit(index: number, rsu: RSU){
 		let indicies: number[];
-		this.timCreatorService.queryTim(rsu).subscribe(
+		this.timBuilderService.queryTim(rsu).subscribe(
 			i => indicies = i.indicies_set,
 			e => this.errorMessage = e,
 			() => { 
