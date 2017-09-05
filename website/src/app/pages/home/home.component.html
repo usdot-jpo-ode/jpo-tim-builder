@@ -1,0 +1,128 @@
+<div *ngIf="!mileposts || !rsuData" style="text-align: center;">
+	<div class="loader"></div>
+	LOADING...
+</div>
+<form *ngIf="mileposts && rsuData" class="form-horizontal" #createTimForm="ngForm" (ngSubmit)="submitFormGeometry()">
+	<div class="col-sm-12">
+		<div class="form-group">
+			<label class="control-label col-sm-3">Broadcast Date/Time Start:<span style="color: red;">*</span></label>
+			<div class="col-sm-3"> 
+				<input ngui-datetime-picker class="form-control" [(ngModel)]="df.startDateTime" name="startTime" required />
+			</div>
+			
+			<label class="control-label col-sm-2">Duration (Minutes):<span style="color: red;">*</span></label>
+			<div class="col-sm-3">
+				<input class="form-control" [(ngModel)]="df.durationTime" name="durationTime" type="Number" required />
+			</div>
+
+
+		</div>
+
+		<div class="form-group">
+
+			<label class="control-label col-sm-3">ITIS Code Category:<span style="color: red;">*</span></label>
+			<div class="col-sm-3"> 
+				<select class="form-control" [(ngModel)]="selectedCategory" name="category" (change)="onCategoryChanged()" required>
+		        	<option *ngFor="let i of categories" [ngValue]="i.categoryId">{{ i.category }}</option> 
+	  			</select>
+			</div>
+
+		<!-- 	<label class="control-label col-sm-3">TIM Type (ITIS code):<span style="color: red;">*</span></label>
+			<div class="col-sm-3"> 
+				<select class="form-control" [(ngModel)]="selectedItisCodeId" name="itisCode" [disabled]="selectedCategory == null" required>
+		        	<option *ngFor="let i of filteredItisCodes" [ngValue]="i.itisCodeId">{{ i.description }}</option> 
+	  			</select>
+			</div> -->
+
+			<label class="control-label col-sm-2">ITIS code(s):<span style="color: red;">*</span></label>
+			<div class="col-sm-3"> 
+				<ss-multiselect-dropdown [options]="filteredItisCodes" [texts]="ddText" [(ngModel)]="selectedItisCodes" [disabled]="selectedCategory == null" required [settings]="ddSettings" name="codes"></ss-multiselect-dropdown>
+			</div>
+
+			
+		</div>
+
+		<div class="form-group">
+
+			<label class="control-label col-sm-3">Frame Type:<span style="color: red;">*</span></label>
+			<div class="col-sm-3"> 
+				<select class="form-control" [(ngModel)]="df.frameType" id="frameType" name="frameType" required>
+		        	<option value="0">Unknown</option> 
+		        	<option value="1">Advisory</option> 
+		        	<option value="2">Road Signage</option> 
+		        	<option value="3">Commercial Signage</option> 
+	  			</select>
+			</div>
+
+			<div class="col-sm-offset-7">
+				<div class="checkbox custom-control custom-checkbox">
+					<label>
+					<input type="checkbox" (change)="downloadJsonChanged($event)" name="downloadJson">
+					<span class="custom-control-indicator"></span>
+						Download JSON
+					</label>
+				</div>
+			</div>		
+
+			
+		</div>
+
+		<!-- <ss-multiselect-dropdown [options]="filteredItisCodes" [(ngModel)]="selectedItisCodes" [settings]="ddSettings" name="codes"></ss-multiselect-dropdown> -->
+
+		<!-- <ss-multiselect-dropdown ></ss-multiselect-dropdown>
+ -->
+
+		<!-- <div  class="form-group">
+			<label class="control-label col-sm-3">Frame Type:<span style="color: red;">*</span></label>
+			<div class="col-sm-3"> 
+				<select class="form-control" [(ngModel)]="df.frameType" id="frameType" name="frameType" required>
+		        	<option value="0">Unknown</option> 
+		        	<option value="1">Advisory</option> 
+		        	<option value="2">Road Signage</option> 
+		        	<option value="3">Commercial Signage</option> 
+	  			</select>
+			</div>
+		</div> -->
+
+	<!-- 	<div>
+			<div class="col-sm-offset-3" style="padding-left: 7px;">
+				<div class="checkbox custom-control custom-checkbox">
+					<label>
+					<input type="checkbox" (change)="downloadJsonChanged($event)" name="downloadJson">
+					<span class="custom-control-indicator"></span>
+						Download JSON
+					</label>
+				</div>
+			</div>			
+		</div> -->
+
+		<div class="form-group">
+			<label class="control-label col-sm-3">RSUs (choose at least one):<span style="color: red;">*</span></label>
+			<div *ngFor="let r of rsuData">
+				<div class="col-sm-offset-3" style="padding-left: 15px;">
+					<div class="checkbox custom-control custom-checkbox">
+						<label>
+						<input type="checkbox" (change)="checkChanged($event)" name="{{r.rsuTarget}}">
+						<span class="custom-control-indicator"></span>
+							{{ r.rsuTarget }}
+						</label>
+					</div>
+				</div>
+			</div>
+		</div>	
+
+	</div>
+	<app-esri-map *ngIf="mileposts && rsuData" [rsuData]="rsuData" [mileposts]="mileposts" (onEmit)="onEmit($event)"></app-esri-map>
+	<div style="text-align: center; clear: both;">		
+		<button type="submit" class="btn btn-primary">Send New TIM</button>
+	</div>
+
+	<!-- <div>{{ testJSON }}</div> 
+ -->
+ 	<ul style="padding-top: 15px;">
+		<li *ngFor="let message of messages">
+			{{ message }}
+		</li>
+	</ul> 
+
+</form>

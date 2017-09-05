@@ -1,0 +1,26 @@
+
+<div class="form-group">
+	<label class="control-label col-sm-3">Direction:<span style="color: red;">*</span></label>
+	<div class="col-sm-2"> 
+		<select class="form-control" [(ngModel)]="direction" (change)="directionChanged()" id="direction" name="direction" required>
+        	<option>Eastbound</option> 
+        	<option>Westbound</option> 
+			</select>
+	</div>
+
+	<label class="control-label col-sm-1">Starting Milepost:<span style="color: red;">*</span></label>
+	<div class="col-sm-2"> 
+		<select class="form-control" [(ngModel)]="startingMilepost" id="startingMilepost" name="startingMilepost" [disabled]="direction == null" required>
+        	<option *ngFor="let i of milepostDD" [ngValue]="i.milepost">{{ i.milepost }}</option> 
+			</select>
+	</div>
+
+	<label class="control-label col-sm-1">Ending Milepost:<span style="color: red;">*</span></label>
+	<div class="col-sm-2"> 
+		<select class="form-control" [(ngModel)]="endingMilepost" id="endingMilepost" name="endingMilepost" [disabled]="direction == null" required>
+        	<option *ngFor="let i of milepostDD" [ngValue]="i.milepost">{{ i.milepost }}</option> 
+			</select>
+	</div>
+</div>
+
+<div #mapViewNode></div>

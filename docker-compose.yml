@@ -1,0 +1,29 @@
+version: '2'
+services:
+  mysql:
+      image: mysql
+      ports:
+          - "3306:3306"
+      environment:
+        MYSQL_ROOT_PASSWORD: "mypassword"
+      restart: always     
+      volumes:       
+        - ./mysql/data:/var/lib/mysql-files
+        - ./mysql/init:/docker-entrypoint-initdb.d/:ro
+  tim-rest-service:
+    depends_on:
+      - mysql
+    build: service/complete
+    ports:
+      - "7777:7777"
+    links:
+      - mysql:mysql
+    environment:
+      databaseurl: jdbc:mysql://mysql:3306/timBuilder 
+      databaseclass: com.mysql.jdbc.Driver
+  angular:
+    build: website 
+    ports:
+      - "4200:4200"
+
+

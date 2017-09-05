@@ -1,0 +1,46 @@
+"Speed Limit";1;268
+"Accident";2;513
+"Incident";2;531
+"Hazardous material spill";2;550
+"Closed";2;770
+"Closed for the season";2;774
+"Reduced to one lane";3;777
+"Avalanche control activities";2;1042
+"Road Construction";3;1025
+"Herd of animals on roadway";2;1292
+"Landslide";2;1310
+"Wide load";2;2050
+"No trailers";2;2568
+"Width Limit";2;2573
+"Height Limit";2;2574				
+"Wildfire";2;3084				
+"Major event";2;3841				
+"No parking spaces available";4;4103			
+"Only a few parking spaces available";4;4104				
+"Spaces Available";4;4105				
+"No parking information available";4;4223				
+"Severe weather";2;4865				
+"Snow";2;4868				
+"Winter Storm";2;4871				
+"Rain";2;4885				
+"Strong winds";2;5127				
+"Fog";2;5378				
+"Visibility reduced";2;5383				
+"Blowing snow";2;5385				
+"Black ice";2;5908				
+"Wet pavement";2;5895				
+"Ice";2;5906				
+"Icy patches";2;5907				
+"Snow drifts";2;5927				
+"Dry pavement";2;6011				
+"Snow tires or chains required";2;6156				
+"Keep to right";3;7425				
+"Keep to left";3;7426				
+"Reduce your speed";1;7443				
+"Drive carefully";2;7169				
+"Drive with extreme caution";2;7170				
+"Increase normal following distance";2;7173				
+"Prepare to stop";3;7186				
+"Stop at next safe place";2;7188				
+"Only travel is absolutely necessary";2;7189
+"Falling rocks";2;12037
