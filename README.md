@@ -17,9 +17,11 @@ The CV TIM Builder is an open source application built to send test TIMs (travel
 
 <a name="release-notes"/>
  
-## [I. Release Notes](ReleaseNotes.md)
+## I. Release Notes
 
-Coming soon...
+### Release 1
+- Functionality to create and send TIMs to RSUs by building a Path between mileposts
+- Functionality to disable TIMs from RSUs
 
 <a name="documentation"/>
 
