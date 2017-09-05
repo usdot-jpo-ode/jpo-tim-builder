@@ -6,14 +6,15 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" routerLink="/home" style="margin-top: 3px;">
+            <a class="navbar-brand" routerLink="/home" style="margin-top: 3px;" (click)="onHomeSelected()">
                 <img src='../../WYDOT_icon.jpg' style="width: 44px; margin-top: -7px; display: inline-block;" />            
                 CV TIM Builder
             </a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a routerLink="/disableTims">Disable TIMs</a></li>
+                <li [ngClass]="homeActive"><a routerLink="/home" (click)="onHomeSelected()">Build TIM</a></li>
+                <li [ngClass]="disableActive"><a routerLink="/disableTims" (click)="onDisableSelected()">Disable TIMs</a></li>
             </ul>
         </div>
     </div>

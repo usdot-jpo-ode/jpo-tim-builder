@@ -8,6 +8,7 @@
 # dependencies
 /website/node_modules
 /website/src/theme-dashboard/node_modules
+/website/dist
 
 # IDEs and editors
 /.idea

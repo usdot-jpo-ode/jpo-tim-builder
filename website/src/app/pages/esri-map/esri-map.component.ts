@@ -158,6 +158,7 @@ export class EsriMapComponent implements OnInit {
       
         on(dom.byId("endingMilepost"), "change", milepostChanged);
         on(dom.byId("startingMilepost"), "change", milepostChanged);
+        on(dom.byId("direction"), "change", milepostChanged);
 
         // function that will filter by the selected floor
         function milepostChanged(evt) {          

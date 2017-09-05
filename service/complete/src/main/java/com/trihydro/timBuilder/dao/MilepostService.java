@@ -59,7 +59,11 @@ public class MilepostService
 		try {
 			// build SQL query
    		    Statement statement = dbUtility.getConnection().createStatement();
-   			ResultSet rs = statement.executeQuery("select * from MILEPOST where direction = '" + direction + "' and milepost >= " + startingMilepost + " and milepost <= "+ endingMilepost + " order by milepost asc");
+   		    ResultSet rs;
+   		    if(startingMilepost < endingMilepost)
+   				rs = statement.executeQuery("select * from MILEPOST where direction = '" + direction + "' and milepost >= " + startingMilepost + " and milepost <= "+ endingMilepost + " order by milepost asc");
+   			else
+   				rs = statement.executeQuery("select * from MILEPOST where direction = '" + direction + "' and milepost <= " + startingMilepost + " and milepost >= "+ endingMilepost + " order by milepost asc");
    			// convert result to milepost objects
    			while (rs.next()) {   				
 			    Milepost milepost = new Milepost();
