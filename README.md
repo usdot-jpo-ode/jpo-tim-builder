@@ -19,6 +19,10 @@ The CV TIM Builder is an open source application built to send test TIMs (travel
  
 ## I. Release Notes
 
+### Release 2
+- Added functionality to deposit TIMs to SDW
+- NE and SW default lat/longs are at the NE and SW corners of Wyoming
+
 ### Release 1
 - Functionality to create and send TIMs to RSUs by building a Path between mileposts
 - Functionality to disable TIMs from RSUs
@@ -56,8 +60,7 @@ The following instructions describe the procedure to fetch, build, and run the a
 Clone the source code from the GitHub repository using Git command:
 
 ```bash
-git clone https://github.com/Trihydro/jpo-tim-builder.git
-(after pull request change to  -> git clone https://github.com/usdot-jpo-ode/jpo-tim-builder.git)
+git clone https://github.com/usdot-jpo-ode/jpo-tim-builder.git
 ```
 
 ## IV. Running the Application
