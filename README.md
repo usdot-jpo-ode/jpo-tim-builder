@@ -21,7 +21,7 @@ The CV TIM Builder is an open source application built to send test TIMs (travel
 
 ### Release 2
 - Added functionality to deposit TIMs to SDW
-- NE and SW default lat/longs are at the NE and SW corners of Wyoming
+- NE and SW default lat/longs are at the NW and SE corners of Wyoming
 
 ### Release 1
 - Functionality to create and send TIMs to RSUs by building a Path between mileposts
