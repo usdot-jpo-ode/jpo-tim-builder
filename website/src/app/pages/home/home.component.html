@@ -9,41 +9,24 @@
 			<div class="col-sm-3"> 
 				<input ngui-datetime-picker class="form-control" [(ngModel)]="df.startDateTime" name="startTime" required />
 			</div>
-			
 			<label class="control-label col-sm-2">Duration (Minutes):<span style="color: red;">*</span></label>
 			<div class="col-sm-3">
 				<input class="form-control" [(ngModel)]="df.durationTime" name="durationTime" type="Number" required />
 			</div>
-
-
 		</div>
-
 		<div class="form-group">
-
 			<label class="control-label col-sm-3">ITIS Code Category:<span style="color: red;">*</span></label>
 			<div class="col-sm-3"> 
 				<select class="form-control" [(ngModel)]="selectedCategory" name="category" (change)="onCategoryChanged()" required>
 		        	<option *ngFor="let i of categories" [ngValue]="i.categoryId">{{ i.category }}</option> 
 	  			</select>
 			</div>
-
-		<!-- 	<label class="control-label col-sm-3">TIM Type (ITIS code):<span style="color: red;">*</span></label>
-			<div class="col-sm-3"> 
-				<select class="form-control" [(ngModel)]="selectedItisCodeId" name="itisCode" [disabled]="selectedCategory == null" required>
-		        	<option *ngFor="let i of filteredItisCodes" [ngValue]="i.itisCodeId">{{ i.description }}</option> 
-	  			</select>
-			</div> -->
-
 			<label class="control-label col-sm-2">ITIS code(s):<span style="color: red;">*</span></label>
 			<div class="col-sm-3"> 
 				<ss-multiselect-dropdown [options]="filteredItisCodes" [texts]="ddText" [(ngModel)]="selectedItisCodes" [disabled]="selectedCategory == null" required [settings]="ddSettings" name="codes"></ss-multiselect-dropdown>
 			</div>
-
-			
 		</div>
-
 		<div class="form-group">
-
 			<label class="control-label col-sm-3">Frame Type:<span style="color: red;">*</span></label>
 			<div class="col-sm-3"> 
 				<select class="form-control" [(ngModel)]="df.frameType" id="frameType" name="frameType" required>
@@ -53,7 +36,6 @@
 		        	<option value="3">Commercial Signage</option> 
 	  			</select>
 			</div>
-
 			<div class="col-sm-offset-7">
 				<div class="checkbox custom-control custom-checkbox">
 					<label>
@@ -62,40 +44,37 @@
 						Download JSON
 					</label>
 				</div>
-			</div>		
-
-			
-		</div>
-
-		<!-- <ss-multiselect-dropdown [options]="filteredItisCodes" [(ngModel)]="selectedItisCodes" [settings]="ddSettings" name="codes"></ss-multiselect-dropdown> -->
-
-		<!-- <ss-multiselect-dropdown ></ss-multiselect-dropdown>
- -->
-
-		<!-- <div  class="form-group">
-			<label class="control-label col-sm-3">Frame Type:<span style="color: red;">*</span></label>
-			<div class="col-sm-3"> 
-				<select class="form-control" [(ngModel)]="df.frameType" id="frameType" name="frameType" required>
-		        	<option value="0">Unknown</option> 
-		        	<option value="1">Advisory</option> 
-		        	<option value="2">Road Signage</option> 
-		        	<option value="3">Commercial Signage</option> 
-	  			</select>
-			</div>
-		</div> -->
-
-	<!-- 	<div>
-			<div class="col-sm-offset-3" style="padding-left: 7px;">
+			</div>	
+			<div class="col-sm-offset-7">
 				<div class="checkbox custom-control custom-checkbox">
 					<label>
-					<input type="checkbox" (change)="downloadJsonChanged($event)" name="downloadJson">
+					<input type="checkbox" (change)="sendToSDWChanged($event)" name="sendToSDW">
 					<span class="custom-control-indicator"></span>
-						Download JSON
+						Send to SDW
 					</label>
 				</div>
-			</div>			
-		</div> -->
-
+			</div>		
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-3">SDW NW Corner Lat:</label>
+			<div class="col-sm-3"> 
+				<input class="form-control" [disabled]="!sendToSDWFlag" [(ngModel)]="sdwNWCornerLat" name="sdwNWCornerLat" type="Number" />
+			</div>
+			<label class="control-label col-sm-2">SDW NW Corner Long:</label>
+			<div class="col-sm-3">
+				<input class="form-control" [disabled]="!sendToSDWFlag" [(ngModel)]="sdwNWCornerLong" name="sdwNWCornerLong" type="Number" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-3">SDW SE Corner Lat:</label>
+			<div class="col-sm-3"> 
+				<input class="form-control" [disabled]="!sendToSDWFlag" [(ngModel)]="sdwSECornerLat" name="sdwSECornerLat" type="Number" />
+			</div>
+			<label class="control-label col-sm-2">SDW SE Corner Long:</label>
+			<div class="col-sm-3">
+				<input class="form-control" [disabled]="!sendToSDWFlag" [(ngModel)]="sdwSECornerLong" name="sdwSECornerLong" type="Number" />
+			</div>
+		</div>
 		<div class="form-group">
 			<label class="control-label col-sm-3">RSUs (choose at least one):<span style="color: red;">*</span></label>
 			<div *ngFor="let r of rsuData">
@@ -110,19 +89,14 @@
 				</div>
 			</div>
 		</div>	
-
 	</div>
 	<app-esri-map *ngIf="mileposts && rsuData" [rsuData]="rsuData" [mileposts]="mileposts" (onEmit)="onEmit($event)"></app-esri-map>
 	<div style="text-align: center; clear: both;">		
 		<button type="submit" class="btn btn-primary">Send New TIM</button>
 	</div>
-
-	<!-- <div>{{ testJSON }}</div> 
- -->
  	<ul style="padding-top: 15px;">
 		<li *ngFor="let message of messages">
 			{{ message }}
 		</li>
 	</ul> 
-
 </form>

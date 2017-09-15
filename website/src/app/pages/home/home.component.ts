@@ -31,6 +31,10 @@ import { RegionList } from '../../classes/region-list';
 import { Index } from '../../classes/index';
 import { Milepost } from '../../classes/mile-post';
 import { Category } from '../../classes/category';
+import { SDW } from '../../classes/sdw';
+import { ServiceRegion } from '../../classes/service-region';
+import { TwoDPoint } from '../../classes/two-d-point';
+
 import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts  } from 'angular-2-dropdown-multiselect';
 
 @Component({
@@ -57,14 +61,23 @@ export class HomeComponent implements OnInit{
 	pathposts: Milepost[];	
 	categories: Category[];	
 	downloadJsonFlag: boolean;
+	sendToSDWFlag: boolean;
 	filteredItisCodes: IMultiSelectOption[];
     selectedItisCodes: number[];
     ddSettings: IMultiSelectSettings;
 	ddText: IMultiSelectTexts;
+	sdwNWCornerLat: number;
+	sdwNWCornerLong: number;
+	sdwSECornerLat: number;
+	sdwSECornerLong: number;
 
    	constructor(private timBuilderService : TimBuilderService, private rsuService: RSUService, private itisCodeService: ItisCodeService, private milepostService: MilepostService, private categoryService: CategoryService){ }
 
 	ngOnInit(){	
+		this.sdwNWCornerLat = 45.035685245316394;
+		this.sdwNWCornerLong = -110.95195770263672;
+		this.sdwSECornerLat = 40.96538194577477;
+		this.sdwSECornerLong = -104.15382385253906;
 
         this.ddSettings = {
 			displayAllSelectedText: true
@@ -79,6 +92,7 @@ export class HomeComponent implements OnInit{
 		this.tim = new Tim();
 		this.messages = [];
 		this.downloadJsonFlag = false;
+		this.sendToSDWFlag = false;
 
 		this.rsuService.getAll().subscribe(
 			r => this.rsuData = r,
@@ -126,6 +140,10 @@ export class HomeComponent implements OnInit{
 
 	downloadJsonChanged(e){
 		this.downloadJsonFlag = !this.downloadJsonFlag;
+	}
+
+	sendToSDWChanged(e){
+		this.sendToSDWFlag = !this.sendToSDWFlag;
 	}	
 
 	onEmit(newPath: Milepost[]) {
@@ -167,7 +185,7 @@ export class HomeComponent implements OnInit{
 		var today = new Date();
 		tim.timeStamp = today.toISOString(); // OPTIONAL
 
-		//tim.packetID = "1";  // OPTIONAL
+		tim.packetID = tim.index.toString();  // unique
 		tim.urlB = "null"; // OPTIONAL
 
 		//The SSP index is used to control the data elements that follow the occurrence of the index. 
@@ -208,7 +226,7 @@ export class HomeComponent implements OnInit{
 			region.anchorPosition.elevation = (this.convertFeetToM(this.pathposts[0].elevation)).toString();
 		}
 		
-		region.laneWidth = "7";  // integer 0-32767, units of 1 cm
+		region.laneWidth = "300";  // integer 0-32767, units of 1 cm
 
 		// enum
 		// unavailable (0), -- unknown or NA, not typically used in valid expressions    
@@ -271,7 +289,7 @@ export class HomeComponent implements OnInit{
 
 		timSample.rsus = [];
 		timSample.snmp = new SNMP();
-		timSample.snmp.rsuid = "0083";
+		timSample.snmp.rsuid = "00000083";
 		timSample.snmp.msgid = "31";
 		timSample.snmp.mode = "1";
 		timSample.snmp.channel = "178";
@@ -282,6 +300,16 @@ export class HomeComponent implements OnInit{
 		timSample.snmp.status = "4";
 
 		timSample.rsus.push(rsu);
+		if(this.sendToSDWFlag){
+			timSample.sdw = new SDW();
+			timSample.sdw.serviceRegion = new ServiceRegion();
+			timSample.sdw.serviceRegion.nwCorner = new TwoDPoint();
+			timSample.sdw.serviceRegion.seCorner = new TwoDPoint();
+			timSample.sdw.serviceRegion.nwCorner.latitude = this.sdwNWCornerLat.toString();
+			timSample.sdw.serviceRegion.nwCorner.longitude = this.sdwNWCornerLong.toString();
+			timSample.sdw.serviceRegion.seCorner.latitude = this.sdwSECornerLat.toString();
+			timSample.sdw.serviceRegion.seCorner.longitude = this.sdwSECornerLong.toString();
+		}
 	
 		this.testJSON = JSON.stringify(timSample);	
 
